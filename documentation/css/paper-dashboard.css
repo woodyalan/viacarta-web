@@ -11556,3 +11556,7 @@ star {
     padding: 5px 15px;
   }
 }
+
+.mt5 {
+  margin-top: 5px !important;
+}

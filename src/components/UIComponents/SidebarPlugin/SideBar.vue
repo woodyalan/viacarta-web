@@ -6,13 +6,13 @@
         -->
     <!-- -->
     <div class="logo">
-      <a class="simple-text logo-mini" href="https://www.creative-tim.com/product/vue-paper-dashboard-pro">
+      <a class="simple-text logo-mini" href="https://viacarta.com.br/">
           <div class="logo-img">
               <img :src="logo" alt="">
           </div>
       </a>
 
-      <a class="simple-text logo-normal" href="https://www.creative-tim.com/vue-paper-dashboard-pro">
+      <a class="simple-text logo-normal" href="https://viacarta.com.br/">
           {{ title }}
       </a>
     </div>
@@ -75,7 +75,7 @@
     props: {
       title: {
         type: String,
-        default: 'Paper Dashboard Pro'
+        default: 'Viacarta Web'
       },
       type: {
         type: String,
@@ -103,7 +103,7 @@
       },
       logo: {
         type: String,
-        default: 'static/img/vue-logo.png'
+        default: 'static/img/viacarta_logo.png'
       },
       sidebarLinks: {
         type: Array,

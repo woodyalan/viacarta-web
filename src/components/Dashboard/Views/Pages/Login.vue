@@ -10,53 +10,57 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <router-link class="navbar-brand" to="/admin">Paper Dashboard PRO</router-link>
-        </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li>
-              <router-link to="/register">
-                Register
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/admin/overview">
-                Dashboard
-              </router-link>
-            </li>
-          </ul>
+          <router-link class="navbar-brand" to="/admin">Viacarta Web</router-link>
         </div>
       </div>
     </nav>
 
     <div class="wrapper wrapper-full-page">
-      <div class="full-page login-page" data-color=""
+      <div class="full-page login-page" data-color="green"
            data-image="static/img/background/background-2.jpg">
         <!--   you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple" -->
         <div class="content">
           <div class="container">
             <div class="row">
               <div class="col-md-4 col-sm-6 col-md-offset-4 col-sm-offset-3">
-                <form method="#" action="#">
-                  <div class="card" data-background="color" data-color="blue">
+                <form @submit.prevent="validar()" autocomplete="off" novalidate>
+                  <div class="card" data-background="color" data-color="green">
                     <div class="card-header">
-                      <h3 class="card-title">Login</h3>
+                      <h3 class="card-title">Acesso</h3>
                     </div>
                     <div class="card-content">
                       <div class="form-group">
-                        <label>Email address</label>
-                        <input type="email" placeholder="Enter email" class="form-control input-no-border">
+                        <label>E-mail</label>
+                        <input type="email" 
+                          placeholder="E-mail" 
+                          class="form-control input-no-border" 
+                          v-model="login.email" 
+                          name="email"
+                          v-validate="'required|email'">
+                          <small class="text-danger" v-show="errors.has('email')">
+                            {{ errors.first('email') }}
+                          </small>
                       </div>
                       <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" placeholder="Password" class="form-control input-no-border">
+                        <label>Senha</label>
+                        <input type="password" 
+                          placeholder="Senha" 
+                          class="form-control input-no-border" 
+                          v-model="login.senha" 
+                          name="senha"
+                          v-validate="'required'">
+                        <small class="text-danger" v-show="errors.has('senha')">
+                          {{ errors.first('senha') }}
+                        </small>
                       </div>
+
+                      <p class="text-center text-danger"><small>{{ login.mensagem }}</small></p>
                     </div>
                     <div class="card-footer text-center">
-                      <button type="submit" class="btn btn-fill btn-wd ">Let's go</button>
+                      <button type="submit" class="btn btn-fill btn-wd ">Acessar</button>
                       <div class="forgot">
                         <router-link to="/register">
-                          Forgot your password?
+                          Esqueceu sua senha?
                         </router-link>
                       </div>
                     </div>
@@ -70,20 +74,27 @@
         <footer class="footer footer-transparent">
           <div class="container">
             <div class="copyright">
-              &copy; Coded with
-              <i class="fa fa-heart heart"></i> by
-              <a href="https://github.com/cristijora" target="_blank">Cristi Jora</a>.
-              Designed by <a href="https://www.creative-tim.com/?ref=pdf-vuejs" target="_blank">Creative Tim</a>.
+              &copy; Desenvolvido por
+              <a href="#" target="_blank">Alan Santos</a>
             </div>
           </div>
         </footer>
-        <div class="full-page-background" style="background-image: url(static/img/background/background-2.jpg) "></div>
+        <div class="full-page-background" style="background-image: url(static/img/background/viacarta.jfif) "></div>
       </div>
     </div>
   </div>
 </template>
 <script>
   export default {
+    data() {
+      return {
+        login: {
+          email: 'teste@teste.com',
+          senha: '123',
+          mensagem: ''
+        }
+      }
+    },
     methods: {
       toggleNavbar () {
         document.body.classList.toggle('nav-open')
@@ -91,6 +102,20 @@
       closeMenu () {
         document.body.classList.remove('nav-open')
         document.body.classList.remove('off-canvas-sidebar')
+      },
+      validar() {
+        this.$validator
+          .validateAll()
+          .then(success => {
+              if(success) {
+                if((this.login.email == 'teste@teste.com') && (this.login.senha == '123'))
+                  this.$router.push('/');
+                else
+                  this.login.mensagem = 'E-mail ou senha inválidos'
+              }
+          }).catch((err) => {
+              console.log(err)
+          })
       }
     },
     beforeDestroy () {
@@ -98,5 +123,9 @@
     }
   }
 </script>
+
 <style>
+.forgot {
+  margin-top: 10px;
+}
 </style>
