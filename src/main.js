@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueNotify from 'vue-notifyjs'
+import VueResource from 'vue-resource'
 import VeeValidate, { Validator } from 'vee-validate'
 import lang from 'element-ui/lib/locale/lang/pt-br'
 import locale from 'element-ui/lib/locale'
+import store from './store'
 import App from './App.vue'
 
 import messagesBR from 'vee-validate/dist/locale/pt_BR'
@@ -22,13 +24,15 @@ import './assets/sass/paper-dashboard.scss'
 import './assets/sass/demo.scss'
 import 'es6-promise/auto'
 
-import sidebarLinks from './sidebarLinks'
+// import sidebarLinks from './sidebarLinks'
+
 // plugin setup
 Vue.use(VueRouter)
+Vue.use(VueResource)
 Vue.use(GlobalDirectives)
 Vue.use(GlobalComponents)
 Vue.use(VueNotify)
-Vue.use(SideBar, {sidebarLinks: sidebarLinks})
+Vue.use(SideBar)
 
 Validator.addLocale(messagesBR)
 Vue.use(VeeValidate, {
@@ -36,6 +40,27 @@ Vue.use(VeeValidate, {
 })
 
 locale.use(lang)
+
+Vue.http.options.root = "http://localhost:3000/";
+
+Vue.http.interceptors.push(function(request, next) {
+    const removeAuthHeaders = false;
+
+    request.headers.set('Accept', 'application/json');
+    
+    if (removeAuthHeaders){
+        request.headers.delete('x-access-token');
+    } else {
+        let token = store.state.token;
+        request.headers.set('x-access-token', token);
+    }
+    
+    next(function (res) {
+        if(res.status === 401) {
+            Vue.router.push('/logoff');
+        }
+    });
+});
 
 // configure router
 const router = new VueRouter({
@@ -46,6 +71,7 @@ const router = new VueRouter({
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  render: h => h(App),
-  router
+  router,
+  store,
+  render: h => h(App)
 })

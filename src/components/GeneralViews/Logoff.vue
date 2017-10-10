@@ -11,7 +11,10 @@
 <script>
   export default {
     mounted() {
-      this.$router.push('/login');
+      this.$store.dispatch('resetData')
+        .then(() => {
+          this.$router.push('/login');
+        });
     }
   }
 </script>

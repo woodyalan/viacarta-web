@@ -18,7 +18,7 @@ const routes = [
   {
     path: '/',
     component: DashboardLayout,
-    redirect: '/overview'
+    redirect: '/dashboard/overview'
   },
   {
     path: '/login',
@@ -31,9 +31,9 @@ const routes = [
     component: Logoff
   },
   {
-    path: '/',
+    path: '/dashboard',
     component: DashboardLayout,
-    redirect: '/overview',
+    redirect: '/dashboard/overview',
     children: [
       {
         path: 'overview',

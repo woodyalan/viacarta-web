@@ -1,11 +1,11 @@
 <template lang="pug">
-  .user
+  .user(v-if='user')
     .photo
-      img(src='static/img/faces/face-2.jpg')
+      img(src='static/img/faces/face-0.jpg')
     .info
       a(data-toggle='collapse', @click='toggleMenu', href='javascript:void(0)')
         span
-          | Alan Santos
+          | {{ user.nome }}
           b.caret
       .clearfix
       div
@@ -25,6 +25,11 @@
     data () {
       return {
         isClosed: true
+      }
+    },
+    computed: {
+      user() {
+        return this.$store.state.user;
       }
     },
     methods: {

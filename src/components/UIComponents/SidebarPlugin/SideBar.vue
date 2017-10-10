@@ -144,6 +144,11 @@
         currentActiveMenu: {}
       }
     },
+    watch: {
+      sidebarLinks(value) {
+        console.log(value);
+      }
+    },
     methods: {
       findActiveLink () {
         if (!this.$route) return

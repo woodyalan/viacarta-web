@@ -1,98 +1,68 @@
-<template>
-  <div>
-    <nav class="navbar navbar-transparent navbar-absolute">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2"
-                  @click="toggleNavbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <router-link class="navbar-brand" to="/admin">Viacarta Web</router-link>
-        </div>
-      </div>
-    </nav>
+<template lang="pug">
+  div
+    nav.navbar.navbar-transparent.navbar-absolute
+      .container
+        .navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='#navigation-example-2', @click='toggleNavbar')
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          router-link.navbar-brand(to='/') Viacarta Web
+    .wrapper.wrapper-full-page
+      .full-page.login-page(data-color='green', data-image='static/img/background/background-2.jpg')
+        // you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple"
+        .content
+          .container
+            .row
+              .col-md-4.col-sm-6.col-md-offset-4.col-sm-offset-3
+                form(@submit.prevent='doLogin()', autocomplete='off', novalidate='')
+                  .card(data-background='color', data-color='green')
+                    .card-header
+                      h3.card-title Acesso
+                    .card-content
+                      fg-input(
+                        type='email',
+                        label='E-mail',
+                        placeholder='E-mail', 
+                        v-model='login.email', 
+                        name='email', 
+                        :rules='{ required: true, email: true }'
+                      )
+                      fg-input(
+                        type='password',
+                        label='Senha',
+                        placeholder='Senha', 
+                        v-model='login.senha', 
+                        name='senha', 
+                        :rules='{ required: true }'
+                      )
+                      p.text-center.text-danger
+                        small {{ mensagem }}
+                    .card-footer.text-center
+                      button.btn.btn-fill.btn-wd(type='submit') Acessar
+                      .forgot
+                        router-link(to='/register')
+                          | Esqueceu sua senha?
+        footer.footer.footer-transparent
+          .container
+            .copyright
+              | © Desenvolvido por
+              a(href='#', target='_blank') Alan Santos
+        .full-page-background(style='background-image: url(static/img/background/viacarta.jfif) ')
 
-    <div class="wrapper wrapper-full-page">
-      <div class="full-page login-page" data-color="green"
-           data-image="static/img/background/background-2.jpg">
-        <!--   you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple" -->
-        <div class="content">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-4 col-sm-6 col-md-offset-4 col-sm-offset-3">
-                <form @submit.prevent="validar()" autocomplete="off" novalidate>
-                  <div class="card" data-background="color" data-color="green">
-                    <div class="card-header">
-                      <h3 class="card-title">Acesso</h3>
-                    </div>
-                    <div class="card-content">
-                      <div class="form-group">
-                        <label>E-mail</label>
-                        <input type="email" 
-                          placeholder="E-mail" 
-                          class="form-control input-no-border" 
-                          v-model="login.email" 
-                          name="email"
-                          v-validate="'required|email'">
-                          <small class="text-danger" v-show="errors.has('email')">
-                            {{ errors.first('email') }}
-                          </small>
-                      </div>
-                      <div class="form-group">
-                        <label>Senha</label>
-                        <input type="password" 
-                          placeholder="Senha" 
-                          class="form-control input-no-border" 
-                          v-model="login.senha" 
-                          name="senha"
-                          v-validate="'required'">
-                        <small class="text-danger" v-show="errors.has('senha')">
-                          {{ errors.first('senha') }}
-                        </small>
-                      </div>
-
-                      <p class="text-center text-danger"><small>{{ login.mensagem }}</small></p>
-                    </div>
-                    <div class="card-footer text-center">
-                      <button type="submit" class="btn btn-fill btn-wd ">Acessar</button>
-                      <div class="forgot">
-                        <router-link to="/register">
-                          Esqueceu sua senha?
-                        </router-link>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <footer class="footer footer-transparent">
-          <div class="container">
-            <div class="copyright">
-              &copy; Desenvolvido por
-              <a href="#" target="_blank">Alan Santos</a>
-            </div>
-          </div>
-        </footer>
-        <div class="full-page-background" style="background-image: url(static/img/background/viacarta.jfif) "></div>
-      </div>
-    </div>
-  </div>
 </template>
 <script>
+  import LoginService from '../../../../domain/login/LoginService'
+
   export default {
     data() {
       return {
         login: {
-          email: 'teste@teste.com',
-          senha: '123',
-          mensagem: ''
-        }
+          email: 'alan.afs89@gmail.com',
+          senha: '1234'
+        },
+        mensagem: ''
       }
     },
     methods: {
@@ -103,18 +73,57 @@
         document.body.classList.remove('nav-open')
         document.body.classList.remove('off-canvas-sidebar')
       },
-      validar() {
-        this.$validator
+      validate() {
+        return this.$validator
           .validateAll()
+          .then(success => success)
+          .catch((err) => {
+            console.log(err)
+          })
+      },
+      getUserInfo() {
+        this.service = new LoginService(this.$http);
+        return this.service
+          .getUserInfo(this.login.email)
+          .then(userInfo => {
+            this.$store.dispatch('setUser', userInfo.result);
+            return userInfo.result;
+          });
+      },
+      getUserMenus(perfil) {
+        this.service = new LoginService(this.$http);
+        return this.service
+          .getUserMenus(perfil)
+          .then(menus => {
+            this.$store.dispatch('setMenus', menus.result);
+          });
+      },
+      doLogin() {
+        this.validate()
           .then(success => {
-              if(success) {
-                if((this.login.email == 'teste@teste.com') && (this.login.senha == '123'))
-                  this.$router.push('/');
-                else
-                  this.login.mensagem = 'E-mail ou senha inválidos'
-              }
-          }).catch((err) => {
-              console.log(err)
+            if(success) {
+              this.service = new LoginService(this.$http);
+              this.service
+                .login(this.login.email, this.login.senha)
+                .then(result => {
+                  this.mensagem = '';
+
+                  if(result.success) {
+                    this.$store.dispatch('setToken', result.token)
+                      .then(() => {
+                        this.getUserInfo()
+                          .then(userInfo => {
+                            this.getUserMenus(userInfo.perfil)
+                              .then(() => {
+                                this.$router.push('/');
+                              });
+                          });
+                      });
+                  } else {
+                    this.mensagem = result.message;
+                  }
+                });
+            }
           })
       }
     },

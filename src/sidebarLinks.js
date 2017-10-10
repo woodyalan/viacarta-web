@@ -7,14 +7,5 @@ export default [
       name: 'Visão Geral',
       path: '/overview'
     }]
-  },
-  {
-    name: 'Cadastros',
-    icon: 'ti-package',
-    collapsed: true,
-    children: [{
-      name: 'Veículos',
-      path: '/cadastros/veiculos'
-    }]
   }
 ]

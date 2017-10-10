@@ -4,7 +4,8 @@
       {{label}}
     </label>
     <input class="form-control border-input" v-bind="$props" :value="value"
-           @input="$emit('input',$event.target.value)">
+           @input="$emit('input',$event.target.value)" v-validate="rules" :data-vv-as="label">
+    <small class="text-danger" v-show="errors.has(name)">{{ errors.first(name) }}</small>
   </div>
 </template>
 <script>
@@ -19,7 +20,11 @@
       name: String,
       disabled: Boolean,
       placeholder: String,
-      value: [String, Number]
+      value: [String, Number],
+      rules: {
+        type: Object,
+        default: {}
+      }
     }
   }
 
