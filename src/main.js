@@ -5,6 +5,7 @@ import VueResource from 'vue-resource'
 import VeeValidate, { Validator } from 'vee-validate'
 import lang from 'element-ui/lib/locale/lang/pt-br'
 import locale from 'element-ui/lib/locale'
+import AsyncComputed from 'vue-async-computed'
 import store from './store'
 import App from './App.vue'
 
@@ -22,6 +23,7 @@ import routes from './routes/routes'
 
 import './assets/sass/paper-dashboard.scss'
 import './assets/sass/demo.scss'
+import 'sweetalert2/dist/sweetalert2.css'
 import 'es6-promise/auto'
 
 // import sidebarLinks from './sidebarLinks'
@@ -33,15 +35,24 @@ Vue.use(GlobalDirectives)
 Vue.use(GlobalComponents)
 Vue.use(VueNotify)
 Vue.use(SideBar)
+Vue.use(AsyncComputed)
 
 Validator.addLocale(messagesBR)
 Vue.use(VeeValidate, {
-    locale: 'pt_BR'
+    locale: 'pt_BR',
+    inject: false
 })
 
 locale.use(lang)
 
+// configure router
+const router = new VueRouter({
+    routes, // short for routes: routes
+    linkActiveClass: 'active'
+})
+  
 Vue.http.options.root = "http://localhost:3000/";
+  
 
 Vue.http.interceptors.push(function(request, next) {
     const removeAuthHeaders = false;
@@ -57,16 +68,10 @@ Vue.http.interceptors.push(function(request, next) {
     
     next(function (res) {
         if(res.status === 401) {
-            Vue.router.push('/logoff');
+            router.push('/logoff');
         }
     });
 });
-
-// configure router
-const router = new VueRouter({
-  routes, // short for routes: routes
-  linkActiveClass: 'active'
-})
 
 /* eslint-disable no-new */
 new Vue({

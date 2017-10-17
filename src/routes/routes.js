@@ -11,8 +11,8 @@ import Overview from 'src/components/Dashboard/Views/Dashboard/Overview.vue'
 import Login from 'src/components/Dashboard/Views/Pages/Login.vue'
 
 // Cadastros
-import Veiculos from 'src/components/Dashboard/Views/Veiculos/Cadastro.vue'
-import ListVeiculos from 'src/components/Dashboard/Views/Veiculos/Lista.vue'
+import CadastroMenus from 'src/components/Dashboard/Views/Menus/CadastroMenus.vue'
+import ListaMenus from 'src/components/Dashboard/Views/Menus/ListaMenus.vue'
 
 const routes = [
   {
@@ -47,19 +47,19 @@ const routes = [
     component: DashboardLayout,
     children: [
       {
-        path: 'veiculos/new',
-        name: 'Novo Veículo',
-        component: Veiculos
+        path: 'menus/new',
+        name: 'Novo Menu',
+        component: CadastroMenus
       },
       {
-        path: 'veiculos/edit/:id',
-        name: 'Editar Veículo',
-        component: Veiculos
+        path: 'menus/edit/:id?',
+        name: 'Editar Menu',
+        component: CadastroMenus
       },
       {
-        path: 'veiculos',
-        name: 'Veículos',
-        component: ListVeiculos
+        path: 'menus',
+        name: 'Menus',
+        component: ListaMenus
       }
     ]
   },

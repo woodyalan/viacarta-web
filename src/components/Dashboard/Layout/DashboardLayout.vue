@@ -48,28 +48,29 @@
         let app = this;
         let sidebarLinks = [];
         
+        if(this.$store.state.menus) {
+          let sidebarLinksUser = this.$store.state.menus.map(m => {
+            let telas = m.telas.map(t => {
+                return {
+                  name: t.nome,
+                  path: `/${m.path}/${t.route}`
+                }
+            })
+        
+            return {
+              name: m.nome,
+              icon: m.icon,
+              collapsed: true,
+              children: telas
+            }
+          });
 
-        let sidebarLinksUser = this.$store.state.menus.map(m => {
-          let telas = m.telas.map(t => {
-              return {
-                name: t.nome,
-                path: `/${m.path}/${t.route}`
-              }
-          })
-      
-          return {
-            name: m.nome,
-            icon: m.icon,
-            collapsed: true,
-            children: telas
-          }
-        });
+          sidebarLinksUser.forEach(function(element) {
+            sidebarLinks.push(element)
+          }, this);
 
-        sidebarLinksUser.forEach(function(element) {
-          sidebarLinks.push(element)
-        }, this);
-
-        app.$sidebar.sidebarLinks = sidebarLinks;
+          app.$sidebar.sidebarLinks = sidebarLinks;
+        }
 
         return app.$sidebar.sidebarLinks;
       }
