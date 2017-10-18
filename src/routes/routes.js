@@ -14,6 +14,12 @@ import Login from 'src/components/Dashboard/Views/Pages/Login.vue'
 import CadastroMenus from 'src/components/Dashboard/Views/Menus/CadastroMenus.vue'
 import ListaMenus from 'src/components/Dashboard/Views/Menus/ListaMenus.vue'
 
+import CadastroPerfis from 'src/components/Dashboard/Views/Perfis/CadastroPerfis.vue'
+import ListaPerfis from 'src/components/Dashboard/Views/Perfis/ListaPerfis.vue'
+
+import CadastroTiposVeiculo from 'src/components/Dashboard/Views/TiposVeiculo/CadastroTiposVeiculo.vue'
+import ListaTiposVeiculo from 'src/components/Dashboard/Views/TiposVeiculo/ListaTiposVeiculo'
+
 const routes = [
   {
     path: '/',
@@ -60,6 +66,36 @@ const routes = [
         path: 'menus',
         name: 'Menus',
         component: ListaMenus
+      },
+      {
+        path: 'perfis/new',
+        name: 'Novo Perfil',
+        component: CadastroPerfis
+      },
+      {
+        path: 'perfis/edit/:id?',
+        name: 'Editar Perfis',
+        component: CadastroPerfis
+      },
+      {
+        path: 'perfis',
+        name: 'Perfis',
+        component: ListaPerfis
+      },
+      {
+        path: 'tiposVeiculo/new',
+        name: 'Novo Tipo de Veículo',
+        component: CadastroTiposVeiculo
+      },
+      {
+        path: 'tiposVeiculo/edit/:id?',
+        name: 'Editar Tipo de Veículo',
+        component: CadastroTiposVeiculo
+      },
+      {
+        path: 'tiposVeiculo',
+        name: 'Tipos de Veículo',
+        component: ListaTiposVeiculo
       }
     ]
   },

@@ -11,7 +11,7 @@
               type='text',
               label='Nome',
               placeholder='Nome', 
-              v-model='menu.nome', 
+              v-model='perfil.nome', 
               name='nome', 
               :rules='{ required: true }'
             )
@@ -20,7 +20,7 @@
             fg-select(
               label='Ativo',
               placeholder='Ativo', 
-              v-model='menu.ativo', 
+              v-model='perfil.ativo', 
               name='ativo', 
               :rules='{ required: true }',
               :options='options.ativo'
@@ -35,8 +35,8 @@
 </template>
 <script>
 import Cadastro from 'src/components/GeneralViews/Cadastro.vue'
-import MenuService from 'src/domain/menu/MenuService'
-import Menu from 'src/domain/menu/Menu'
+import PerfilService from 'src/domain/perfil/PerfilService'
+import Perfil from 'src/domain/perfil/Perfil'
 import swal from 'sweetalert2'
 
 export default {
@@ -46,8 +46,8 @@ export default {
   },
   data () {
     return {
-      title: 'Cadastro de Menus',
-      route: '/cadastros/menus',
+      title: 'Cadastro de Perfis',
+      route: '/cadastros/perfis',
       loading: false,
       options: {
         ativo: [
@@ -61,7 +61,7 @@ export default {
           }
         ]
       },
-      menu: {
+      perfil: {
         nome: null,
         ativo: null
       }
@@ -84,13 +84,13 @@ export default {
           if(success && !this.loading) {
             this.loading = true;
 
-            let menu = new Menu(this.menu.nome, this.menu.ativo);
+            let perfil = new Perfil(this.perfil.nome, this.perfil.ativo);
 
-            this.service = new MenuService(this.$resource);
+            this.service = new PerfilService(this.$resource);
 
             if(this.$route.params.id) {
               this.service
-                .update(this.$route.params.id, menu)
+                .update(this.$route.params.id, perfil)
                 .then(response => {
                   let success = response.success;
 
@@ -108,7 +108,7 @@ export default {
                 });
             } else {
               this.service
-                .save(menu)
+                .save(perfil)
                 .then(response => {
                   let success = response.success;
 
@@ -130,13 +130,13 @@ export default {
     }
   },
   mounted() {
-    this.menu = new Menu();
+    this.perfil = new Perfil();
 
     if(this.$route.params.id) {
-      this.service = new MenuService(this.$resource);
+      this.service = new PerfilService(this.$resource);
       this.service
         .get(this.$route.params.id)
-        .then(menu => this.menu = menu);
+        .then(perfil => this.perfil = perfil);
     }
   }
 }

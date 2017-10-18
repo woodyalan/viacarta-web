@@ -11,7 +11,7 @@
               type='text',
               label='Nome',
               placeholder='Nome', 
-              v-model='menu.nome', 
+              v-model='tipoVeiculo.nome', 
               name='nome', 
               :rules='{ required: true }'
             )
@@ -20,7 +20,7 @@
             fg-select(
               label='Ativo',
               placeholder='Ativo', 
-              v-model='menu.ativo', 
+              v-model='tipoVeiculo.ativo', 
               name='ativo', 
               :rules='{ required: true }',
               :options='options.ativo'
@@ -35,8 +35,8 @@
 </template>
 <script>
 import Cadastro from 'src/components/GeneralViews/Cadastro.vue'
-import MenuService from 'src/domain/menu/MenuService'
-import Menu from 'src/domain/menu/Menu'
+import TipoVeiculoService from 'src/domain/tipoVeiculo/TipoVeiculoService'
+import TipoVeiculo from 'src/domain/tipoVeiculo/TipoVeiculo'
 import swal from 'sweetalert2'
 
 export default {
@@ -46,8 +46,8 @@ export default {
   },
   data () {
     return {
-      title: 'Cadastro de Menus',
-      route: '/cadastros/menus',
+      title: 'Cadastro de Tipos de Veículo',
+      route: '/cadastros/tiposVeiculo',
       loading: false,
       options: {
         ativo: [
@@ -61,7 +61,7 @@ export default {
           }
         ]
       },
-      menu: {
+      tipoVeiculo: {
         nome: null,
         ativo: null
       }
@@ -84,13 +84,13 @@ export default {
           if(success && !this.loading) {
             this.loading = true;
 
-            let menu = new Menu(this.menu.nome, this.menu.ativo);
+            let tipoVeiculo = new TipoVeiculo(this.tipoVeiculo.nome, this.tipoVeiculo.ativo);
 
-            this.service = new MenuService(this.$resource);
+            this.service = new TipoVeiculoService(this.$resource);
 
             if(this.$route.params.id) {
               this.service
-                .update(this.$route.params.id, menu)
+                .update(this.$route.params.id, tipoVeiculo)
                 .then(response => {
                   let success = response.success;
 
@@ -108,7 +108,7 @@ export default {
                 });
             } else {
               this.service
-                .save(menu)
+                .save(tipoVeiculo)
                 .then(response => {
                   let success = response.success;
 
@@ -130,13 +130,13 @@ export default {
     }
   },
   mounted() {
-    this.menu = new Menu();
+    this.tipoVeiculo = new TipoVeiculo();
 
     if(this.$route.params.id) {
-      this.service = new MenuService(this.$resource);
+      this.service = new TipoVeiculoService(this.$resource);
       this.service
         .get(this.$route.params.id)
-        .then(menu => this.menu = menu);
+        .then(tipoVeiculo => this.tipoVeiculo = tipoVeiculo);
     }
   }
 }
