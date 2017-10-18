@@ -56,6 +56,7 @@
   import LoginService from '../../../../domain/login/LoginService'
 
   export default {
+    $validates: true,
     data() {
       return {
         login: {

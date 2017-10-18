@@ -21,11 +21,15 @@
           .row
             .col-xs-12
               .table-responsive
-                el-table.table.table-striped.table-no-bordered.table-hover(:data='queriedData', border='', style='width: 100%')
+                el-table.table.table-striped.table-no-bordered.table-hover(
+                  :data='queriedData', 
+                  border='', 
+                  style='width: 100%'
+                )
                   el-table-column(v-for='column in tableColumns', :class-name='column.class', :prop='column.prop', :label='column.label', sortable='')
                   el-table-column(width='150' class-name='text-center', fixed='right')
                     template(scope='props')
-                      router-link(:to='`${route}/edit/${queriedData[props.$index].id}`')
+                      router-link(:to='`${route}/edit/${props.row.id}`')
                         a.btn.btn-simple.btn-warning.btn-xs.btn-icon.edit
                           i.ti-pencil-alt
                       a.btn.btn-simple.btn-danger.btn-xs.btn-icon.remove(@click='handleDelete(props.$index, props.row)')
@@ -141,8 +145,12 @@
       }
     },
     methods: {
-      handleDelete() {
-        
+      handleDelete(index, object) {
+        this.$emit('deleteItem', { index, object });
+      },
+      removeItem(index) {
+        console.log(index)
+        this.tableData.splice(index)
       }
     }
   }

@@ -23,7 +23,8 @@ import routes from './routes/routes'
 
 import './assets/sass/paper-dashboard.scss'
 import './assets/sass/demo.scss'
-import 'sweetalert2/dist/sweetalert2.css'
+import './assets/sass/paper-dashboard-override.scss'
+import './assets/sass/demo.scss'
 import 'es6-promise/auto'
 
 // import sidebarLinks from './sidebarLinks'
