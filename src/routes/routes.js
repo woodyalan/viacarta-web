@@ -20,6 +20,9 @@ import ListaPerfis from 'src/components/Dashboard/Views/Perfis/ListaPerfis.vue'
 import CadastroTiposVeiculo from 'src/components/Dashboard/Views/TiposVeiculo/CadastroTiposVeiculo.vue'
 import ListaTiposVeiculo from 'src/components/Dashboard/Views/TiposVeiculo/ListaTiposVeiculo'
 
+import CadastroSeguradora from 'src/components/Dashboard/Views/Seguradora/CadastroSeguradora.vue'
+import ListaSeguradora from 'src/components/Dashboard/Views/Seguradora/ListaSeguradora.vue'
+
 const routes = [
   {
     path: '/',
@@ -96,6 +99,21 @@ const routes = [
         path: 'tiposVeiculo',
         name: 'Tipos de Veículo',
         component: ListaTiposVeiculo
+      },
+      {
+        path: 'seguradora/new',
+        name: 'Nova Seguradora',
+        component: CadastroSeguradora
+      },
+      {
+        path: 'seguradora/edit/:id?',
+        name: 'Editar Seguradora',
+        component: CadastroSeguradora
+      },
+      {
+        path: 'seguradora',
+        name: 'Seguradora',
+        component: ListaSeguradora
       }
     ]
   },
