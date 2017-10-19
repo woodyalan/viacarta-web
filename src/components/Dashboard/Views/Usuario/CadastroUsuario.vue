@@ -23,7 +23,7 @@
               v-model='usuario.email', 
               name='email',
               type='email', 
-              :rules='{ required: true }'
+              :rules='{ required: true, email: true }'
             )
 
           .col-md-3
@@ -32,7 +32,7 @@
               placeholder='Celular', 
               v-model='usuario.celular', 
               name='celular', 
-              :rules='{ required: false }',
+              :rules='{ required: false, min: 14 }',
               :mask="['(##) ####-####', '(##) #####-####']"
             )
         
