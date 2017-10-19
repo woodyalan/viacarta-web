@@ -26,6 +26,9 @@ import ListaSeguradora from 'src/components/Dashboard/Views/Seguradora/ListaSegu
 import CadastroVeiculo from 'src/components/Dashboard/Views/Veiculo/CadastroVeiculo.vue'
 import ListaVeiculo from 'src/components/Dashboard/Views/Veiculo/ListaVeiculo.vue'
 
+import CadastroUsuario from 'src/components/Dashboard/Views/Usuario/CadastroUsuario.vue'
+import ListaUsuario from 'src/components/Dashboard/Views/Usuario/ListaUsuario.vue'
+
 const routes = [
   {
     path: '/',
@@ -137,6 +140,22 @@ const routes = [
         path: 'veiculo',
         name: 'Veiculo',
         component: ListaVeiculo
+      },
+      //Usuário
+      {
+        path: 'usuario/new',
+        name: 'Novo Usuário',
+        component: CadastroUsuario
+      },
+      {
+        path: 'usuario/edit/:id?',
+        name: 'Editar Usuário',
+        component: CadastroUsuario
+      },
+      {
+        path: 'usuario',
+        name: 'Usuário',
+        component: ListaUsuario
       }
     ]
   },
