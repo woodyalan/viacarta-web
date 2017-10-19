@@ -18,55 +18,44 @@
 
           .col-md-3
             fg-input(
-              label='Ano',
-              placeholder='Ano', 
-              v-model='usuario.ano', 
-              name='ano',
-              type='number', 
+              label='E-mail',
+              placeholder='E-mail', 
+              v-model='usuario.email', 
+              name='email',
+              type='email', 
               :rules='{ required: true }'
             )
 
           .col-md-3
             fg-input-mask(
-              label='Placa',
-              placeholder='Placa', 
-              v-model='usuario.placa', 
-              name='placa', 
-              :rules='{ required: true }'
-              mask='AAA-####'
+              label='Celular',
+              placeholder='Celular', 
+              v-model='usuario.celular', 
+              name='celular', 
+              :rules='{ required: false }',
+              :mask="['(##) ####-####', '(##) #####-####']"
             )
         
         .row
           .col-md-3
             fg-input(
-              label='Odômetro',
-              placeholder='Odômetro', 
-              v-model='usuario.odometro', 
-              name='odometro',
-              type='number', 
+              label='Senha',
+              placeholder='Senha', 
+              v-model='usuario.senha', 
+              name='senha',
+              type='password', 
               :rules='{ required: true }'
             )
 
           .col-md-3
             fg-select(
-              v-if='tiposVeiculo',
-              label='Tipo de Veículo',
-              placeholder='Tipo de Veículo', 
-              v-model='usuario.tipoVeiculo', 
-              name='tipoVeiculo', 
+              v-if='perfis',
+              label='Perfil',
+              placeholder='Perfil', 
+              v-model='usuario.perfil', 
+              name='perfil', 
               :rules='{ required: true }',
-              :options='tiposVeiculo'
-            )
-
-          .col-md-3
-            fg-select(
-              v-if='planosManutencao',
-              label='Plano de Manutenção',
-              placeholder='Plano de Manutenção', 
-              v-model='usuario.planoManutencao', 
-              name='planoManutencao', 
-              :rules='{ required: false }',
-              :options='planosManutencao'
+              :options='perfis'
             )
 
           .col-md-3
