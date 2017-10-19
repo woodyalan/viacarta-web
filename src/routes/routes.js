@@ -29,6 +29,9 @@ import ListaVeiculo from 'src/components/Dashboard/Views/Veiculo/ListaVeiculo.vu
 import CadastroUsuario from 'src/components/Dashboard/Views/Usuario/CadastroUsuario.vue'
 import ListaUsuario from 'src/components/Dashboard/Views/Usuario/ListaUsuario.vue'
 
+import CadastroTela from 'src/components/Dashboard/Views/Tela/CadastroTela.vue'
+import ListaTela from 'src/components/Dashboard/Views/Tela/ListaTela.vue'
+
 const routes = [
   {
     path: '/',
@@ -156,6 +159,22 @@ const routes = [
         path: 'usuario',
         name: 'Usuário',
         component: ListaUsuario
+      },
+      //Tela
+      {
+        path: 'tela/new',
+        name: 'Nova Tela',
+        component: CadastroTela
+      },
+      {
+        path: 'tela/edit/:id?',
+        name: 'Editar Tela',
+        component: CadastroTela
+      },
+      {
+        path: 'tela',
+        name: 'Tela',
+        component: ListaTela
       }
     ]
   },
