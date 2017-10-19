@@ -23,6 +23,9 @@ import ListaTiposVeiculo from 'src/components/Dashboard/Views/TiposVeiculo/Lista
 import CadastroSeguradora from 'src/components/Dashboard/Views/Seguradora/CadastroSeguradora.vue'
 import ListaSeguradora from 'src/components/Dashboard/Views/Seguradora/ListaSeguradora.vue'
 
+import CadastroVeiculo from 'src/components/Dashboard/Views/Veiculo/CadastroVeiculo.vue'
+import ListaVeiculo from 'src/components/Dashboard/Views/Veiculo/ListaVeiculo.vue'
+
 const routes = [
   {
     path: '/',
@@ -55,6 +58,7 @@ const routes = [
     path: '/cadastros',
     component: DashboardLayout,
     children: [
+      //Menu
       {
         path: 'menus/new',
         name: 'Novo Menu',
@@ -70,6 +74,7 @@ const routes = [
         name: 'Menus',
         component: ListaMenus
       },
+      //Perfil
       {
         path: 'perfis/new',
         name: 'Novo Perfil',
@@ -85,6 +90,7 @@ const routes = [
         name: 'Perfis',
         component: ListaPerfis
       },
+      //Tipo de Veículo
       {
         path: 'tiposVeiculo/new',
         name: 'Novo Tipo de Veículo',
@@ -100,6 +106,7 @@ const routes = [
         name: 'Tipos de Veículo',
         component: ListaTiposVeiculo
       },
+      //Seguradora
       {
         path: 'seguradora/new',
         name: 'Nova Seguradora',
@@ -114,6 +121,22 @@ const routes = [
         path: 'seguradora',
         name: 'Seguradora',
         component: ListaSeguradora
+      },
+      //Veículo
+      {
+        path: 'veiculo/new',
+        name: 'Novo Veículo',
+        component: CadastroVeiculo
+      },
+      {
+        path: 'veiculo/edit/:id?',
+        name: 'Editar Veiculo',
+        component: CadastroVeiculo
+      },
+      {
+        path: 'veiculo',
+        name: 'Veiculo',
+        component: ListaVeiculo
       }
     ]
   },

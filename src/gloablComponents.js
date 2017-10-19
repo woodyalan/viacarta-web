@@ -1,4 +1,5 @@
 import fgInput from './components/UIComponents/Inputs/formGroupInput.vue'
+import fgInputMask from './components/UIComponents/Inputs/formGroupInputMask.vue'
 import fgSelect from './components/UIComponents/Inputs/formGroupSelect.vue'
 import DropDown from './components/UIComponents/Dropdown.vue'
 import Checkbox from './components/UIComponents/Inputs/Checkbox.vue'
@@ -12,6 +13,7 @@ import Radio from './components/UIComponents/Inputs/Radio.vue'
 const GlobalComponents = {
   install (Vue) {
     Vue.component(fgInput.name, fgInput)
+    Vue.component(fgInputMask.name, fgInputMask)
     Vue.component(fgSelect.name, fgSelect)
     Vue.component(DropDown.name, DropDown)
     Vue.component(Checkbox.name, Checkbox)

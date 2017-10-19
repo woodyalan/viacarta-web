@@ -6,6 +6,7 @@ import VeeValidate, { Validator } from 'vee-validate'
 import lang from 'element-ui/lib/locale/lang/pt-br'
 import locale from 'element-ui/lib/locale'
 import AsyncComputed from 'vue-async-computed'
+import VueTheMask from 'vue-the-mask'
 import store from './store'
 import App from './App.vue'
 
@@ -37,6 +38,7 @@ Vue.use(GlobalComponents)
 Vue.use(VueNotify)
 Vue.use(SideBar)
 Vue.use(AsyncComputed)
+Vue.use(VueTheMask)
 
 Validator.addLocale(messagesBR)
 Vue.use(VeeValidate, {
