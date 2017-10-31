@@ -204,8 +204,15 @@
         this.findActiveLink()
       },
       linkAbbreviation (name) {
-        const matches = name.match(/\b(\w)/g)
-        return matches.join('')
+        let matchesShow = []
+        const matches = name.match(/(\s|^)([a-z])/ig)
+
+        matchesShow.push(matches[0])
+
+        if(matches.length > 1)
+          matchesShow.push(matches[matches.length - 1])
+
+        return matchesShow.join('')
       },
       async initScrollBarAsync () {
         await import('perfect-scrollbar/dist/css/perfect-scrollbar.css')

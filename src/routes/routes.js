@@ -32,6 +32,15 @@ import ListaUsuario from 'src/components/Dashboard/Views/Usuario/ListaUsuario.vu
 import CadastroTela from 'src/components/Dashboard/Views/Tela/CadastroTela.vue'
 import ListaTela from 'src/components/Dashboard/Views/Tela/ListaTela.vue'
 
+import CadastroTelaPerfil from 'src/components/Dashboard/Views/TelaPerfil/CadastroTelaPerfil.vue'
+import ListaTelaPerfil from 'src/components/Dashboard/Views/TelaPerfil/ListaTelaPerfil.vue'
+
+import CadastroTipoOcorrencia from 'src/components/Dashboard/Views/TipoOcorrencia/CadastroTipoOcorrencia.vue'
+import ListaTipoOcorrencia from 'src/components/Dashboard/Views/TipoOcorrencia/ListaTipoOcorrencia.vue'
+
+import CadastroCentroCusto from 'src/components/Dashboard/Views/CentroCusto/CadastroCentroCusto.vue'
+import ListaCentroCusto from 'src/components/Dashboard/Views/CentroCusto/ListaCentroCusto.vue'
+
 const routes = [
   {
     path: '/',
@@ -95,6 +104,22 @@ const routes = [
         path: 'perfis',
         name: 'Perfis',
         component: ListaPerfis
+      },
+      //Tela do Perfil
+      {
+        path: 'perfil/:perfilId/telaPerfil/new',
+        name: 'Nova Tela do Perfil',
+        component: CadastroTelaPerfil
+      },
+      {
+        path: 'perfil/:perfilId/telaPerfil/edit/:id',
+        name: 'Editar Telas do Perfil',
+        component: CadastroTelaPerfil
+      },
+      {
+        path: 'perfil/:perfilId/telaPerfil',
+        name: 'Telas do Perfil',
+        component: ListaTelaPerfil
       },
       //Tipo de Veículo
       {
@@ -175,6 +200,38 @@ const routes = [
         path: 'tela',
         name: 'Tela',
         component: ListaTela
+      },
+      //Tipo de Ocorrencia
+      {
+        path: 'tipoOcorrencia/new',
+        name: 'Novo Tipo de Ocorrência',
+        component: CadastroTipoOcorrencia
+      },
+      {
+        path: 'tipoOcorrencia/edit/:id?',
+        name: 'Editar Tipo de Ocorrência',
+        component: CadastroTipoOcorrencia
+      },
+      {
+        path: 'tipoOcorrencia',
+        name: 'Tipo de Ocorrência',
+        component: ListaTipoOcorrencia
+      },
+      //Centro de Custo
+      {
+        path: 'centroCusto/new',
+        name: 'Novo Centro de Custo',
+        component: CadastroCentroCusto
+      },
+      {
+        path: 'centroCusto/edit/:id?',
+        name: 'Editar Centro de Custo',
+        component: CadastroCentroCusto
+      },
+      {
+        path: 'centroCusto',
+        name: 'Centro de Custo',
+        component: ListaCentroCusto
       }
     ]
   },

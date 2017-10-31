@@ -14,6 +14,7 @@
           .card-content
             slot(name='fields')
           .card-footer
+            hr
             .row
               .col-xs-6
                 router-link(:to='route')
