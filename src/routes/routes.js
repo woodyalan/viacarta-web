@@ -41,6 +41,9 @@ import ListaTipoOcorrencia from 'src/components/Dashboard/Views/TipoOcorrencia/L
 import CadastroCentroCusto from 'src/components/Dashboard/Views/CentroCusto/CadastroCentroCusto.vue'
 import ListaCentroCusto from 'src/components/Dashboard/Views/CentroCusto/ListaCentroCusto.vue'
 
+import CadastroServico from 'src/components/Dashboard/Views/servico/CadastroServico.vue'
+import ListaServico from 'src/components/Dashboard/Views/servico/ListaServico.vue'
+
 const routes = [
   {
     path: '/',
@@ -232,6 +235,22 @@ const routes = [
         path: 'centroCusto',
         name: 'Centro de Custo',
         component: ListaCentroCusto
+      },
+      //Serviços
+      {
+        path: 'servico/new',
+        name: 'Novo Serviço',
+        component: CadastroServico
+      },
+      {
+        path: 'servico/edit/:id?',
+        name: 'Editar Serviço',
+        component: CadastroServico
+      },
+      {
+        path: 'servico',
+        name: 'Serviço',
+        component: ListaServico
       }
     ]
   },
