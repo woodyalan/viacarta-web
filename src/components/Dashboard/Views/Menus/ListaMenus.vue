@@ -32,7 +32,8 @@
           {
             prop: 'id',
             label: '#',
-            class: ''
+            class: '',
+            minWidth: '20'
           },
           {
             prop: 'nome',

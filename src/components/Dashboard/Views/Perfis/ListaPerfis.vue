@@ -1,21 +1,22 @@
 <template lang="pug">
-  lista(
+  lista-dropdown(
     :title='title',
     :description='description',
     :table-columns='tableColumns',
     :table-data='tableData',
     :route='route'
+    :dropdown-links='dropdownLinks'
     @deleteItem='deleteItem($event)'
   )
 </template>
 <script>
-  import Lista from 'src/components/GeneralViews/Lista.vue'
+  import ListaDropdown from 'src/components/GeneralViews/ListaDropdown.vue'
   import PerfilService from 'src/domain/perfil/PerfilService'
   import swal from 'sweetalert2'
   
   export default {
     components: {
-      'lista': Lista
+      'lista-dropdown': ListaDropdown
     },
     asyncComputed: {
       tableData() {
@@ -32,12 +33,19 @@
           {
             prop: 'id',
             label: '#',
-            class: ''
+            class: '',
+            minWidth: '20'
           },
           {
             prop: 'nome',
             label: 'Nome',
             class: ''
+          }
+        ],
+        dropdownLinks: [
+          {
+            label: 'Telas do Perfil',
+            route: 'telaPerfil'
           }
         ]
       }

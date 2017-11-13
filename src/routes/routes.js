@@ -107,17 +107,17 @@ const routes = [
       },
       //Tela do Perfil
       {
-        path: 'perfil/:perfilId/telaPerfil/new',
+        path: 'telaPerfil/:perfilId/new',
         name: 'Nova Tela do Perfil',
         component: CadastroTelaPerfil
       },
       {
-        path: 'perfil/:perfilId/telaPerfil/edit/:id',
+        path: 'telaPerfil/:perfilId/edit/:telaId',
         name: 'Editar Telas do Perfil',
         component: CadastroTelaPerfil
       },
       {
-        path: 'perfil/:perfilId/telaPerfil',
+        path: 'telaPerfil/:perfilId',
         name: 'Telas do Perfil',
         component: ListaTelaPerfil
       },

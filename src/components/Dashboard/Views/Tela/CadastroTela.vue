@@ -41,7 +41,6 @@
               placeholder='Menu', 
               v-model='tela.menu', 
               name='menu', 
-              :rules='{ required: true }',
               :options='menus'
             )
         
@@ -52,7 +51,7 @@
               placeholder='Ativo', 
               v-model='tela.ativo', 
               name='ativo', 
-              :rules='{ required: false }',
+              :rules='{ required: true }',
               :options='options.ativo'
             )
 

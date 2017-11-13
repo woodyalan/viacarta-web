@@ -26,10 +26,10 @@
                   border='', 
                   style='width: 100%'
                 )
-                  el-table-column(v-for='column in tableColumns', :class-name='column.class', :prop='column.prop', :label='column.label', sortable='')
+                  el-table-column(v-for='column in tableColumns', :class-name='column.class', :prop='column.prop', :label='column.label', sortable='', :min-width='column.minWidth')
                   el-table-column(width='150' class-name='text-center', fixed='right')
                     template(scope='props')
-                      router-link(:to='`${route}/edit/${props.row.id}`')
+                      router-link(:to='`${route}/edit/${props.row[tableKey]}`')
                         a.btn.btn-simple.btn-warning.btn-xs.btn-icon.edit
                           i.ti-pencil-alt
                       a.btn.btn-simple.btn-danger.btn-xs.btn-icon.remove(@click='handleDelete(props.$index, props.row)')
@@ -41,10 +41,17 @@
               p-pagination.pull-right(v-model='pagination.currentPage', :per-page='pagination.perPage', :total='pagination.total')
         .card-footer
           hr
-          .row
+          .row.buttons-with-margin
             .col-sm-6
+              router-link(
+                v-if='navigationBack', 
+                :to="`/${navigationBack}`"
+              )
+                button.btn.btn-primary.btn-move-left.btn-fill(type='button')
+                  i.ti-angle-left
+                  |  Voltar
               router-link(:to='`${route}/new`')
-                a.btn.btn-default(href='#')
+                button.btn.btn-default(type='button')
                   i.ti-plus
                   |  Novo
 </template>
@@ -81,6 +88,12 @@
       },
       tableData: {
         type: Array
+      },
+      navigationBack: {
+        type: String
+      },
+      tableKey: {
+        default: 'id'
       }
     },
     components: {

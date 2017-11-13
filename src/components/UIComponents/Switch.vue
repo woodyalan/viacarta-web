@@ -20,7 +20,7 @@
     name: 'p-switch',
     props: {
       label: String,
-      value: [Array, Boolean],
+      value: [Array, Boolean, Number],
       disabled: [Boolean, String],
       onText: String,
       offText: String,

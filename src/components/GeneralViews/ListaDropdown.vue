@@ -26,7 +26,7 @@
                   border='', 
                   style='width: 100%'
                 )
-                  el-table-column(v-for='column in tableColumns', :class-name='column.class', :prop='column.prop', :label='column.label', sortable='')
+                  el-table-column(v-for='column in tableColumns', :class-name='column.class', :prop='column.prop', :label='column.label', sortable='', :min-width='column.minWidth')
                   el-table-column(width='150' class-name='text-center', fixed='right')
                     template(scope='props')
                       el-dropdown
@@ -34,9 +34,9 @@
                           | Ações 
                           span.caret
                         el-dropdown-menu(slot="dropdown")
-                          el-dropdown-item
-                            router-link(:to='`/cadastros/perfil/${props.row.id}/telaPerfil`')
-                              | Telas do Perfil
+                          el-dropdown-item(v-for='item in dropdownLinks')
+                            router-link(:to='`/cadastros/${item.route}/${props.row.id}/`')
+                              | {{ item.label }}
                           el-dropdown-item(:divided="true")
                           el-dropdown-item.text-warning
                             router-link(:to='`${route}/edit/${props.row.id}`')
@@ -92,6 +92,10 @@
       },
       tableData: {
         type: Array
+      },
+      dropdownLinks: {
+        type: Array,
+        required: true
       }
     },
     components: {
