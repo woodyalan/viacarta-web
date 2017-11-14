@@ -41,8 +41,11 @@ import ListaTipoOcorrencia from 'src/components/Dashboard/Views/TipoOcorrencia/L
 import CadastroCentroCusto from 'src/components/Dashboard/Views/CentroCusto/CadastroCentroCusto.vue'
 import ListaCentroCusto from 'src/components/Dashboard/Views/CentroCusto/ListaCentroCusto.vue'
 
-import CadastroServico from 'src/components/Dashboard/Views/servico/CadastroServico.vue'
-import ListaServico from 'src/components/Dashboard/Views/servico/ListaServico.vue'
+import CadastroServico from 'src/components/Dashboard/Views/Servico/CadastroServico.vue'
+import ListaServico from 'src/components/Dashboard/Views/Servico/ListaServico.vue'
+
+import CadastroSeguroVeiculo from 'src/components/Dashboard/Views/SeguroVeiculo/CadastroSeguroVeiculo.vue'
+import ListaSeguroVeiculo from 'src/components/Dashboard/Views/SeguroVeiculo/ListaSeguroVeiculo.vue'
 
 const routes = [
   {
@@ -251,6 +254,22 @@ const routes = [
         path: 'servico',
         name: 'Serviço',
         component: ListaServico
+      },
+      //Seguros de Veículos
+      {
+        path: 'seguroVeiculo/new',
+        name: 'Novo Seguro de Veículo',
+        component: CadastroSeguroVeiculo
+      },
+      {
+        path: 'seguroVeiculo/edit/:id?',
+        name: 'Editar Seguro de Veículo',
+        component: CadastroSeguroVeiculo
+      },
+      {
+        path: 'seguroVeiculo',
+        name: 'Seguro de Veículo',
+        component: ListaSeguroVeiculo
       }
     ]
   },
