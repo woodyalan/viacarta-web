@@ -1,7 +1,7 @@
 <template lang="pug">
   cadastro(
-    :title='title',
-    :route='route'
+    :route='route',
+    :param-value='$route.params.planoManutencaoId'
   )
     .row(slot='fields')
       .col-xs-12
@@ -65,8 +65,7 @@ export default {
   },
   data () {
     return {
-      title: 'Cadastro de Serviços do Plano de Manutenção',
-      route: `/cadastros/servicoPlanoManutencao/${this.$route.params.planoManutencaoId}`,
+      route: `servicoPlanoManutencao`,
       loading: false,
       servicoPlanoManutencao: {
         planoManutencao: null,

@@ -21,6 +21,15 @@ export default class LoginService {
             });
     }
 
+    getTelaInfo(route) {
+        return this._resource
+            .get(`auth/telaInfo/${route}`)
+            .then(res => res.json(), err => {
+                console.log(err);
+                throw new Error('Não foi possível recuperar as informações do usuário');
+            });
+    }
+
     getUserMenus(perfil) {
         return this._resource
             .get(`auth/userMenus/${perfil}`)

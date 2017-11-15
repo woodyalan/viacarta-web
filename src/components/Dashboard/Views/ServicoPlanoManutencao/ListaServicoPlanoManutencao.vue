@@ -1,12 +1,11 @@
 <template lang="pug">
   lista(
-    :title='title',
-    :description='description',
+    :param-value='param',
     :table-columns='tableColumns',
     :table-data='tableData',
     table-key='servicoManutencao',
     :route='route',
-    navigation-back='cadastros/planoManutencao',
+    navigation-back='planoManutencao',
     @deleteItem='deleteItem($event)'
   )
 </template>
@@ -28,9 +27,8 @@
     },
     data () {
       return {
-        title: 'Cadastro de Servicos do Plano de Manutenção',
-        description: "Serviços Cadastrados",
-        route: `/cadastros/servicoPlanoManutencao/${this.$route.params.planoManutencaoId}`,
+        route: `servicoPlanoManutencao`,
+        param: this.$route.params.planoManutencaoId,
         tableColumns: [
           {
             prop: 'servicoObject.nome',

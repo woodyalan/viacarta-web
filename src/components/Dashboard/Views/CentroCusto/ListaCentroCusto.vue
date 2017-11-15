@@ -1,7 +1,5 @@
 <template lang="pug">
   lista(
-    :title='title',
-    :description='description',
     :table-columns='tableColumns',
     :table-data='tableData',
     :route='route'
@@ -25,9 +23,7 @@
     },
     data () {
       return {
-        title: 'Cadastro de Tipos de Ocorrência',
-        description: "Tipos de Ocorrência Cadastrados",
-        route: "/cadastros/centroCusto",
+        route: 'centroCusto',
         tableColumns: [
           {
             prop: 'id',

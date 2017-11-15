@@ -4,11 +4,10 @@
       .card
         .card-header
           h4.title
-            | {{ title }}
-            router-link.pull-right(:to='`${route}/new`')
+            | {{ telaInfo.title }}
+            router-link.pull-right(:to='`${telaInfo.rota}/new`')
               a.btn.btn-icon.btn-default(href='#')
                 i.ti-plus
-          p.category {{ description }}
         .card-content
           .row
             .col-xs-6
@@ -35,11 +34,11 @@
                           span.caret
                         el-dropdown-menu(slot="dropdown")
                           el-dropdown-item(v-for='item in dropdownLinks')
-                            router-link(:to='`/cadastros/${item.route}/${props.row.id}/`')
+                            router-link(:to='`/${telaInfo.menuPath}/${item.route}/${props.row.id}/`')
                               | {{ item.label }}
                           el-dropdown-item(:divided="true")
                           el-dropdown-item.text-warning
-                            router-link(:to='`${route}/edit/${props.row.id}`')
+                            router-link(:to='`${telaInfo.rota}/edit/${props.row.id}`')
                               i.ti-pencil-alt 
                               |   Editar
                           el-dropdown-item.text-danger(@click='handleDelete(props.$index, props.row)')
@@ -54,7 +53,7 @@
           hr
           .row
             .col-sm-6
-              router-link(:to='`${route}/new`')
+              router-link(:to='`${telaInfo.rota}/new`')
                 a.btn.btn-default(href='#')
                   i.ti-plus
                   |  Novo
@@ -63,6 +62,7 @@
   import Vue from 'vue'
   import {Table, TableColumn, Select, Option, Button, Dropdown, DropdownMenu, DropdownItem } from 'element-ui'
   import PPagination from 'src/components/UIComponents/Pagination.vue'
+  import LoginService from 'src/domain/login/LoginService'
 
   Vue.use(Table)
   Vue.use(TableColumn)
@@ -75,13 +75,6 @@
 
   export default {
     props: {
-      title: {
-        type: String,
-        required: true
-      },
-      description: {
-        type: String
-      },
       route: {
         type: String,
         required: true
@@ -148,6 +141,20 @@
         })
       }
     },
+    asyncComputed: {
+      telaInfo() {
+        this.service = new LoginService(this.$http);
+        return this.service
+          .getTelaInfo(this.route)
+          .then(telaInfo => {
+            return {
+              title: telaInfo.descricao,
+              menuPath: telaInfo.menuObject.path,
+              rota: `/${telaInfo.menuObject.path}/${telaInfo.rota}`  
+            }
+          });
+      }
+    },
     data () {
       return {
         pagination: {
@@ -164,7 +171,6 @@
         this.$emit('deleteItem', { index, object });
       },
       removeItem(index) {
-        console.log(index)
         this.tableData.splice(index)
       }
     }

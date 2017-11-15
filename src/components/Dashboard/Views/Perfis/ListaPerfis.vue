@@ -1,7 +1,5 @@
 <template lang="pug">
   lista-dropdown(
-    :title='title',
-    :description='description',
     :table-columns='tableColumns',
     :table-data='tableData',
     :route='route'
@@ -26,9 +24,7 @@
     },
     data () {
       return {
-        title: 'Cadastro de Perfis',
-        description: "Perfis Cadastrados",
-        route: "/cadastros/perfis",
+        route: "perfis",
         tableColumns: [
           {
             prop: 'id',

@@ -1,12 +1,11 @@
 <template lang="pug">
   lista(
-    :title='title',
-    :description='description',
+    :param-value='param',
     :table-columns='tableColumns',
     :table-data='tableData',
     table-key='tela',
     :route='route',
-    navigation-back='cadastros/perfis',
+    navigation-back='perfis',
     @deleteItem='deleteItem($event)'
   )
 </template>
@@ -28,9 +27,8 @@
     },
     data () {
       return {
-        title: 'Cadastro de Telas do Perfil',
-        description: "Telas Cadastradas",
-        route: `/cadastros/telaPerfil/${this.$route.params.perfilId}`,
+        route: 'telaPerfil',
+        param: this.$route.params.perfilId,
         tableColumns: [
           {
             prop: 'telaObject.descricao',

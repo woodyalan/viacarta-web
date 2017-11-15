@@ -11,6 +11,9 @@ import Overview from 'src/components/Dashboard/Views/Dashboard/Overview.vue'
 import Login from 'src/components/Dashboard/Views/Pages/Login.vue'
 
 // Cadastros
+import CadastroCentroCusto from 'src/components/Dashboard/Views/CentroCusto/CadastroCentroCusto.vue'
+import ListaCentroCusto from 'src/components/Dashboard/Views/CentroCusto/ListaCentroCusto.vue'
+
 import CadastroMenus from 'src/components/Dashboard/Views/Menus/CadastroMenus.vue'
 import ListaMenus from 'src/components/Dashboard/Views/Menus/ListaMenus.vue'
 
@@ -37,9 +40,6 @@ import ListaTelaPerfil from 'src/components/Dashboard/Views/TelaPerfil/ListaTela
 
 import CadastroTipoOcorrencia from 'src/components/Dashboard/Views/TipoOcorrencia/CadastroTipoOcorrencia.vue'
 import ListaTipoOcorrencia from 'src/components/Dashboard/Views/TipoOcorrencia/ListaTipoOcorrencia.vue'
-
-import CadastroCentroCusto from 'src/components/Dashboard/Views/CentroCusto/CadastroCentroCusto.vue'
-import ListaCentroCusto from 'src/components/Dashboard/Views/CentroCusto/ListaCentroCusto.vue'
 
 import CadastroServico from 'src/components/Dashboard/Views/Servico/CadastroServico.vue'
 import ListaServico from 'src/components/Dashboard/Views/Servico/ListaServico.vue'
@@ -82,7 +82,7 @@ const routes = [
     ]
   },
   {
-    path: '/cadastros',
+    path: '/sistema',
     component: DashboardLayout,
     children: [
       //Menu
@@ -132,7 +132,44 @@ const routes = [
         path: 'telaPerfil/:perfilId',
         name: 'Telas do Perfil',
         component: ListaTelaPerfil
+      },//Usuário
+      {
+        path: 'usuario/new',
+        name: 'Novo Usuário',
+        component: CadastroUsuario
       },
+      {
+        path: 'usuario/edit/:id?',
+        name: 'Editar Usuário',
+        component: CadastroUsuario
+      },
+      {
+        path: 'usuario',
+        name: 'Usuário',
+        component: ListaUsuario
+      },
+      //Tela
+      {
+        path: 'tela/new',
+        name: 'Nova Tela',
+        component: CadastroTela
+      },
+      {
+        path: 'tela/edit/:id?',
+        name: 'Editar Tela',
+        component: CadastroTela
+      },
+      {
+        path: 'tela',
+        name: 'Tela',
+        component: ListaTela
+      },
+    ]
+  },
+  {
+    path: '/veiculos',
+    component: DashboardLayout,
+    children: [
       //Tipo de Veículo
       {
         path: 'tiposVeiculo/new',
@@ -181,38 +218,6 @@ const routes = [
         name: 'Veiculo',
         component: ListaVeiculo
       },
-      //Usuário
-      {
-        path: 'usuario/new',
-        name: 'Novo Usuário',
-        component: CadastroUsuario
-      },
-      {
-        path: 'usuario/edit/:id?',
-        name: 'Editar Usuário',
-        component: CadastroUsuario
-      },
-      {
-        path: 'usuario',
-        name: 'Usuário',
-        component: ListaUsuario
-      },
-      //Tela
-      {
-        path: 'tela/new',
-        name: 'Nova Tela',
-        component: CadastroTela
-      },
-      {
-        path: 'tela/edit/:id?',
-        name: 'Editar Tela',
-        component: CadastroTela
-      },
-      {
-        path: 'tela',
-        name: 'Tela',
-        component: ListaTela
-      },
       //Tipo de Ocorrencia
       {
         path: 'tipoOcorrencia/new',
@@ -228,22 +233,6 @@ const routes = [
         path: 'tipoOcorrencia',
         name: 'Tipo de Ocorrência',
         component: ListaTipoOcorrencia
-      },
-      //Centro de Custo
-      {
-        path: 'centroCusto/new',
-        name: 'Novo Centro de Custo',
-        component: CadastroCentroCusto
-      },
-      {
-        path: 'centroCusto/edit/:id?',
-        name: 'Editar Centro de Custo',
-        component: CadastroCentroCusto
-      },
-      {
-        path: 'centroCusto',
-        name: 'Centro de Custo',
-        component: ListaCentroCusto
       },
       //Serviços
       {
@@ -308,6 +297,28 @@ const routes = [
         path: 'servicoPlanoManutencao/:planoManutencaoId',
         name: 'Serviços do Plano de Manutenção',
         component: ListaServicoPlanoManutencao
+      }
+    ]
+  },
+  {
+    path: '/cadastros',
+    component: DashboardLayout,
+    children: [
+      //Centro de Custo
+      {
+        path: 'centroCusto/new',
+        name: 'Novo Centro de Custo',
+        component: CadastroCentroCusto
+      },
+      {
+        path: 'centroCusto/edit/:id?',
+        name: 'Editar Centro de Custo',
+        component: CadastroCentroCusto
+      },
+      {
+        path: 'centroCusto',
+        name: 'Centro de Custo',
+        component: ListaCentroCusto
       }
     ]
   },

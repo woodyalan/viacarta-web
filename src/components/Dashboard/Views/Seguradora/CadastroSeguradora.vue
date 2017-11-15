@@ -1,6 +1,5 @@
 <template lang="pug">
   cadastro(
-    :title='title',
     :route='route'
   )
     .row(slot='fields')
@@ -46,8 +45,7 @@ export default {
   },
   data () {
     return {
-      title: 'Cadastro de Seguradoras',
-      route: '/cadastros/seguradora',
+      route: 'seguradora',
       loading: false,
       options: {
         ativo: [

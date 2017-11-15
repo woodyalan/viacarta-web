@@ -1,7 +1,5 @@
 <template lang="pug">
   lista(
-    :title='title',
-    :description='description',
     :table-columns='tableColumns',
     :table-data='tableData',
     :route='route'
@@ -25,9 +23,7 @@
     },
     data () {
       return {
-        title: 'Cadastro de Seguros de Veículos',
-        description: "Seguros de Veículos Cadastrados",
-        route: "/cadastros/seguroVeiculo",
+        route: "seguroVeiculo",
         tableColumns: [
           {
             prop: 'id',

@@ -1,11 +1,11 @@
 <template lang="pug">
   .row
     .col-md-12
-      .card
+      .card(v-if='telaInfo')
         .card-header
           h4.title
-            | {{ title }}
-            router-link.pull-right(:to='route')
+            | {{ telaInfo.title }}
+            router-link.pull-right(:to='telaInfo.rota')
               a.btn.btn-default.btn-icon(href='#')
                 i.ti-view-list-alt
         
@@ -17,7 +17,7 @@
             hr
             .row
               .col-xs-6
-                router-link(:to='route')
+                router-link(:to='telaInfo.rota')
                   a.btn.btn-default(href='#')
                     i.ti-view-list-alt
                     |  Listagem
@@ -25,21 +25,33 @@
                 slot(name='actions')
 </template>
 <script>
+  import LoginService from 'src/domain/login/LoginService'
+
   export default {
     props: {
-      title: {
-        type: String,
-        required: true
-      },
       route: {
         type: String,
         required: true
+      },
+      paramValue: {
+        type: String
       }
     },
-    methods: {
-      salvar() {
-
+    asyncComputed: {
+      telaInfo() {
+        this.service = new LoginService(this.$http);
+        return this.service
+          .getTelaInfo(this.route)
+          .then(telaInfo => {
+            let param = this.paramValue ? `/${this.paramValue}` : '';
+            
+            return {
+              title: telaInfo.descricao,
+              menuPath: telaInfo.menuObject.path,
+              rota: `/${telaInfo.menuObject.path}/${telaInfo.rota}${param}`  
+            }
+          });
       }
-    }
+    },
   }
 </script>

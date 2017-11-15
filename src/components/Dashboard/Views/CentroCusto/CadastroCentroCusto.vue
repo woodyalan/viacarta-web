@@ -1,6 +1,5 @@
 <template lang="pug">
   cadastro(
-    :title='title',
     :route='route'
   )
     .row(slot='fields')
@@ -46,8 +45,7 @@ export default {
   },
   data () {
     return {
-      title: 'Cadastro de Centros de Custo',
-      route: '/cadastros/centroCusto',
+      route: 'centroCusto',
       loading: false,
       centroCusto: {
         nome: null,

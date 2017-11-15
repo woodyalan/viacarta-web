@@ -1,6 +1,5 @@
 <template lang="pug">
   cadastro(
-    :title='title',
     :route='route'
   )
     .row(slot='fields')
@@ -41,7 +40,8 @@
               placeholder='Menu', 
               v-model='tela.menu', 
               name='menu', 
-              :options='menus'
+              :options='menus',
+              :rules='{ required: false }'
             )
         
         .row
@@ -76,8 +76,7 @@ export default {
   },
   data () {
     return {
-      title: 'Cadastro de Telas',
-      route: '/cadastros/tela',
+      route: 'tela',
       loading: false,
       options: {
         ativo: [

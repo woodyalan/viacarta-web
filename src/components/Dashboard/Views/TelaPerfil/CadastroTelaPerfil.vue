@@ -1,7 +1,7 @@
 <template lang="pug">
   cadastro(
-    :title='title',
-    :route='route'
+    :route='route',
+    :param-value='$route.params.perfilId'
   )
     .row(slot='fields')
       .col-xs-12
@@ -62,8 +62,8 @@ export default {
   },
   data () {
     return {
-      title: 'Cadastro de Telas do Perfil',
-      route: `/cadastros/telaPerfil/${this.$route.params.perfilId}`,
+      route: `telaPerfil`,
+      param: this.$route.params.perfilId,
       loading: false,
       telaPerfil: {
         perfil: null,

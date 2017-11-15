@@ -1,6 +1,5 @@
 <template lang="pug">
   cadastro(
-    :title='title',
     :route='route'
   )
     .row(slot='fields')
@@ -47,8 +46,8 @@ export default {
   },
   data () {
     return {
-      title: 'Cadastro de Planos de Manutenção',
-      route: '/cadastros/planoManutencao',
+      route: 'planoManutencao',
+      param: this.$route.params.perfilId,
       loading: false,
       options: {
         ativo: [

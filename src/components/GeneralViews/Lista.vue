@@ -1,14 +1,13 @@
 <template lang="pug">
   .row
     .col-xs-12
-      .card
+      .card(v-if='telaInfo')
         .card-header
           h4.title
-            | {{ title }}
-            router-link.pull-right(:to='`${route}/new`')
+            | {{ telaInfo.title }}
+            router-link.pull-right(:to='`${telaInfo.rota}/new`')
               a.btn.btn-icon.btn-default(href='#')
                 i.ti-plus
-          p.category {{ description }}
         .card-content
           .row
             .col-xs-6
@@ -29,7 +28,7 @@
                   el-table-column(v-for='column in tableColumns', :class-name='column.class', :prop='column.prop', :label='column.label', sortable='', :min-width='column.minWidth')
                   el-table-column(width='150' class-name='text-center', fixed='right')
                     template(scope='props')
-                      router-link(:to='`${route}/edit/${props.row[tableKey]}`')
+                      router-link(:to='`${telaInfo.rota}/edit/${props.row[tableKey]}`')
                         a.btn.btn-simple.btn-warning.btn-xs.btn-icon.edit
                           i.ti-pencil-alt
                       a.btn.btn-simple.btn-danger.btn-xs.btn-icon.remove(@click='handleDelete(props.$index, props.row)')
@@ -45,12 +44,12 @@
             .col-sm-6
               router-link(
                 v-if='navigationBack', 
-                :to="`/${navigationBack}`"
+                :to="`/${telaInfo.menuPath}/${navigationBack}`"
               )
                 button.btn.btn-primary.btn-move-left.btn-fill(type='button')
                   i.ti-angle-left
                   |  Voltar
-              router-link(:to='`${route}/new`')
+              router-link(:to='`${telaInfo.rota}/new`')
                 button.btn.btn-default(type='button')
                   i.ti-plus
                   |  Novo
@@ -59,6 +58,7 @@
   import Vue from 'vue'
   import {Table, TableColumn, Select, Option, Button, Dropdown, DropdownMenu, DropdownItem } from 'element-ui'
   import PPagination from 'src/components/UIComponents/Pagination.vue'
+  import LoginService from 'src/domain/login/LoginService'
 
   Vue.use(Table)
   Vue.use(TableColumn)
@@ -71,16 +71,12 @@
 
   export default {
     props: {
-      title: {
-        type: String,
-        required: true
-      },
-      description: {
-        type: String
-      },
       route: {
         type: String,
         required: true
+      },
+      paramValue: {
+        type: String
       },
       tableColumns: {
         type: Array,
@@ -146,6 +142,22 @@
         })
       }
     },
+    asyncComputed: {
+      telaInfo() {
+        this.service = new LoginService(this.$http);
+        return this.service
+          .getTelaInfo(this.route)
+          .then(telaInfo => {
+            let param = this.paramValue ? `/${this.paramValue}` : '';
+
+            return {
+              title: telaInfo.descricao,
+              menuPath: telaInfo.menuObject.path,
+              rota: `/${telaInfo.menuObject.path}/${telaInfo.rota}${param}`  
+            }
+          });
+      }
+    },
     data () {
       return {
         pagination: {
@@ -162,7 +174,6 @@
         this.$emit('deleteItem', { index, object });
       },
       removeItem(index) {
-        console.log(index)
         this.tableData.splice(index)
       }
     }

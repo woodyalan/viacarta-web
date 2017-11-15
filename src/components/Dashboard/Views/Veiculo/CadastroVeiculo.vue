@@ -1,6 +1,5 @@
 <template lang="pug">
   cadastro(
-    :title='title',
     :route='route'
   )
     .row(slot='fields')
@@ -65,7 +64,7 @@
               placeholder='Plano de Manutenção', 
               v-model='veiculo.planoManutencao', 
               name='planoManutencao', 
-              :rules='{ required: false }',
+              :rules='{ required: true }',
               :options='planosManutencao'
             )
 
@@ -75,7 +74,7 @@
               placeholder='Ativo', 
               v-model='veiculo.ativo', 
               name='ativo', 
-              :rules='{ required: false }',
+              :rules='{ required: true }',
               :options='options.ativo'
             )
 
@@ -101,8 +100,7 @@ export default {
   },
   data () {
     return {
-      title: 'Cadastro de Veículos',
-      route: '/cadastros/veiculo',
+      route: 'veiculo',
       loading: false,
       options: {
         ativo: [
