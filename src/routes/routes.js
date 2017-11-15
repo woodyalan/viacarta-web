@@ -47,6 +47,12 @@ import ListaServico from 'src/components/Dashboard/Views/Servico/ListaServico.vu
 import CadastroSeguroVeiculo from 'src/components/Dashboard/Views/SeguroVeiculo/CadastroSeguroVeiculo.vue'
 import ListaSeguroVeiculo from 'src/components/Dashboard/Views/SeguroVeiculo/ListaSeguroVeiculo.vue'
 
+import CadastroPlanoManutencao from 'src/components/Dashboard/Views/PlanoManutencao/CadastroPlanoManutencao.vue'
+import ListaPlanoManutencao from 'src/components/Dashboard/Views/PlanoManutencao/ListaPlanoManutencao.vue'
+
+import CadastroServicoPlanoManutencao from 'src/components/Dashboard/Views/ServicoPlanoManutencao/CadastroServicoPlanoManutencao.vue'
+import ListaServicoPlanoManutencao from 'src/components/Dashboard/Views/servicoPlanoManutencao/ListaServicoPlanoManutencao.vue'
+
 const routes = [
   {
     path: '/',
@@ -270,6 +276,38 @@ const routes = [
         path: 'seguroVeiculo',
         name: 'Seguro de Veículo',
         component: ListaSeguroVeiculo
+      },
+      //Planos de Manutenção
+      {
+        path: 'planoManutencao/new',
+        name: 'Novo Plano de Manutenção',
+        component: CadastroPlanoManutencao
+      },
+      {
+        path: 'planoManutencao/edit/:id?',
+        name: 'Editar Plano de Manutenção',
+        component: CadastroPlanoManutencao
+      },
+      {
+        path: 'planoManutencao',
+        name: 'Plano de Manutenção',
+        component: ListaPlanoManutencao
+      },
+      //Serviços dos Planos de Manutenção
+      {
+        path: 'servicoPlanoManutencao/:planoManutencaoId/new',
+        name: 'Novo Serviço do Plano de Manutenção',
+        component: CadastroServicoPlanoManutencao
+      },
+      {
+        path: 'servicoPlanoManutencao/:planoManutencaoId/edit/:servicoId?',
+        name: 'Editar Serviço do Plano de Manutenção',
+        component: CadastroServicoPlanoManutencao
+      },
+      {
+        path: 'servicoPlanoManutencao/:planoManutencaoId',
+        name: 'Serviços do Plano de Manutenção',
+        component: ListaServicoPlanoManutencao
       }
     ]
   },

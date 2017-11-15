@@ -11,7 +11,7 @@
 </template>
 <script>
   import ListaDropdown from 'src/components/GeneralViews/ListaDropdown.vue'
-  import PerfilService from 'src/domain/perfil/PerfilService'
+  import PlanoManutencaoService from 'src/domain/planoManutencao/PlanoManutencaoService'
   import swal from 'sweetalert2'
   
   export default {
@@ -20,15 +20,15 @@
     },
     asyncComputed: {
       tableData() {
-        this.service = new PerfilService(this.$resource);
-        return this.service.get(perfis => perfis);
+        this.service = new PlanoManutencaoService(this.$resource);
+        return this.service.get(planosManutencao => planosManutencao);
       }
     },
     data () {
       return {
-        title: 'Cadastro de Perfis',
-        description: "Perfis Cadastrados",
-        route: "/cadastros/perfis",
+        title: 'Cadastro de Planos de Manutenção',
+        description: "Planos de Manutenção Cadastrados",
+        route: "/cadastros/planoManutencao",
         tableColumns: [
           {
             prop: 'id',
@@ -44,8 +44,8 @@
         ],
         dropdownLinks: [
           {
-            label: 'Cadastrar Telas',
-            route: 'telaPerfil'
+            label: 'Cadastrar Serviços',
+            route: 'servicoPlanoManutencao'
           }
         ]
       }
@@ -64,7 +64,7 @@
           cancelButtonClass: 'btn btn-danger btn-fill',
           allowOutsideClick: false
         }).then(function() {
-          app.service = new PerfilService(app.$resource);
+          app.service = new PlanoManutencaoService(app.$resource);
           app.service
             .delete(item.object.id)
             .then(result => {

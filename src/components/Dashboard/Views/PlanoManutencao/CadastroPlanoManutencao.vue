@@ -11,74 +11,21 @@
               type='text',
               label='Nome',
               placeholder='Nome', 
-              v-model='veiculo.nome', 
+              v-model='planoManutencao.nome', 
               name='nome', 
               :rules='{ required: true }'
-            )
-
-          .col-md-3
-            fg-input(
-              label='Ano',
-              placeholder='Ano', 
-              v-model='veiculo.ano', 
-              name='ano',
-              type='number', 
-              :rules='{ required: true }'
-            )
-
-          .col-md-3
-            fg-input-mask(
-              label='Placa',
-              placeholder='Placa', 
-              v-model='veiculo.placa', 
-              name='placa', 
-              :rules='{ required: true }'
-              mask='AAA-####'
-            )
-        
-        .row
-          .col-md-3
-            fg-input(
-              label='Odômetro',
-              placeholder='Odômetro', 
-              v-model='veiculo.odometro', 
-              name='odometro',
-              type='number', 
-              :rules='{ required: true }'
-            )
-
-          .col-md-3
-            fg-select(
-              v-if='tiposVeiculo',
-              label='Tipo de Veículo',
-              placeholder='Tipo de Veículo', 
-              v-model='veiculo.tipoVeiculo', 
-              name='tipoVeiculo', 
-              :rules='{ required: true }',
-              :options='tiposVeiculo'
-            )
-
-          .col-md-3
-            fg-select(
-              v-if='planosManutencao',
-              label='Plano de Manutenção',
-              placeholder='Plano de Manutenção', 
-              v-model='veiculo.planoManutencao', 
-              name='planoManutencao', 
-              :rules='{ required: false }',
-              :options='planosManutencao'
             )
 
           .col-md-3
             fg-select(
               label='Ativo',
               placeholder='Ativo', 
-              v-model='veiculo.ativo', 
+              v-model='planoManutencao.ativo', 
               name='ativo', 
-              :rules='{ required: false }',
+              :rules='{ required: true }',
               :options='options.ativo'
             )
-
+  
     button.btn.btn-fill.btn-info(
       :class='{ disabled: loading }'
       @click='salvar()',
@@ -88,10 +35,9 @@
 </template>
 <script>
 import Cadastro from 'src/components/GeneralViews/Cadastro.vue'
-import VeiculoService from 'src/domain/veiculo/VeiculoService'
 import PlanoManutencaoService from 'src/domain/planoManutencao/PlanoManutencaoService'
-import TipoVeiculoService from 'src/domain/tipoVeiculo/TipoVeiculoService'
-import Veiculo from 'src/domain/veiculo/Veiculo'
+import ServicoService from 'src/domain/servico/ServicoService'
+import PlanoManutencao from 'src/domain/planoManutencao/PlanoManutencao'
 import swal from 'sweetalert2'
 
 export default {
@@ -101,8 +47,8 @@ export default {
   },
   data () {
     return {
-      title: 'Cadastro de Veículos',
-      route: '/cadastros/veiculo',
+      title: 'Cadastro de Planos de Manutenção',
+      route: '/cadastros/planoManutencao',
       loading: false,
       options: {
         ativo: [
@@ -114,43 +60,35 @@ export default {
             value: 0,
             text: 'Não'
           }
+        ],
+        tipoServico: [
+          {
+            value: 'T',
+            text: 'Tempo'
+          },
+          {
+            value: 'Q',
+            text: 'Quilometragem'
+          }
         ]
       },
-      veiculo: {
+      planoManutencao: {
         nome: null,
-        ano: null,
-        odometro: null,
-        placa: null,
-        ativo: null,
-		    planoManutencao: null,
-		    tipoVeiculo: null
+        ativo: null
       }
     }
   },
   asyncComputed: {
-    tiposVeiculo() {
-      this.service = new TipoVeiculoService(this.$resource);
+    servicos() {
+      this.service = new ServicoService(this.$resource);
       return this.service
         .get()
-        .then(tiposVeiculo => {
-          return tiposVeiculo.map(tp => {
+        .then(servicos => {
+          return servicos.map(item => {
             return {
-              value: tp.id,
-              text: tp.nome
+              value: item.id,
+              text: item.nome
             }
-          });
-        });
-    },
-    planosManutencao() {
-      this.service = new PlanoManutencaoService(this.$resource);
-      return this.service
-        .get()
-        .then(planosManutencao => {
-          return planosManutencao.map(item => {
-              return {
-                value: item.id,
-                text: item.nome
-              }
           });
         });
     }
@@ -172,11 +110,11 @@ export default {
           if(success && !this.loading) {
             this.loading = true;
 
-            this.service = new VeiculoService(this.$resource);
+            this.service = new PlanoManutencaoService(this.$resource);
 
             if(this.$route.params.id) {
               this.service
-                .update(this.$route.params.id, this.veiculo)
+                .update(this.$route.params.id, this.planoManutencao)
                 .then(response => {
                   let success = response.success;
 
@@ -194,7 +132,7 @@ export default {
                 });
             } else {
               this.service
-                .save(this.veiculo)
+                .save(this.planoManutencao)
                 .then(response => {
                   let success = response.success;
 
@@ -216,13 +154,13 @@ export default {
     }
   },
   mounted() {
-    this.veiculo = new Veiculo();
+    this.planoManutencao = new PlanoManutencao();
 
     if(this.$route.params.id) {
-      this.service = new VeiculoService(this.$resource);
+      this.service = new PlanoManutencaoService(this.$resource);
       this.service
         .get(this.$route.params.id)
-        .then(veiculo => this.veiculo = veiculo);
+        .then(planoManutencao => this.planoManutencao = planoManutencao);
     }
   }
 }

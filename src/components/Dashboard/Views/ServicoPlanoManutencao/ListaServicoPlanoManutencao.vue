@@ -1,51 +1,46 @@
 <template lang="pug">
-  lista-dropdown(
+  lista(
     :title='title',
     :description='description',
     :table-columns='tableColumns',
     :table-data='tableData',
-    :route='route'
-    :dropdown-links='dropdownLinks'
+    table-key='servicoManutencao',
+    :route='route',
+    navigation-back='cadastros/planoManutencao',
     @deleteItem='deleteItem($event)'
   )
 </template>
 <script>
-  import ListaDropdown from 'src/components/GeneralViews/ListaDropdown.vue'
-  import PerfilService from 'src/domain/perfil/PerfilService'
+  import Lista from 'src/components/GeneralViews/Lista.vue'
+  import ServicoPlanoManutencaoService from 'src/domain/servicoPlanoManutencao/ServicoPlanoManutencaoService'
   import swal from 'sweetalert2'
   
   export default {
     components: {
-      'lista-dropdown': ListaDropdown
+      'lista': Lista
     },
     asyncComputed: {
       tableData() {
-        this.service = new PerfilService(this.$resource);
-        return this.service.get(perfis => perfis);
+        this.service = new ServicoPlanoManutencaoService(this.$http);
+        return this.service.getTelas(this.$route.params.planoManutencaoId)
+          .then(servicosPlanoManutencao => servicosPlanoManutencao);
       }
     },
     data () {
       return {
-        title: 'Cadastro de Perfis',
-        description: "Perfis Cadastrados",
-        route: "/cadastros/perfis",
+        title: 'Cadastro de Servicos do Plano de Manutenção',
+        description: "Serviços Cadastrados",
+        route: `/cadastros/servicoPlanoManutencao/${this.$route.params.planoManutencaoId}`,
         tableColumns: [
           {
-            prop: 'id',
-            label: '#',
-            class: '',
-            minWidth: '20'
+            prop: 'servicoObject.nome',
+            label: 'Serviço',
+            class: ''
           },
           {
-            prop: 'nome',
-            label: 'Nome',
+            prop: 'planoManutencaoObject.nome',
+            label: 'Plano Manutenção',
             class: ''
-          }
-        ],
-        dropdownLinks: [
-          {
-            label: 'Cadastrar Telas',
-            route: 'telaPerfil'
           }
         ]
       }
@@ -64,9 +59,9 @@
           cancelButtonClass: 'btn btn-danger btn-fill',
           allowOutsideClick: false
         }).then(function() {
-          app.service = new PerfilService(app.$resource);
+          app.service = new ServicoPlanoManutencaoService(app.$http);
           app.service
-            .delete(item.object.id)
+            .delete(item.object.planoManutencao, item.object.servicoManutencao)
             .then(result => {
               if(result.success) {
                 app.tableData.splice(item.index);
