@@ -55,7 +55,7 @@ const router = new VueRouter({
     linkActiveClass: 'active'
 })
   
-Vue.http.options.root = "http://localhost:3000/";
+Vue.http.options.root = process.env.API_URL;
   
 
 Vue.http.interceptors.push(function(request, next) {

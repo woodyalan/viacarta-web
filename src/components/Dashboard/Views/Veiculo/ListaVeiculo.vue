@@ -1,19 +1,20 @@
 <template lang="pug">
-  lista(
+  lista-dropdown(
     :table-columns='tableColumns',
     :table-data='tableData',
     :route='route'
+    :dropdown-links='dropdownLinks',
     @deleteItem='deleteItem($event)'
   )
 </template>
 <script>
-  import Lista from 'src/components/GeneralViews/Lista.vue'
+  import ListaDropdown from 'src/components/GeneralViews/ListaDropdown.vue'
   import VeiculoService from 'src/domain/veiculo/VeiculoService'
   import swal from 'sweetalert2'
   
   export default {
     components: {
-      'lista': Lista
+      'lista-dropdown': ListaDropdown
     },
     asyncComputed: {
       tableData() {
@@ -45,6 +46,12 @@
             prop: 'placa',
             label: 'Placa',
             class: ''
+          }
+        ],
+        dropdownLinks: [
+          {
+            label: 'Cadastrar Seguros',
+            route: 'seguroVeiculo'
           }
         ]
       }

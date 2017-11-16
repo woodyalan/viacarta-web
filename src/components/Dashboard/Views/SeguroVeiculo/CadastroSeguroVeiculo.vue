@@ -1,20 +1,11 @@
 <template lang="pug">
   cadastro(
-    :route='route'
+    :route='route',
+    :param-value='$route.params.veiculoId'
   )
     .row(slot='fields')
       .col-xs-12
         .row
-          .col-md-3
-            fg-select(
-              label='Veículo',
-              placeholder='Veículo', 
-              v-model='seguroVeiculo.veiculo', 
-              name='veiculo', 
-              :rules='{ required: true }',
-              :options='veiculos'
-            )
-          
           .col-md-3
             fg-select(
               label='Seguradora',
@@ -75,6 +66,7 @@ export default {
   data () {
     return {
       route: 'seguroVeiculo',
+      param: this.$route.params.veiculoId,
       loading: false,
       seguroVeiculo: {
         veiculo: null,
@@ -174,7 +166,7 @@ export default {
     }
   },
   mounted() {
-    this.seguroVeiculo = new SeguroVeiculo();
+    this.seguroVeiculo = new SeguroVeiculo(this.param);
 
     if(this.$route.params.id) {
       this.service = new SeguroVeiculoService(this.$resource);

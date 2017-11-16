@@ -270,17 +270,17 @@ const routes = [
       },
       //Seguros de Veículos
       {
-        path: 'seguroVeiculo/new',
+        path: 'seguroVeiculo/:veiculoId/new',
         name: 'Novo Seguro de Veículo',
         component: CadastroSeguroVeiculo
       },
       {
-        path: 'seguroVeiculo/edit/:id?',
+        path: 'seguroVeiculo/:veiculoId/edit/:id?',
         name: 'Editar Seguro de Veículo',
         component: CadastroSeguroVeiculo
       },
       {
-        path: 'seguroVeiculo',
+        path: 'seguroVeiculo/:veiculoId/',
         name: 'Seguro de Veículo',
         component: ListaSeguroVeiculo
       },
@@ -307,7 +307,7 @@ const routes = [
         component: CadastroServicoPlanoManutencao
       },
       {
-        path: 'servicoPlanoManutencao/:planoManutencaoId/edit/:servicoId?',
+        path: 'servicoPlanoManutencao/:planoManutencaoId/edit/:servicoId',
         name: 'Editar Serviço do Plano de Manutenção',
         component: CadastroServicoPlanoManutencao
       },
@@ -432,17 +432,17 @@ const routes = [
       },
       //Feriado
       {
-        path: 'feriado/new',
+        path: 'feriado/:calendarioId/new',
         name: 'Novo Feriado',
         component: CadastroFeriado
       },
       {
-        path: 'feriado/edit/:id?',
+        path: 'feriado/:calendarioId/edit/:id?',
         name: 'Editar Feriado',
         component: CadastroFeriado
       },
       {
-        path: 'feriado',
+        path: 'feriado/:calendarioId',
         name: 'Feriado',
         component: ListaFeriado
       }

@@ -1,20 +1,11 @@
 <template lang="pug">
   cadastro(
     :route='route'
+    :param-value='param'
   )
     .row(slot='fields')
       .col-xs-12
         .row
-          .col-md-3
-            fg-select(
-              label='Calendário',
-              placeholder='Calendário', 
-              v-model='feriado.calendario', 
-              name='calendario', 
-              :rules='{ required: true }',
-              :options='calendarios'
-            )
-          
           .col-md-3
             fg-input(
               type='text',
@@ -63,6 +54,7 @@ export default {
   data () {
     return {
       route: 'feriado',
+      param: this.$route.params.calendarioId,
       loading: false,
       feriado: {
         calendario: null,
@@ -147,7 +139,7 @@ export default {
     }
   },
   mounted() {
-    this.feriado = new Feriado();
+    this.feriado = new Feriado(this.param);
 
     if(this.$route.params.id) {
       this.service = new FeriadoService(this.$resource);

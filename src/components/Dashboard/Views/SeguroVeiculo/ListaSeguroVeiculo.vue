@@ -1,8 +1,10 @@
 <template lang="pug">
   lista(
+    :param-value='param',
     :table-columns='tableColumns',
     :table-data='tableData',
     :route='route'
+    navigation-back='veiculo',
     @deleteItem='deleteItem($event)'
   )
 </template>
@@ -24,6 +26,7 @@
     data () {
       return {
         route: "seguroVeiculo",
+        param: this.$route.params.veiculoId,
         tableColumns: [
           {
             prop: 'id',
@@ -32,13 +35,13 @@
             minWidth: '30'
           },
           {
-            prop: 'veiculoObject.nome',
-            label: 'Veículo',
+            prop: 'seguradoraObject.nome',
+            label: 'Seguradora',
             class: ''
           },
           {
-            prop: 'seguradoraObject.nome',
-            label: 'Seguradora',
+            prop: 'veiculoObject.nome',
+            label: 'Veículo',
             class: ''
           }
         ]

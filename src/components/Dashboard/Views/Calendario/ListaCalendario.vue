@@ -1,19 +1,20 @@
 <template lang="pug">
-  lista(
+  lista-dropdown(
     :table-columns='tableColumns',
     :table-data='tableData',
     :route='route',
+    :dropdown-links='dropdownLinks',
     @deleteItem='deleteItem($event)'
   )
 </template>
 <script>
-  import Lista from 'src/components/GeneralViews/Lista.vue'
+  import ListaDropdown from 'src/components/GeneralViews/ListaDropdown.vue'
   import CalendarioService from 'src/domain/calendario/CalendarioService'
   import swal from 'sweetalert2'
   
   export default {
     components: {
-      'lista': Lista
+      'lista-dropdown': ListaDropdown
     },
     asyncComputed: {
       tableData() {
@@ -35,6 +36,12 @@
             prop: 'nome',
             label: 'Nome',
             class: ''
+          }
+        ],
+        dropdownLinks: [
+          {
+            label: 'Cadastrar Feriados',
+            route: 'feriado'
           }
         ]
       }

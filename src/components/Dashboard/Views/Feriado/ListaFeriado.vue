@@ -1,8 +1,10 @@
 <template lang="pug">
   lista(
+    :param-value='param',
     :table-columns='tableColumns',
     :table-data='tableData',
     :route='route'
+    navigation-back='calendario',
     @deleteItem='deleteItem($event)'
   )
 </template>
@@ -24,6 +26,7 @@
     data () {
       return {
         route: "feriado",
+        param: this.$route.params.calendarioId,
         tableColumns: [
           {
             prop: 'id',
@@ -32,13 +35,13 @@
             minWidth: '30'
           },
           {
-            prop: 'calendarioObject.nome',
-            label: 'Calendário',
+            prop: 'nome',
+            label: 'Nome',
             class: ''
           },
           {
-            prop: 'nome',
-            label: 'Nome',
+            prop: 'calendarioObject.nome',
+            label: 'Calendário',
             class: ''
           }
         ]
