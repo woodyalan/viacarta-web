@@ -1,7 +1,9 @@
 <template lang="pug">
   .row
     .col-md-12
-      .card(v-if='telaInfo')
+      .card(
+        v-if='telaInfo'
+      )
         .card-header
           h4.title
             | {{ telaInfo.title }}
@@ -25,6 +27,7 @@
                 slot(name='actions')
 </template>
 <script>
+  import Vue from 'vue'
   import LoginService from 'src/domain/login/LoginService'
 
   export default {
@@ -35,6 +38,17 @@
       },
       paramValue: {
         type: String
+      }
+    },
+    computed: {
+      backToList() {
+        return this.$store.state.backToList;
+      }
+    },
+    watch: {
+      backToList(value) {
+        if(value)
+          this.$router.push(this.telaInfo.rota);
       }
     },
     asyncComputed: {
@@ -53,5 +67,8 @@
           });
       }
     },
+    mounted() {
+      this.$store.dispatch('setBackToList', false);
+    }
   }
 </script>

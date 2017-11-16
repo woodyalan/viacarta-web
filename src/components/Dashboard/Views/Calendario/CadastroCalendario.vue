@@ -5,12 +5,12 @@
     .row(slot='fields')
       .col-xs-12
         .row
-          .col-md-6
+          .col-md-3
             fg-input(
               type='text',
               label='Nome',
               placeholder='Nome', 
-              v-model='menu.nome', 
+              v-model='calendario.nome', 
               name='nome', 
               :rules='{ required: true }'
             )
@@ -19,7 +19,7 @@
             fg-select(
               label='Ativo',
               placeholder='Ativo', 
-              v-model='menu.ativo', 
+              v-model='calendario.ativo', 
               name='ativo', 
               :rules='{ required: true }',
               :options='options.ativo'
@@ -34,8 +34,8 @@
 </template>
 <script>
 import Cadastro from 'src/components/GeneralViews/Cadastro.vue'
-import MenuService from 'src/domain/menu/MenuService'
-import Menu from 'src/domain/menu/Menu'
+import CalendarioService from 'src/domain/calendario/CalendarioService'
+import Calendario from 'src/domain/calendario/Calendario'
 import swal from 'sweetalert2'
 
 export default {
@@ -45,7 +45,7 @@ export default {
   },
   data () {
     return {
-      route: 'menus',
+      route: 'calendario',
       loading: false,
       options: {
         ativo: [
@@ -59,7 +59,7 @@ export default {
           }
         ]
       },
-      menu: {
+      calendario: {
         nome: null,
         ativo: null
       }
@@ -82,13 +82,11 @@ export default {
           if(success && !this.loading) {
             this.loading = true;
 
-            let menu = new Menu(this.menu.nome, this.menu.ativo);
-
-            this.service = new MenuService(this.$resource);
+            this.service = new CalendarioService(this.$resource);
 
             if(this.$route.params.id) {
               this.service
-                .update(this.$route.params.id, menu)
+                .update(this.$route.params.id, this.calendario)
                 .then(response => {
                   let success = response.success;
 
@@ -106,7 +104,7 @@ export default {
                 });
             } else {
               this.service
-                .save(menu)
+                .save(this.calendario)
                 .then(response => {
                   let success = response.success;
 
@@ -118,7 +116,7 @@ export default {
                     confirmButtonClass: 'btn btn-success btn-fill',
                     allowOutsideClick: false
                   }).then(function() {
-                    if(success) 
+                    if(success)
                       app.$store.dispatch('setBackToList', true);
                   });
                 });
@@ -128,13 +126,13 @@ export default {
     }
   },
   mounted() {
-    this.menu = new Menu();
+    this.calendario = new Calendario();
 
     if(this.$route.params.id) {
-      this.service = new MenuService(this.$resource);
+      this.service = new CalendarioService(this.$resource);
       this.service
         .get(this.$route.params.id)
-        .then(menu => this.menu = menu);
+        .then(calendario => this.calendario = calendario);
     }
   }
 }

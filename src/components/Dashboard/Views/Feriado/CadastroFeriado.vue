@@ -1,43 +1,41 @@
 <template lang="pug">
   cadastro(
-    :route='route',
-    :param-value='$route.params.planoManutencaoId'
+    :route='route'
   )
     .row(slot='fields')
       .col-xs-12
         .row
-          .col-md-6
+          .col-md-3
             fg-select(
-              v-if='servicos',
-              label='Serviço',
-              placeholder='Serviço', 
-              v-model='servicoPlanoManutencao.servicoManutencao', 
-              name='servicoManutencao', 
+              label='Calendário',
+              placeholder='Calendário', 
+              v-model='feriado.calendario', 
+              name='calendario', 
               :rules='{ required: true }',
-              :options='servicos',
-              :disabled='edit'
+              :options='calendarios'
+            )
+          
+          .col-md-3
+            fg-input(
+              type='text',
+              label='Nome',
+              placeholder='Nome', 
+              v-model='feriado.nome', 
+              name='nome', 
+              :rules='{ required: true }'
             )
 
           .col-md-3
-            fg-input(
-              label='Tempo de Realização',
-              placeholder='Tempo em Meses', 
-              v-model='servicoPlanoManutencao.tempo', 
-              type='number',
-              name='tempo', 
-              :rules='{ min_value: 1, numeric: true, required: servicoPlanoManutencao.km == null }'
+            fg-datepicker(
+              label='Data',
+              placeholder='Selecione', 
+              v-model="feriado.dia",
+              name="dia",
+              format='dd/MM/yyyy',
+              value-format='yyyy-MM-dd',
+              :rules='{ required: true }'
             )
-
-          .col-md-3
-            fg-input(
-              label='Km de Realização',
-              placeholder='Km', 
-              v-model='servicoPlanoManutencao.km', 
-              type='number',
-              name='km', 
-              :rules='{ min_value: 1, numeric: true, required: servicoPlanoManutencao.tempo == null }'
-            )
-
+  
     button.btn.btn-fill.btn-info(
       :class='{ disabled: loading }'
       @click='salvar()',
@@ -46,42 +44,40 @@
     ) Salvar
 </template>
 <script>
+import Vue from 'vue'
+import { DatePicker } from 'element-ui'
+
 import Cadastro from 'src/components/GeneralViews/Cadastro.vue'
-import ServicoPlanoManutencaoService from 'src/domain/servicoPlanoManutencao/ServicoPlanoManutencaoService'
-import ServicoService from 'src/domain/servico/ServicoService'
-import ServicoPlanoManutencao from 'src/domain/servicoPlanoManutencao/ServicoPlanoManutencao'
-import PSwitch from 'src/components/UIComponents/Switch.vue'
+import FeriadoService from 'src/domain/feriado/FeriadoService'
+import CalendarioService from 'src/domain/calendario/CalendarioService'
+import Feriado from 'src/domain/feriado/Feriado'
 import swal from 'sweetalert2'
+
+Vue.use(DatePicker);
 
 export default {
   $validates: true,
   components: {
     'cadastro': Cadastro
   },
-  computed: {
-      edit() {
-        return this.servicoPlanoManutencao.createdAt != null
-      }
-  },
   data () {
     return {
-      route: `servicoPlanoManutencao`,
+      route: 'feriado',
       loading: false,
-      servicoPlanoManutencao: {
-        planoManutencao: null,
-        servicoManutencao: null,
-        tempo: null,
-        km: null
-      }
+      feriado: {
+        calendario: null,
+        dia: new Date(),
+        nome: null
+      }      
     }
   },
   asyncComputed: {
-    servicos() {
-      this.service = new ServicoService(this.$resource);
+    calendarios() {
+      this.service = new CalendarioService(this.$resource);
       return this.service
         .get()
-        .then(servicos => {
-          return servicos.map(item => {
+        .then(calendarios => {
+          return calendarios.map(item => {
             return {
               value: item.id,
               text: item.nome
@@ -107,11 +103,11 @@ export default {
           if(success && !this.loading) {
             this.loading = true;
 
-            this.service = new ServicoPlanoManutencaoService(this.$http);
+            this.service = new FeriadoService(this.$resource);
 
-            if(this.servicoPlanoManutencao.createdAt) {
+            if(this.$route.params.id) {
               this.service
-                .update(this.servicoPlanoManutencao.planoManutencao, this.servicoPlanoManutencao.servicoManutencao, this.servicoPlanoManutencao)
+                .update(this.$route.params.id, this.feriado)
                 .then(response => {
                   let success = response.success;
 
@@ -129,7 +125,7 @@ export default {
                 });
             } else {
               this.service
-                .save(this.servicoPlanoManutencao)
+                .save(this.feriado)
                 .then(response => {
                   let success = response.success;
 
@@ -151,15 +147,13 @@ export default {
     }
   },
   mounted() {
-    this.servicoPlanoManutencao = new ServicoPlanoManutencao(this.$route.params.planoManutencaoId, null, null, null);
+    this.feriado = new Feriado();
 
-    if(this.$route.params.servicoId) {
-      this.service = new ServicoPlanoManutencaoService(this.$http);
+    if(this.$route.params.id) {
+      this.service = new FeriadoService(this.$resource);
       this.service
-        .get(this.$route.params.planoManutencaoId, this.$route.params.servicoId)
-        .then(servicoPlanoManutencao => {
-          this.servicoPlanoManutencao = servicoPlanoManutencao;
-        });
+        .get(this.$route.params.id)
+        .then(feriado => this.feriado = feriado);
     }
   }
 }

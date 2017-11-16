@@ -53,6 +53,24 @@ import ListaPlanoManutencao from 'src/components/Dashboard/Views/PlanoManutencao
 import CadastroServicoPlanoManutencao from 'src/components/Dashboard/Views/ServicoPlanoManutencao/CadastroServicoPlanoManutencao.vue'
 import ListaServicoPlanoManutencao from 'src/components/Dashboard/Views/servicoPlanoManutencao/ListaServicoPlanoManutencao.vue'
 
+import CadastroTipoDespesa from 'src/components/Dashboard/Views/TipoDespesa/CadastroTipoDespesa.vue'
+import ListaTipoDespesa from 'src/components/Dashboard/Views/TipoDespesa/ListaTipoDespesa.vue'
+
+import CadastroCargo from 'src/components/Dashboard/Views/Cargo/CadastroCargo.vue'
+import ListaCargo from 'src/components/Dashboard/Views/Cargo/ListaCargo.vue'
+
+import CadastroBanco from 'src/components/Dashboard/Views/Banco/CadastroBanco.vue'
+import ListaBanco from 'src/components/Dashboard/Views/Banco/ListaBanco.vue'
+
+import CadastroPlanoTrabalho from 'src/components/Dashboard/Views/PlanoTrabalho/CadastroPlanoTrabalho.vue'
+import ListaPlanoTrabalho from 'src/components/Dashboard/Views/PlanoTrabalho/ListaPlanoTrabalho.vue'
+
+import CadastroCalendario from 'src/components/Dashboard/Views/calendario/CadastroCalendario.vue'
+import ListaCalendario from 'src/components/Dashboard/Views/calendario/ListaCalendario.vue'
+
+import CadastroFeriado from 'src/components/Dashboard/Views/feriado/CadastroFeriado.vue'
+import ListaFeriado from 'src/components/Dashboard/Views/feriado/ListaFeriado.vue'
+
 const routes = [
   {
     path: '/',
@@ -319,6 +337,114 @@ const routes = [
         path: 'centroCusto',
         name: 'Centro de Custo',
         component: ListaCentroCusto
+      }
+    ]
+  },
+  {
+    path: '/financeiro',
+    component: DashboardLayout,
+    children: [
+      //Tipo de Despesa
+      {
+        path: 'tipoDespesa/new',
+        name: 'Novo Tipo de Despesa',
+        component: CadastroTipoDespesa
+      },
+      {
+        path: 'tipoDespesa/edit/:id?',
+        name: 'Editar Tipo de Despesa',
+        component: CadastroTipoDespesa
+      },
+      {
+        path: 'tipoDespesa',
+        name: 'Tipo de Despesa',
+        component: ListaTipoDespesa
+      },
+      //Banco
+      {
+        path: 'banco/new',
+        name: 'Novo Banco',
+        component: CadastroBanco
+      },
+      {
+        path: 'banco/edit/:id?',
+        name: 'Editar Banco',
+        component: CadastroBanco
+      },
+      {
+        path: 'banco',
+        name: 'Banco',
+        component: ListaBanco
+      }
+    ]
+  },
+  {
+    path: '/recursosHumanos',
+    component: DashboardLayout,
+    children: [
+      //Cargo
+      {
+        path: 'cargo/new',
+        name: 'Novo Cargo',
+        component: CadastroCargo
+      },
+      {
+        path: 'cargo/edit/:id?',
+        name: 'Editar Cargo',
+        component: CadastroCargo
+      },
+      {
+        path: 'cargo',
+        name: 'Cargo',
+        component: ListaCargo
+      },
+      //Plano de Trabalho
+      {
+        path: 'planoTrabalho/new',
+        name: 'Novo Plano de Trabalho',
+        component: CadastroPlanoTrabalho
+      },
+      {
+        path: 'planoTrabalho/edit/:id?',
+        name: 'Editar Plano de Trabalho',
+        component: CadastroPlanoTrabalho
+      },
+      {
+        path: 'planoTrabalho',
+        name: 'Plano de Trabalho',
+        component: ListaPlanoTrabalho
+      },
+      //Calendario
+      {
+        path: 'calendario/new',
+        name: 'Novo Calendário',
+        component: CadastroCalendario
+      },
+      {
+        path: 'calendario/edit/:id?',
+        name: 'Editar Calendário',
+        component: CadastroCalendario
+      },
+      {
+        path: 'calendario',
+        name: 'Calendário',
+        component: ListaCalendario
+      },
+      //Feriado
+      {
+        path: 'feriado/new',
+        name: 'Novo Feriado',
+        component: CadastroFeriado
+      },
+      {
+        path: 'feriado/edit/:id?',
+        name: 'Editar Feriado',
+        component: CadastroFeriado
+      },
+      {
+        path: 'feriado',
+        name: 'Feriado',
+        component: ListaFeriado
       }
     ]
   },

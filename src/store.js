@@ -7,7 +7,8 @@ Vue.use(Vuex)
 const state = {
     token: null,
     user: null,
-    menus: null
+    menus: null,
+    backToList: false
 }
 
 const mutations = {
@@ -19,6 +20,9 @@ const mutations = {
     },
     updateMenus(state, menus) {
         state.menus = menus
+    },
+    updateBackToList(state, backToList) {
+        state.backToList = backToList
     }
 }
 
@@ -29,6 +33,9 @@ const actions = {
     setUser(state, user) {
         state.commit('updateUser', user);
     },
+    setBackToList(state, back) {
+        state.commit('updateBackToList', back);
+    },
     setMenus(state, menus) {
         state.commit('updateMenus', menus);
     },
@@ -36,10 +43,11 @@ const actions = {
         state.commit('updateToken', null);
         state.commit('updateUser', null);
         state.commit('updateMenus', null);
+        state.commit('updateBackToList', false);
     }
 }
 
-const badMutations = [];
+const badMutations = ['updateBackToList'];
 
 export default new Vuex.Store({
     state,

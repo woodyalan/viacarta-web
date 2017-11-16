@@ -148,7 +148,7 @@ export default {
                     allowOutsideClick: false
                   }).then(function() {
                     if(success)
-                      app.$router.push(app.route);
+                      app.$store.dispatch('setBackToList', true);
                   });
                 });
             } else {
@@ -166,7 +166,7 @@ export default {
                     allowOutsideClick: false
                   }).then(function() {
                     if(success)
-                      app.$router.push(app.route);
+                      app.$store.dispatch('setBackToList', true);
                   });
                 });
             }

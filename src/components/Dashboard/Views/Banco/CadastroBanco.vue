@@ -5,26 +5,36 @@
     .row(slot='fields')
       .col-xs-12
         .row
+          .col-md-3
+            fg-input(
+              type='number',
+              label='Código',
+              placeholder='Código', 
+              v-model='banco.codigo', 
+              name='codigo', 
+              :rules='{ required: true, numeric: true, min_value: 1 }'
+            )
+
           .col-md-6
             fg-input(
               type='text',
               label='Nome',
               placeholder='Nome', 
-              v-model='menu.nome', 
+              v-model='banco.nome', 
               name='nome', 
               :rules='{ required: true }'
             )
-
+          
           .col-md-3
             fg-select(
               label='Ativo',
               placeholder='Ativo', 
-              v-model='menu.ativo', 
+              v-model='banco.ativo', 
               name='ativo', 
               :rules='{ required: true }',
               :options='options.ativo'
             )
-  
+            
     button.btn.btn-fill.btn-info(
       :class='{ disabled: loading }'
       @click='salvar()',
@@ -34,8 +44,8 @@
 </template>
 <script>
 import Cadastro from 'src/components/GeneralViews/Cadastro.vue'
-import MenuService from 'src/domain/menu/MenuService'
-import Menu from 'src/domain/menu/Menu'
+import BancoService from 'src/domain/banco/BancoService'
+import Banco from 'src/domain/banco/Banco'
 import swal from 'sweetalert2'
 
 export default {
@@ -45,7 +55,7 @@ export default {
   },
   data () {
     return {
-      route: 'menus',
+      route: 'banco',
       loading: false,
       options: {
         ativo: [
@@ -59,9 +69,9 @@ export default {
           }
         ]
       },
-      menu: {
+      banco: {
         nome: null,
-        ativo: null
+        codigo: null
       }
     }
   },
@@ -82,13 +92,11 @@ export default {
           if(success && !this.loading) {
             this.loading = true;
 
-            let menu = new Menu(this.menu.nome, this.menu.ativo);
-
-            this.service = new MenuService(this.$resource);
+            this.service = new BancoService(this.$resource);
 
             if(this.$route.params.id) {
               this.service
-                .update(this.$route.params.id, menu)
+                .update(this.$route.params.id, this.banco)
                 .then(response => {
                   let success = response.success;
 
@@ -106,7 +114,7 @@ export default {
                 });
             } else {
               this.service
-                .save(menu)
+                .save(this.banco)
                 .then(response => {
                   let success = response.success;
 
@@ -118,7 +126,7 @@ export default {
                     confirmButtonClass: 'btn btn-success btn-fill',
                     allowOutsideClick: false
                   }).then(function() {
-                    if(success) 
+                    if(success)
                       app.$store.dispatch('setBackToList', true);
                   });
                 });
@@ -128,13 +136,13 @@ export default {
     }
   },
   mounted() {
-    this.menu = new Menu();
+    this.banco = new Banco();
 
     if(this.$route.params.id) {
-      this.service = new MenuService(this.$resource);
+      this.service = new BancoService(this.$resource);
       this.service
         .get(this.$route.params.id)
-        .then(menu => this.menu = menu);
+        .then(banco => this.banco = banco);
     }
   }
 }
