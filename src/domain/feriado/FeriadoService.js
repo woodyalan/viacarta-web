@@ -1,11 +1,20 @@
 export default class FeriadoService {
     constructor(resource) {
-        this._resource = resource('feriado{/id}');
+        this._resource = resource;
     }
 
     get(id) {
         return this._resource
-            .get({ id })
+            .get(`feriado/${id}`)
+            .then(res => res.json(), err => {
+                console.log(err);
+                throw new Error('Não foi possível obter o registro');
+            })
+    }
+
+    getFeriadosCalendario(calendarioId) {
+        return this._resource
+            .get(`feriadoCalendario/${calendarioId}`)
             .then(res => res.json(), err => {
                 console.log(err);
                 throw new Error('Não foi possível obter o registro');
@@ -14,7 +23,7 @@ export default class FeriadoService {
 
     save(feriado) {
         return this._resource
-            .save(feriado)
+            .post('feriado', feriado)
             .then(res => res.json(), err => {
                 console.log(err);
                 throw new Error('Não foi possível salvar o registro');
@@ -23,7 +32,7 @@ export default class FeriadoService {
 
     update(id, feriado) {
         return this._resource
-            .update({ id }, feriado)
+            .put(`feriado/${id}`, feriado)
             .then(res => res.json(), err => {
                 console.log(err);
                 throw new Error('Não foi possível salvar o registro');
@@ -32,7 +41,7 @@ export default class FeriadoService {
 
     delete(id) {
         return this._resource
-            .delete({ id })
+            .delete(`feriado/${id}`)
             .then(res => res.json(), err => {
                 console.log(err);
                 throw new Error('Não foi possível remover o registro');

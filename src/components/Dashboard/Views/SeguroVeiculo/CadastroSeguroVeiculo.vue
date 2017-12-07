@@ -1,7 +1,7 @@
 <template lang="pug">
   cadastro(
     :route='route',
-    :param-value='$route.params.veiculoId'
+    :param-value='param'
   )
     .row(slot='fields')
       .col-xs-12
@@ -69,7 +69,7 @@ export default {
       param: this.$route.params.veiculoId,
       loading: false,
       seguroVeiculo: {
-        veiculo: null,
+        veiculo: this.$route.params.veiculoId,
         seguradora: null,
         inicio: new Date(),
         fim: new Date(),
@@ -122,7 +122,7 @@ export default {
           if(success && !this.loading) {
             this.loading = true;
 
-            this.service = new SeguroVeiculoService(this.$resource);
+            this.service = new SeguroVeiculoService(this.$http);
 
             if(this.$route.params.id) {
               this.service
@@ -166,10 +166,11 @@ export default {
     }
   },
   mounted() {
-    this.seguroVeiculo = new SeguroVeiculo(this.param);
+    this.seguroVeiculo = new SeguroVeiculo(this.$route.params.veiculoId);
+    console.log(this.$route.params);
 
     if(this.$route.params.id) {
-      this.service = new SeguroVeiculoService(this.$resource);
+      this.service = new SeguroVeiculoService(this.$http);
       this.service
         .get(this.$route.params.id)
         .then(seguroVeiculo => this.seguroVeiculo = seguroVeiculo);

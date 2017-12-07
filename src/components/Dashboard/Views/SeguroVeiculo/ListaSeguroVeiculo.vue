@@ -19,8 +19,10 @@
     },
     asyncComputed: {
       tableData() {
-        this.service = new SeguroVeiculoService(this.$resource);
-        return this.service.get(servicos => servicos);
+        this.service = new SeguroVeiculoService(this.$http);
+        return this.service
+          .getSegurosVeiculo(this.$route.params.veiculoId)
+          .then(servicos => servicos);
       }
     },
     data () {
@@ -61,7 +63,7 @@
           cancelButtonClass: 'btn btn-danger btn-fill',
           allowOutsideClick: false
         }).then(function() {
-          app.service = new SeguroVeiculoService(app.$resource);
+          app.service = new SeguroVeiculoService(app.$http);
           app.service
             .delete(item.object.id)
             .then(result => {

@@ -19,8 +19,10 @@
     },
     asyncComputed: {
       tableData() {
-        this.service = new FeriadoService(this.$resource);
-        return this.service.get(feriados => feriados);
+        this.service = new FeriadoService(this.$http);
+        return this.service
+          .getFeriadosCalendario(this.$route.params.calendarioId)
+          .then(feriados => feriados);
       }
     },
     data () {
@@ -61,7 +63,7 @@
           cancelButtonClass: 'btn btn-danger btn-fill',
           allowOutsideClick: false
         }).then(function() {
-          app.service = new FeriadoService(app.$resource);
+          app.service = new FeriadoService(app.$http);
           app.service
             .delete(item.object.id)
             .then(result => {

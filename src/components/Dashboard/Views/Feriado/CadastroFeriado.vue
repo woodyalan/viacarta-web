@@ -37,6 +37,7 @@
 <script>
 import Vue from 'vue'
 import { DatePicker } from 'element-ui'
+import moment from 'moment'
 
 import Cadastro from 'src/components/GeneralViews/Cadastro.vue'
 import FeriadoService from 'src/domain/feriado/FeriadoService'
@@ -95,8 +96,8 @@ export default {
           if(success && !this.loading) {
             this.loading = true;
 
-            this.service = new FeriadoService(this.$resource);
-
+            this.service = new FeriadoService(this.$http);
+            
             if(this.$route.params.id) {
               this.service
                 .update(this.$route.params.id, this.feriado)
@@ -139,10 +140,10 @@ export default {
     }
   },
   mounted() {
-    this.feriado = new Feriado(this.param);
+    this.feriado = new Feriado(this.$route.params.calendarioId);
 
     if(this.$route.params.id) {
-      this.service = new FeriadoService(this.$resource);
+      this.service = new FeriadoService(this.$http);
       this.service
         .get(this.$route.params.id)
         .then(feriado => this.feriado = feriado);

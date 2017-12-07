@@ -1,11 +1,20 @@
 export default class SeguroVeiculoService {
     constructor(resource) {
-        this._resource = resource('seguroVeiculo{/id}');
+        this._resource = resource;
     }
 
     get(id) {
         return this._resource
-            .get({ id })
+            .get(`seguroVeiculo/${id}`)
+            .then(res => res.json(), err => {
+                console.log(err);
+                throw new Error('Não foi possível obter o registro');
+            })
+    }
+
+    getSegurosVeiculo(veiculoId) {
+        return this._resource
+            .get(`segurosVeiculo/${veiculoId}`)
             .then(res => res.json(), err => {
                 console.log(err);
                 throw new Error('Não foi possível obter o registro');
@@ -14,7 +23,7 @@ export default class SeguroVeiculoService {
 
     save(seguroVeiculo) {
         return this._resource
-            .save(seguroVeiculo)
+            .post('seguroVeiculo', seguroVeiculo)
             .then(res => res.json(), err => {
                 console.log(err);
                 throw new Error('Não foi possível salvar o registro');
@@ -23,7 +32,7 @@ export default class SeguroVeiculoService {
 
     update(id, seguroVeiculo) {
         return this._resource
-            .update({ id }, seguroVeiculo)
+            .put(`seguroVeiculo/${id}`, seguroVeiculo)
             .then(res => res.json(), err => {
                 console.log(err);
                 throw new Error('Não foi possível salvar o registro');
@@ -32,7 +41,7 @@ export default class SeguroVeiculoService {
 
     delete(id) {
         return this._resource
-            .delete({ id })
+            .delete(`seguroVeiculo/${id}`)
             .then(res => res.json(), err => {
                 console.log(err);
                 throw new Error('Não foi possível remover o registro');

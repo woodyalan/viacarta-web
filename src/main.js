@@ -11,6 +11,7 @@ import store from './store'
 import App from './App.vue'
 
 import messagesBR from 'vee-validate/dist/locale/pt_BR'
+import moment from 'moment'
 
 // Plugins
 import GlobalComponents from './gloablComponents'
@@ -29,6 +30,8 @@ import './assets/sass/demo.scss'
 import 'es6-promise/auto'
 
 // import sidebarLinks from './sidebarLinks'
+
+Vue.prototype.moment = moment
 
 // plugin setup
 Vue.use(VueRouter)
