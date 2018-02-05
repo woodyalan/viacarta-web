@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
+import Endereco from 'src/domain/cep/Endereco'
 
 Vue.use(Vuex)
 
@@ -8,7 +9,8 @@ const state = {
     token: null,
     user: null,
     menus: null,
-    backToList: false
+    backToList: false,
+    endereco: new Endereco()
 }
 
 const mutations = {
@@ -23,6 +25,9 @@ const mutations = {
     },
     updateBackToList(state, backToList) {
         state.backToList = backToList
+    },
+    updateEndereco(state, endereco) {
+        state.endereco = endereco
     }
 }
 
@@ -39,15 +44,19 @@ const actions = {
     setMenus(state, menus) {
         state.commit('updateMenus', menus);
     },
+    setEndereco(state, endereco) {
+        state.commit('updateEndereco', endereco);
+    },
     resetData(state) {
         state.commit('updateToken', null);
         state.commit('updateUser', null);
         state.commit('updateMenus', null);
         state.commit('updateBackToList', false);
+        state.commit('updateEndereco', new Endereco());
     }
 }
 
-const badMutations = ['updateBackToList'];
+const badMutations = ['updateBackToList', 'updateEndereco'];
 
 export default new Vuex.Store({
     state,

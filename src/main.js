@@ -13,6 +13,10 @@ import App from './App.vue'
 import messagesBR from 'vee-validate/dist/locale/pt_BR'
 import moment from 'moment'
 
+import CpfValidator from './components/Validators/cpf.validator'
+import Dictionary from './components/Validators/dictionary'
+
+
 // Plugins
 import GlobalComponents from './gloablComponents'
 import GlobalDirectives from './globalDirectives'
@@ -43,10 +47,14 @@ Vue.use(SideBar)
 Vue.use(AsyncComputed)
 Vue.use(VueTheMask)
 
+Validator.installDateTimeValidators(moment);
+Validator.extend('cpf', CpfValidator)
+
 Validator.addLocale(messagesBR)
 Vue.use(VeeValidate, {
     locale: 'pt_BR',
-    inject: false
+    inject: false,
+    dictionary: Dictionary
 })
 
 locale.use(lang)
@@ -62,7 +70,7 @@ Vue.http.options.root = process.env.API_URL;
   
 
 Vue.http.interceptors.push(function(request, next) {
-    const removeAuthHeaders = false;
+    const removeAuthHeaders = request.url.includes("republicavirtual.com.br");
 
     request.headers.set('Accept', 'application/json');
     

@@ -1,7 +1,7 @@
 <template lang="pug">
   .row
     .col-xs-12
-      .card
+      .card(v-if="telaInfo")
         .card-header
           h4.title
             | {{ telaInfo.title }}
@@ -28,7 +28,7 @@
                   el-table-column(v-for='column in tableColumns', :class-name='column.class', :prop='column.prop', :label='column.label', sortable='', :min-width='column.minWidth')
                   el-table-column(width='150' class-name='text-center', fixed='right')
                     template(scope='props')
-                      el-dropdown
+                      el-dropdown(@command='handleDelete')
                         el-button.btn.btn-primary.btn-sm.btn-fill 
                           | Ações 
                           span.caret
@@ -41,7 +41,7 @@
                             router-link(:to='`${telaInfo.rota}/edit/${props.row.id}`')
                               i.ti-pencil-alt 
                               |   Editar
-                          el-dropdown-item.text-danger(@click='handleDelete(props.$index, props.row)')
+                          el-dropdown-item.text-danger(:command='{ index: props.$index, object: props.row }')
                             i.ti-trash 
                             |   Excluir
           .row
@@ -167,8 +167,8 @@
       }
     },
     methods: {
-      handleDelete(index, object) {
-        this.$emit('deleteItem', { index, object });
+      handleDelete(command) {
+        this.$emit('deleteItem', command);
       },
       removeItem(index) {
         this.tableData.splice(index)

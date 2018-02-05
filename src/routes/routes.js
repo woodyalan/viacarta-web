@@ -68,8 +68,11 @@ import ListaPlanoTrabalho from 'src/components/Dashboard/Views/PlanoTrabalho/Lis
 import CadastroCalendario from 'src/components/Dashboard/Views/calendario/CadastroCalendario.vue'
 import ListaCalendario from 'src/components/Dashboard/Views/calendario/ListaCalendario.vue'
 
-import CadastroFeriado from 'src/components/Dashboard/Views/feriado/CadastroFeriado.vue'
-import ListaFeriado from 'src/components/Dashboard/Views/feriado/ListaFeriado.vue'
+import CadastroFeriado from 'src/components/Dashboard/Views/Feriado/CadastroFeriado.vue'
+import ListaFeriado from 'src/components/Dashboard/Views/Feriado/ListaFeriado.vue'
+
+import CadastroFuncionario from 'src/components/Dashboard/Views/Funcionario/CadastroFuncionario.vue'
+import ListaFuncionario from 'src/components/Dashboard/Views/Funcionario/ListaFuncionario.vue'
 
 const routes = [
   {
@@ -445,6 +448,22 @@ const routes = [
         path: 'feriado/:calendarioId',
         name: 'Feriado',
         component: ListaFeriado
+      },
+      //Funcionario
+      {
+        path: 'funcionario/new',
+        name: 'Novo Funcionário',
+        component: CadastroFuncionario
+      },
+      {
+        path: 'funcionario/edit/:id?',
+        name: 'Editar Funcionario',
+        component: CadastroFuncionario
+      },
+      {
+        path: 'funcionario',
+        name: 'Funcionario',
+        component: ListaFuncionario
       }
     ]
   },

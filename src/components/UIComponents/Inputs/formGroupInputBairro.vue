@@ -4,14 +4,14 @@
       {{label}}
     </label>
     <input class="form-control border-input" v-bind="$props" :value="value"
-           @input="$emit('input',$event.target.value)" v-validate="rules" :data-vv-as="label">
+           @input="updateValue($event.target.value)" v-validate="rules" :data-vv-as="label">
     <small class="text-danger" v-show="errors.has(name)">{{ errors.first(name) }}</small>
   </div>
 </template>
 <script>
   export default {
     inject: ['$validator'],
-    name: 'fg-input',
+    name: 'fg-input-bairro',
     props: {
       type: {
         type: String,
@@ -26,6 +26,35 @@
       rules: {
         type: Object,
         default: {}
+      }
+    },
+    data() {
+      return {
+        bairro: ''
+      }
+    }, 
+    asyncComputed: {
+      valueComputed() {
+        let value
+
+        if(this.$store.state.endereco.valid)
+            value = this.$store.state.endereco.bairro
+        else 
+            value = this.value
+
+        this.bairro = value
+        
+        return value
+      }
+    },
+    watch: {
+      bairro(value) {
+        this.updateValue(value);
+      }
+    },
+    methods: {
+      updateValue: function (value) {
+        this.$emit('input', value);
       }
     }
   }

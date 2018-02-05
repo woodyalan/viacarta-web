@@ -1,4 +1,9 @@
 import fgInput from './components/UIComponents/Inputs/formGroupInput.vue'
+import fgInputCep from './components/UIComponents/Inputs/formGroupInputCep.vue'
+import fgInputLogradouro from './components/UIComponents/Inputs/formGroupInputLogradouro.vue'
+import fgInputBairro from './components/UIComponents/Inputs/formGroupInputBairro.vue'
+import fgInputCidade from './components/UIComponents/Inputs/formGroupInputCidade.vue'
+import fgInputEstado from './components/UIComponents/Inputs/formGroupInputEstado.vue'
 import fgInputMask from './components/UIComponents/Inputs/formGroupInputMask.vue'
 import fgSelect from './components/UIComponents/Inputs/formGroupSelect.vue'
 import formGroupDatePicker from './components/UIComponents/Inputs/formGroupDatePicker.vue'
@@ -15,6 +20,11 @@ const GlobalComponents = {
   install (Vue) {
     Vue.component(fgInput.name, fgInput)
     Vue.component(fgInputMask.name, fgInputMask)
+    Vue.component(fgInputCep.name, fgInputCep)
+    Vue.component(fgInputLogradouro.name, fgInputLogradouro)
+    Vue.component(fgInputBairro.name, fgInputBairro)
+    Vue.component(fgInputCidade.name, fgInputCidade)
+    Vue.component(fgInputEstado.name, fgInputEstado)
     Vue.component(formGroupDatePicker.name, formGroupDatePicker)
     Vue.component(fgSelect.name, fgSelect)
     Vue.component(DropDown.name, DropDown)
