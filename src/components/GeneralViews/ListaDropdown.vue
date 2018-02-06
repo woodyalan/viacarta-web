@@ -28,7 +28,7 @@
                   el-table-column(v-for='column in tableColumns', :class-name='column.class', :prop='column.prop', :label='column.label', sortable='', :min-width='column.minWidth')
                   el-table-column(width='150' class-name='text-center', fixed='right')
                     template(scope='props')
-                      el-dropdown(@command='handleDelete')
+                      el-dropdown(@command='handleAction')
                         el-button.btn.btn-primary.btn-sm.btn-fill 
                           | Ações 
                           span.caret
@@ -37,11 +37,10 @@
                             router-link(:to='`/${telaInfo.menuPath}/${item.route}/${props.row.id}/`')
                               | {{ item.label }}
                           el-dropdown-item(:divided="true")
-                          el-dropdown-item.text-warning
-                            router-link(:to='`${telaInfo.rota}/edit/${props.row.id}`')
-                              i.ti-pencil-alt 
-                              |   Editar
-                          el-dropdown-item.text-danger(:command='{ index: props.$index, object: props.row }')
+                          el-dropdown-item.text-info(:command='{ action: "edit", url: `${telaInfo.rota}/edit/${props.row.id}` }')
+                            i.ti-pencil-alt 
+                            |   Editar
+                          el-dropdown-item.text-danger(:command='{ action: "delete", index: props.$index, object: props.row }')
                             i.ti-trash 
                             |   Excluir
           .row
@@ -167,6 +166,15 @@
       }
     },
     methods: {
+      handleAction(command) {
+        if(command.action == 'edit') {
+          this.$router.push(command.url);
+        }
+
+        if(command.action == 'delete') {
+          this.handleDelete(command);
+        }
+      },
       handleDelete(command) {
         this.$emit('deleteItem', command);
       },

@@ -74,6 +74,9 @@ import ListaFeriado from 'src/components/Dashboard/Views/Feriado/ListaFeriado.vu
 import CadastroFuncionario from 'src/components/Dashboard/Views/Funcionario/CadastroFuncionario.vue'
 import ListaFuncionario from 'src/components/Dashboard/Views/Funcionario/ListaFuncionario.vue'
 
+import CadastroContaBancaria from 'src/components/Dashboard/Views/ContaBancaria/CadastroContaBancaria.vue'
+import ListaContaBancaria from 'src/components/Dashboard/Views/ContaBancaria/ListaContaBancaria.vue'
+
 const routes = [
   {
     path: '/',
@@ -464,6 +467,22 @@ const routes = [
         path: 'funcionario',
         name: 'Funcionario',
         component: ListaFuncionario
+      },
+      //Contas Bancarias
+      {
+        path: 'contaBancaria/:pessoaId/new',
+        name: 'Nova Conta Bancária',
+        component: CadastroContaBancaria
+      },
+      {
+        path: 'contaBancaria/:pessoaId/edit/:id?',
+        name: 'Editar Conta Bancária',
+        component: CadastroContaBancaria
+      },
+      {
+        path: 'contaBancaria/:pessoaId',
+        name: 'Conta Bancária',
+        component: ListaContaBancaria
       }
     ]
   },

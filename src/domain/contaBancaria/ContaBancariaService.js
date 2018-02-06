@@ -1,29 +1,38 @@
 export default class ContaBancariaService {
     constructor(resource) {
-        this._resource = resource('funcionario{/id}');
+        this._resource = resource;
     }
 
     get(id) {
         return this._resource
-            .get({ id })
+            .get(`contaBancaria/${id}`)
             .then(res => res.json(), err => {
                 console.log(err);
                 throw new Error('Não foi possível obter o registro');
             })
     }
 
-    save(funcionario) {
+    getContasBancariasPessoa(pessoaId) {
         return this._resource
-            .save(funcionario)
+            .get(`contaBancariaPessoa/${pessoaId}`)
+            .then(res => res.json(), err => {
+                console.log(err);
+                throw new Error('Não foi possível obter o registro');
+            })
+    }
+
+    save(contaBancaria) {
+        return this._resource
+            .post('contaBancaria', contaBancaria)
             .then(res => res.json(), err => {
                 console.log(err);
                 throw new Error('Não foi possível salvar o registro');
             })
     }
 
-    update(id, funcionario) {
+    update(id, contaBancaria) {
         return this._resource
-            .update({ id }, funcionario)
+            .put(`contaBancaria/${id}`, contaBancaria)
             .then(res => res.json(), err => {
                 console.log(err);
                 throw new Error('Não foi possível salvar o registro');
@@ -32,7 +41,7 @@ export default class ContaBancariaService {
 
     delete(id) {
         return this._resource
-            .delete({ id })
+            .delete(`contaBancaria/${id}`)
             .then(res => res.json(), err => {
                 console.log(err);
                 throw new Error('Não foi possível remover o registro');

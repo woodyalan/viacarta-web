@@ -249,6 +249,7 @@ export default {
       },
       pessoaFisica: {
         pessoa: null,
+        email: null,
         cpf: null,
         rg: null,
         nascimento: null,
@@ -321,6 +322,13 @@ export default {
             let nascimento = funcionario.pessoaFisica.nascimento;
             nascimento = moment(nascimento, 'DD/MM/YYYY').format('YYYY-MM-DD');
             funcionario.pessoaFisica.nascimento = nascimento;
+
+            funcionario.pessoaFisica.apelido = funcionario.pessoaFisica.apelido || null;
+            funcionario.pessoaFisica.rg = funcionario.pessoaFisica.rg || null;
+            funcionario.pessoaFisica.email = funcionario.pessoaFisica.email || null;
+            funcionario.pessoa.celular = funcionario.pessoa.celular || null;
+            funcionario.pessoa.telefone = funcionario.pessoa.telefone || null;
+            funcionario.pessoa.complemento = funcionario.pessoa.complemento || null;
 
             this.service = new FuncionarioService(this.$resource);
 
