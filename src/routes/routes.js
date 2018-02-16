@@ -80,6 +80,9 @@ import ListaContaBancaria from 'src/components/Dashboard/Views/ContaBancaria/Lis
 import CadastroCliente from 'src/components/Dashboard/Views/Cliente/CadastroCliente.vue'
 import ListaCliente from 'src/components/Dashboard/Views/Cliente/ListaCliente.vue'
 
+import CadastroContato from 'src/components/Dashboard/Views/Contato/CadastroContato.vue'
+import ListaContato from 'src/components/Dashboard/Views/Contato/ListaContato.vue'
+
 const routes = [
   {
     path: '/',
@@ -492,6 +495,22 @@ const routes = [
         path: 'contaBancaria/:pessoaId',
         name: 'Conta Bancária',
         component: ListaContaBancaria
+      },
+      //Contato
+      {
+        path: 'contato/:pessoaId/new',
+        name: 'Nova Contato',
+        component: CadastroContato
+      },
+      {
+        path: 'contato/:pessoaId/edit/:id?',
+        name: 'Editar Contato',
+        component: CadastroContato
+      },
+      {
+        path: 'contato/:pessoaId',
+        name: 'Contato',
+        component: ListaContato
       },
       //Cliente
       {
