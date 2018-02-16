@@ -1,6 +1,6 @@
-export default class FuncionarioService {
+export default class ClienteService {
     constructor(resource) {
-        this._resource = resource('funcionario{/id}');
+        this._resource = resource('cliente{/id}');
     }
 
     get(id) {
@@ -12,18 +12,18 @@ export default class FuncionarioService {
             })
     }
 
-    save(funcionario) {
+    save(cliente) {
         return this._resource
-            .save(funcionario)
+            .save(cliente)
             .then(res => res.json(), err => {
                 console.log(err);
                 throw new Error('Não foi possível salvar o registro');
             })
     }
 
-    update(id, funcionario) {
+    update(id, cliente) {
         return this._resource
-            .update({ id }, funcionario)
+            .update({ id }, cliente)
             .then(res => res.json(), err => {
                 console.log(err);
                 throw new Error('Não foi possível salvar o registro');

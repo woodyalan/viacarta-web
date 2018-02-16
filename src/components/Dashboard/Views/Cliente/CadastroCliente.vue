@@ -5,7 +5,20 @@
     .row(slot='fields')
       .col-xs-12
         .row
-          .col-md-3
+          .col-xs-12
+            label.control-label Tipo
+            .row
+              .col-xs-6.col-md-2(v-for='option in options.tiposPessoa')
+                p-radio(
+                  :label='option.value'
+                  v-model='tipoPessoa'
+                  :disabled='pessoa.id != null'
+                ) {{ option.text }}
+
+        hr
+
+        .row
+          .col-md-3(v-if='tipoPessoa == "F"')
             fg-input-mask(
               label='CPF',
               placeholder='CPF', 
@@ -13,6 +26,16 @@
               name='cpf', 
               :rules='{ required: true, min: 14, cpf: true }',
               :mask="['###.###.###-##']"
+            )
+
+          .col-md-3(v-if='tipoPessoa == "J"')
+            fg-input-mask(
+              label='CNPJ',
+              placeholder='CNPJ', 
+              v-model='pessoaJuridica.cnpj', 
+              name='cnpj', 
+              :rules='{ required: true, min: 18, cnpj: true }',
+              :mask="['##.###.###/####-##']"
             )
 
           .col-md-6
@@ -25,7 +48,7 @@
               :rules='{ required: true }'
             )
 
-          .col-md-3
+          .col-md-3(v-if='tipoPessoa == "F"')
             fg-input-mask(
               type='text',
               label='Nascimento',
@@ -36,34 +59,11 @@
               :mask="['##/##/####']"
             )
 
-        .row
-          .col-md-3
-            fg-select(
-              v-if='cargos',
-              label='Cargo',
-              placeholder='Cargo', 
-              v-model='funcionario.cargo', 
-              name='cargo', 
-              :rules='{ required: true }',
-              :options='cargos'
-            )
-
-          .col-md-3
-            fg-select(
-              v-if='planosTrabalho'
-              label='Plano de Trabalho',
-              placeholder='Plano de Trabalho', 
-              v-model='funcionario.planoTrabalho', 
-              name='planoTrabalho', 
-              :rules='{ required: true }',
-              :options='planosTrabalho'
-            )
-
           .col-md-3
             fg-select(
               label='Ativo',
               placeholder='Ativo', 
-              v-model='funcionario.ativo', 
+              v-model='cliente.ativo', 
               name='ativo', 
               :rules='{ required: true }',
               :options='options.ativo'
@@ -73,7 +73,7 @@
 
         p.category.mb20 Documentos
         .row
-          .col-md-3
+          .col-md-3(v-if='tipoPessoa == "F"')
             fg-input(
               label='RG',
               placeholder='RG', 
@@ -82,11 +82,20 @@
               :rules='{ required: false }'
             )
 
+          .col-md-3(v-if='tipoPessoa == "J"')
+            fg-input(
+              label='Inscrição Estadual',
+              placeholder='Inscrição Estadual', 
+              v-model='pessoaJuridica.inscricaoEstadual', 
+              name='inscricaoEstadual', 
+              :rules='{ required: false }'
+            )
+
         hr
 
         p.category.mb20 Contato
         .row
-          .col-md-3
+          .col-md-3(v-if='tipoPessoa == "F"')
             fg-input(
               type='email',
               label='E-mail',
@@ -203,7 +212,9 @@
 </template>
 <script>
 import Cadastro from 'src/components/GeneralViews/Cadastro.vue'
-import FuncionarioService from 'src/domain/funcionario/FuncionarioService'
+import ClienteService from 'src/domain/cliente/ClienteService'
+import PessoaFisica from 'src/domain/pessoaFisica/PessoaFisica'
+import PessoaJuridica from 'src/domain/pessoaJuridica/PessoaJuridica'
 import CargoService from 'src/domain/cargo/CargoService'
 import Endereco from 'src/domain/cep/Endereco'
 import PlanoTrabalhoService from 'src/domain/planoTrabalho/PlanoTrabalhoService'
@@ -217,7 +228,7 @@ export default {
   },
   data () {
     return {
-      route: 'funcionario',
+      route: 'cliente',
       loading: false,
       options: {
         ativo: [
@@ -229,12 +240,21 @@ export default {
             value: 0,
             text: 'Não'
           }
+        ],
+        tiposPessoa: [
+          {
+            value: 'J',
+            text: 'Jurídica'
+          },
+          {
+            value: 'F',
+            text: 'Física'
+          }
         ]
       },
-      funcionario: {
+      tipoPessoa: 'J',
+      cliente: {
         id: null,
-        cargo: null,
-        planoTrabalho: null,
         ativo: null
       },
       pessoaFisica: {
@@ -242,8 +262,12 @@ export default {
         email: null,
         cpf: null,
         rg: null,
-        nascimento: null,
-        apelido: null
+        nascimento: null
+      },
+      pessoaJuridica: {
+        pessoa: null,
+        cnpj: null,
+        inscricaoEstadual: null
       },
       pessoa: {
         id: null,
@@ -303,28 +327,40 @@ export default {
           if(success && !this.loading) {
             this.loading = true;
 
-            let funcionario = {
-              funcionario: this.funcionario,
+            let cliente = {
+              tipo: this.tipo,
+              cliente: this.cliente,
               pessoaFisica: this.pessoaFisica,
+              pessoaJuridica: this.pessoaJuridica,
               pessoa: this.pessoa
             }
 
-            let nascimento = funcionario.pessoaFisica.nascimento;
-            nascimento = moment(nascimento, 'DD/MM/YYYY').format('YYYY-MM-DD');
-            funcionario.pessoaFisica.nascimento = nascimento;
+            if(this.tipoPessoa == 'F') {
+              let nascimento = cliente.pessoaFisica.nascimento; 
+              nascimento = moment(nascimento, 'DD/MM/YYYY').format('YYYY-MM-DD');
+              cliente.pessoaFisica.nascimento = nascimento;
 
-            funcionario.pessoaFisica.apelido = funcionario.pessoaFisica.apelido || null;
-            funcionario.pessoaFisica.rg = funcionario.pessoaFisica.rg || null;
-            funcionario.pessoaFisica.email = funcionario.pessoaFisica.email || null;
-            funcionario.pessoa.celular = funcionario.pessoa.celular || null;
-            funcionario.pessoa.telefone = funcionario.pessoa.telefone || null;
-            funcionario.pessoa.complemento = funcionario.pessoa.complemento || null;
+              cliente.pessoaFisica.apelido = cliente.pessoaFisica.apelido || null;
+              cliente.pessoaFisica.rg = cliente.pessoaFisica.rg || null;
+              cliente.pessoaFisica.email = cliente.pessoaFisica.email || null;
 
-            this.service = new FuncionarioService(this.$resource);
+              cliente.pessoaJuridica = new PessoaJuridica();
+            } else {
+              cliente.pessoaJuridica.inscricaoEstadual = cliente.pessoaJuridica.inscricaoEstadual || null;
+              
+              cliente.pessoaFisica = new PessoaFisica();
+            }
+            
+            
+            cliente.pessoa.celular = cliente.pessoa.celular || null;
+            cliente.pessoa.telefone = cliente.pessoa.telefone || null;
+            cliente.pessoa.complemento = cliente.pessoa.complemento || null;
+
+            this.service = new ClienteService(this.$resource);
 
             if(this.$route.params.id) {
               this.service
-                .update(this.$route.params.id, funcionario)
+                .update(this.$route.params.id, cliente)
                 .then(response => {
                   let success = response.success;
 
@@ -339,10 +375,12 @@ export default {
                     if(success)
                       app.$store.dispatch('setBackToList', true);
                   });
+                }, err => {
+                    this.loading = false;
                 });
             } else {
               this.service
-                .save(funcionario)
+                .save(cliente)
                 .then(response => {
                   let success = response.success;
 
@@ -357,6 +395,8 @@ export default {
                     if(success)
                       app.$store.dispatch('setBackToList', true);
                   });
+                }, err => {
+                    this.loading = false;
                 });
             }
           }
@@ -365,23 +405,28 @@ export default {
   },
   mounted() {
       if(this.$route.params.id) {
-        this.service = new FuncionarioService(this.$resource);
+        this.service = new ClienteService(this.$resource);
         this.service
           .get(this.$route.params.id)
-          .then(funcionario => {
-            this.funcionario = {
-              id: funcionario.id,
-              cargo: funcionario.cargo,
-              planoTrabalho: funcionario.planoTrabalho,
-              ativo: funcionario.ativo
+          .then(cliente => {
+            this.cliente = {
+              id: cliente.id,
+              ativo: cliente.ativo
             }
 
-            let nascimento = funcionario.pessoaFisicaObject.nascimento;
-            nascimento = moment(nascimento, 'YYYY-MM-DD').format('DD/MM/YYYY');
-            funcionario.pessoaFisicaObject.nascimento = nascimento;
+            if(cliente.pessoaFisicaObject) {
+              let nascimento = cliente.pessoaFisicaObject.nascimento;
+              nascimento = moment(nascimento, 'YYYY-MM-DD').format('DD/MM/YYYY');
+              cliente.pessoaFisicaObject.nascimento = nascimento;
 
-            this.pessoaFisica = funcionario.pessoaFisicaObject;
-            this.pessoa = funcionario.pessoaFisicaObject.pessoaObject;
+              this.tipoPessoa = 'F';
+              this.pessoaFisica = cliente.pessoaFisicaObject;
+            } else {
+              this.tipoPessoa = 'J';
+              this.pessoaJuridica = cliente.pessoaJuridicaObject;
+            }
+            
+            this.pessoa = cliente.pessoaObject;
           });
       } else {
         this.$store.dispatch('setEndereco', new Endereco());

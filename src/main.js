@@ -14,6 +14,7 @@ import messagesBR from 'vee-validate/dist/locale/pt_BR'
 import moment from 'moment'
 
 import CpfValidator from './components/Validators/cpf.validator'
+import CnpjValidator from './components/Validators/cnpj.validator'
 import Dictionary from './components/Validators/dictionary'
 
 
@@ -49,6 +50,7 @@ Vue.use(VueTheMask)
 
 Validator.installDateTimeValidators(moment);
 Validator.extend('cpf', CpfValidator)
+Validator.extend('cnpj', CnpjValidator)
 
 Validator.addLocale(messagesBR)
 Vue.use(VeeValidate, {
