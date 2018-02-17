@@ -83,6 +83,9 @@ import ListaCliente from 'src/components/Dashboard/Views/Cliente/ListaCliente.vu
 import CadastroContato from 'src/components/Dashboard/Views/Contato/CadastroContato.vue'
 import ListaContato from 'src/components/Dashboard/Views/Contato/ListaContato.vue'
 
+import CadastroFornecedor from 'src/components/Dashboard/Views/Fornecedor/CadastroFornecedor.vue'
+import ListaFornecedor from 'src/components/Dashboard/Views/Fornecedor/ListaFornecedor.vue'
+
 const routes = [
   {
     path: '/',
@@ -528,6 +531,22 @@ const routes = [
         name: 'Cliente',
         component: ListaCliente
       },
+      //Fornecedor
+      {
+        path: 'fornecedor/new',
+        name: 'Novo Fornecedor',
+        component: CadastroFornecedor
+      },
+      {
+        path: 'fornecedor/edit/:id?',
+        name: 'Editar Fornecedor',
+        component: CadastroFornecedor
+      },
+      {
+        path: 'fornecedor',
+        name: 'Fornecedor',
+        component: ListaFornecedor
+      }
     ]
   },
   {path: '*', component: NotFound}
