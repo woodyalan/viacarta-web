@@ -10,10 +10,10 @@
                 i.ti-plus
         .card-content
           .row
-            .col-xs-6
+            .col-xs-6.col-md-2
               el-select.select-default(v-model='pagination.perPage', placeholder='Registros por página')
                 el-option.select-default(v-for='item in pagination.perPageOptions', :key='item', :label='item', :value='item')
-            .col-xs-6
+            .col-xs-6.col-md-3.col-md-offset-7
               .pull-right
                 label
                   input.form-control.input-sm(type='search', placeholder='Busca', v-model='searchQuery', aria-controls='datatables')

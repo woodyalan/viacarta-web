@@ -1,49 +1,21 @@
 <template lang="pug">
   cadastro(
     :route='route'
+    :param-value='param'
   )
     .row(slot='fields')
       .col-xs-12
         .row
           .col-md-6
-            fg-input(
-              type='text',
-              label='Nome',
-              placeholder='Nome', 
-              v-model='menu.nome', 
-              name='nome', 
-              :rules='{ required: true }'
-            )
-
-          .col-md-3
-            fg-input(
-              type='text',
-              label='Caminho',
-              placeholder='Caminho', 
-              v-model='menu.path', 
-              name='path', 
-              :rules='{ required: true }'
-            )
-
-          .col-md-3
-            fg-input(
-              type='text',
-              label='Ícone',
-              placeholder='Ícone', 
-              v-model='menu.icon', 
-              name='icon', 
-              :rules='{ required: true }'
-            )
-
-        .row
-          .col-md-3
             fg-select(
-              label='Ativo',
-              placeholder='Ativo', 
-              v-model='menu.ativo', 
-              name='ativo', 
+              v-if='funcionarios',
+              label='Funcionário',
+              placeholder='Funcionário', 
+              v-model='funcionarioProjeto.funcionario', 
+              name='funcionario', 
+              :disabled='edit'
               :rules='{ required: true }',
-              :options='options.ativo'
+              :options='funcionarios'
             )
   
     button.btn.btn-fill.btn-info(
@@ -54,9 +26,12 @@
     ) Salvar
 </template>
 <script>
+import Vue from 'vue'
+
 import Cadastro from 'src/components/GeneralViews/Cadastro.vue'
-import MenuService from 'src/domain/menu/MenuService'
-import Menu from 'src/domain/menu/Menu'
+import FuncionarioService from 'src/domain/funcionario/FuncionarioService'
+import FuncionarioProjetoService from 'src/domain/funcionarioProjeto/FuncionarioProjetoService'
+import FuncionarioProjeto from 'src/domain/funcionarioProjeto/FuncionarioProjeto'
 import swal from 'sweetalert2'
 
 export default {
@@ -64,28 +39,35 @@ export default {
   components: {
     'cadastro': Cadastro
   },
+  computed: {
+    edit() {
+      return this.funcionarioProjeto.createdAt != null
+    }
+  },
   data () {
     return {
-      route: 'menus',
+      route: 'funcionarioProjeto',
+      param: this.$route.params.projetoId,
       loading: false,
-      options: {
-        ativo: [
-          {
-            value: 1,
-            text: 'Sim'
-          },
-          {
-            value: 0,
-            text: 'Não'
-          }
-        ]
-      },
-      menu: {
-        nome: null,
-        path: null,
-        icon: null,
-        ativo: null
-      }
+      funcionarioProjeto: {
+        projeto: null,
+        funcionario: null
+      }      
+    }
+  },
+  asyncComputed: {
+    funcionarios() {
+      this.service = new FuncionarioService(this.$resource);
+      return this.service
+        .get()
+        .then(funcionarios => {
+          return funcionarios.map(funcionario => {
+            return {
+              value: funcionario.id,
+              text: funcionario.pessoaFisicaObject.pessoaObject.nome
+            }
+          });
+        });
     }
   },
   methods: {
@@ -105,13 +87,11 @@ export default {
           if(success && !this.loading) {
             this.loading = true;
 
-            let menu = new Menu(this.menu.nome, this.menu.ativo);
-
-            this.service = new MenuService(this.$resource);
-
-            if(this.$route.params.id) {
+            this.service = new FuncionarioProjetoService(this.$http);
+            
+            if(this.funcionarioProjeto.createdAt) {
               this.service
-                .update(this.$route.params.id, menu)
+                .update(this.funcionarioProjeto.projeto, this.funcionarioProjeto.funcionario, this.funcionarioProjeto)
                 .then(response => {
                   let success = response.success;
 
@@ -126,10 +106,12 @@ export default {
                     if(success)
                       app.$store.dispatch('setBackToList', true);
                   });
+                }, err => {
+                  loading = false;
                 });
             } else {
               this.service
-                .save(menu)
+                .save(this.funcionarioProjeto)
                 .then(response => {
                   let success = response.success;
 
@@ -141,9 +123,11 @@ export default {
                     confirmButtonClass: 'btn btn-success btn-fill',
                     allowOutsideClick: false
                   }).then(function() {
-                    if(success) 
+                    if(success)
                       app.$store.dispatch('setBackToList', true);
                   });
+                }, err => {
+                  loading = false;
                 });
             }
           }
@@ -151,13 +135,13 @@ export default {
     }
   },
   mounted() {
-    this.menu = new Menu();
+    this.funcionarioProjeto = new FuncionarioProjeto(this.$route.params.projetoId);
 
-    if(this.$route.params.id) {
-      this.service = new MenuService(this.$resource);
+    if(this.$route.params.funcionarioId) {
+      this.service = new FuncionarioProjetoService(this.$http);
       this.service
-        .get(this.$route.params.id)
-        .then(menu => this.menu = menu);
+        .get(this.$route.params.projetoId, this.$route.params.funcionarioId)
+        .then(funcionarioProjeto => this.funcionarioProjeto = funcionarioProjeto);
     }
   }
 }

@@ -5,66 +5,83 @@
     .row(slot='fields')
       .col-xs-12
         .row
-          .col-md-3
+          .col-md-6
             fg-input(
               type='text',
               label='Nome',
               placeholder='Nome', 
-              v-model='tela.nome', 
+              v-model='projeto.nome', 
               name='nome', 
               :rules='{ required: true }'
             )
-
-          .col-md-3
-            fg-input(
-              label='Descrição',
-              placeholder='Descrição', 
-              v-model='tela.descricao', 
-              name='descricao',
-              :rules='{ required: true }'
-            )
-
-          .col-md-3
-            fg-input(
-              label='Rota',
-              placeholder='Rota', 
-              v-model='tela.rota', 
-              name='rota', 
-              :rules='{ required: true }'
-            )
-        
-          .col-md-3
+          
+          .col-md-6
             fg-select(
-              v-if='menus',
-              label='Menu',
-              placeholder='Menu', 
-              v-model='tela.menu', 
-              name='menu', 
-              :options='menus',
+              v-if='clientes',
+              label='Cliente',
+              placeholder='Cliente', 
+              v-model='projeto.cliente', 
+              name='ativo', 
+              :rules='{ required: true }',
+              :options='clientes'
+            )
+
+        .row
+          .col-md-6
+            fg-select(
+              v-if='centrosCusto',
+              label='Centro de Custo',
+              placeholder='Centro de Custo', 
+              v-model='projeto.centroCusto', 
+              name='centroCusto', 
+              :rules='{ required: true }',
+              :options='centrosCusto'
+            )
+
+          .col-md-3
+            fg-datepicker(
+              label='Início',
+              placeholder='Selecione', 
+              v-model="projeto.inicio",
+              name="inicio",
+              format='dd/MM/yyyy',
+              value-format='yyyy-MM-dd',
+              :rules='{ required: true }'
+            )
+
+          .col-md-3
+            fg-datepicker(
+              label='Fim',
+              placeholder='Selecione', 
+              v-model="projeto.fim",
+              name="fim",
+              format='dd/MM/yyyy',
+              value-format='yyyy-MM-dd',
               :rules='{ required: false }'
             )
-        
+          
         .row
-          .col-md-3
-            fg-select(
-              label='Mostrar no Menu',
-              placeholder='Mostrar no Menu', 
-              v-model='tela.mostrarMenu', 
-              name='mostrarMenu', 
-              :rules='{ required: true }',
-              :options='options.ativo'
-            )
-
           .col-md-3
             fg-select(
               label='Ativo',
               placeholder='Ativo', 
-              v-model='tela.ativo', 
+              v-model='projeto.ativo', 
               name='ativo', 
               :rules='{ required: true }',
               :options='options.ativo'
-            )
-            
+            )   
+
+        .row
+          .col-xs-12
+             fg-textarea(
+              label='Escopo',
+              placeholder='Descreva este projeto', 
+              v-model='projeto.escopo', 
+              name='escopo', 
+              :rules='{ required: false }',
+              :rows='8'
+            )        
+  
     button.btn.btn-fill.btn-info(
       :class='{ disabled: loading }'
       @click='salvar()',
@@ -73,11 +90,19 @@
     ) Salvar
 </template>
 <script>
+import Vue from 'vue'
 import Cadastro from 'src/components/GeneralViews/Cadastro.vue'
-import TelaService from 'src/domain/tela/TelaService'
-import MenuService from 'src/domain/menu/MenuService'
-import Tela from 'src/domain/tela/Tela'
+import Projeto from 'src/domain/projeto/Projeto'
+import ClienteService from 'src/domain/cliente/ClienteService'
+import CentroCustoService from 'src/domain/centroCusto/CentroCustoService'
+import FuncionarioService from 'src/domain/funcionario/FuncionarioService'
+import ProjetoService from 'src/domain/projeto/ProjetoService'
 import swal from 'sweetalert2'
+import { Select, Option, DatePicker } from 'element-ui'
+
+Vue.use(DatePicker);
+Vue.use(Option);
+Vue.use(Select);
 
 export default {
   $validates: true,
@@ -86,7 +111,7 @@ export default {
   },
   data () {
     return {
-      route: 'tela',
+      route: 'projeto',
       loading: false,
       options: {
         ativo: [
@@ -100,26 +125,54 @@ export default {
           }
         ]
       },
-      tela: {
+      projeto: {
         nome: null,
-        descricao: null,
-        rota: null,
-        menu: null,
-        mostrarMenu: null,
+        cliente: null,
+        centroCusto: null,
+        inicio: null,
+        fim: null,
+        conclusao: null,
+        escopo: null,
         ativo: null
       }
     }
   },
   asyncComputed: {
-    menus() {
-      this.service = new MenuService(this.$resource);
+    funcionarios() {
+      this.service = new FuncionarioService(this.$resource);
       return this.service
         .get()
-        .then(menus => {
-          return menus.map(m => {
+        .then(funcionarios => {
+          return funcionarios.map(funcionario => {
             return {
-              value: m.id,
-              text: m.nome
+              value: funcionario.id,
+              text: funcionario.pessoaFisicaObject.pessoaObject.nome
+            }
+          });
+        });
+    },
+    clientes() {
+      this.service = new ClienteService(this.$resource);
+      return this.service
+        .get()
+        .then(clientes => {
+          return clientes.map(cliente => {
+            return {
+              value: cliente.id,
+              text: cliente.pessoaObject.nome
+            }
+          });
+        });
+    },
+    centrosCusto() {
+      this.service = new CentroCustoService(this.$resource);
+      return this.service
+        .get()
+        .then(centrosCusto => {
+          return centrosCusto.map(centroCusto => {
+            return {
+              value: centroCusto.id,
+              text: centroCusto.nome
             }
           });
         });
@@ -142,11 +195,11 @@ export default {
           if(success && !this.loading) {
             this.loading = true;
 
-            this.service = new TelaService(this.$resource);
+            this.service = new ProjetoService(this.$resource);
 
             if(this.$route.params.id) {
               this.service
-                .update(this.$route.params.id, this.tela)
+                .update(this.$route.params.id, this.projeto)
                 .then(response => {
                   let success = response.success;
 
@@ -164,7 +217,7 @@ export default {
                 });
             } else {
               this.service
-                .save(this.tela)
+                .save(this.projeto)
                 .then(response => {
                   let success = response.success;
 
@@ -186,13 +239,13 @@ export default {
     }
   },
   mounted() {
-    this.tela = new Tela();
+    this.projeto = new Projeto();
 
     if(this.$route.params.id) {
-      this.service = new TelaService(this.$resource);
+      this.service = new ProjetoService(this.$resource);
       this.service
         .get(this.$route.params.id)
-        .then(tela => this.tela = tela);
+        .then(projeto => this.projeto = projeto);
     }
   }
 }

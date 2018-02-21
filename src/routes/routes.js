@@ -86,6 +86,12 @@ import ListaContato from 'src/components/Dashboard/Views/Contato/ListaContato.vu
 import CadastroFornecedor from 'src/components/Dashboard/Views/Fornecedor/CadastroFornecedor.vue'
 import ListaFornecedor from 'src/components/Dashboard/Views/Fornecedor/ListaFornecedor.vue'
 
+import CadastroProjeto from 'src/components/Dashboard/Views/Projeto/CadastroProjeto.vue'
+import ListaProjeto from 'src/components/Dashboard/Views/Projeto/ListaProjeto.vue'
+
+import CadastroFuncionarioProjeto from 'src/components/Dashboard/Views/FuncionarioProjeto/CadastroFuncionarioProjeto.vue'
+import ListaFuncionarioProjeto from 'src/components/Dashboard/Views/FuncionarioProjeto/ListaFuncionarioProjeto.vue'
+
 const routes = [
   {
     path: '/',
@@ -334,7 +340,7 @@ const routes = [
     ]
   },
   {
-    path: '/cadastros',
+    path: '/projetos',
     component: DashboardLayout,
     children: [
       //Centro de Custo
@@ -352,6 +358,37 @@ const routes = [
         path: 'centroCusto',
         name: 'Centro de Custo',
         component: ListaCentroCusto
+      },
+      {
+        path: 'projeto/new',
+        name: 'Novo Projeto',
+        component: CadastroProjeto
+      },
+      {
+        path: 'projeto/edit/:id?',
+        name: 'Editar Projeto',
+        component: CadastroProjeto
+      },
+      {
+        path: 'projeto',
+        name: 'Projeto',
+        component: ListaProjeto
+      },
+      //FuncionarioProjeto
+      {
+        path: 'funcionarioProjeto/:projetoId/new',
+        name: 'Novo Funcionário do Projeto',
+        component: CadastroFuncionarioProjeto
+      },
+      {
+        path: 'funcionarioProjeto/:projetoId/edit/:funcionarioId?',
+        name: 'Editar Funcionário do Projeto',
+        component: CadastroFuncionarioProjeto
+      },
+      {
+        path: 'funcionarioProjeto/:projetoId',
+        name: 'Funcionário do Projeto',
+        component: ListaFuncionarioProjeto
       }
     ]
   },

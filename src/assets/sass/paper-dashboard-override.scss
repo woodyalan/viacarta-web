@@ -22,3 +22,21 @@ a .btn {
 .mb20 {
     margin-bottom: 20px !important;
 }
+
+// .el-select {
+//     width: 100% !important;
+// }
+
+.el-select .el-input__icon {
+    right: 2px;
+}
+
+.select-default.el-select .el-input input {
+    border: 1px solid #e8e7e3;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.select-default.el-select .el-input .el-input__icon {
+    border-radius: 4px;
+}
