@@ -5,8 +5,10 @@ import fgInputBairro from './components/UIComponents/Inputs/formGroupInputBairro
 import fgInputCidade from './components/UIComponents/Inputs/formGroupInputCidade.vue'
 import fgInputEstado from './components/UIComponents/Inputs/formGroupInputEstado.vue'
 import fgInputMask from './components/UIComponents/Inputs/formGroupInputMask.vue'
+import fgInputMoney from './components/UIComponents/Inputs/formGroupInputMoney.vue'
 import fgSelect from './components/UIComponents/Inputs/formGroupSelect.vue'
 import formGroupDatePicker from './components/UIComponents/Inputs/formGroupDatePicker.vue'
+import fgDateTimePicker from './components/UIComponents/Inputs/formGroupDateTimePicker.vue'
 import formGroupRadioButton from './components/UIComponents/Inputs/formGroupRadioButton.vue'
 import fgTextarea from './components/UIComponents/Inputs/formGroupTextarea.vue'
 import DropDown from './components/UIComponents/Dropdown.vue'
@@ -23,6 +25,7 @@ const GlobalComponents = {
     Vue.component(fgInput.name, fgInput)
     Vue.component(fgTextarea.name, fgTextarea)
     Vue.component(fgInputMask.name, fgInputMask)
+    Vue.component(fgInputMoney.name, fgInputMoney)
     Vue.component(fgInputCep.name, fgInputCep)
     Vue.component(fgInputLogradouro.name, fgInputLogradouro)
     Vue.component(fgInputBairro.name, fgInputBairro)
@@ -30,6 +33,7 @@ const GlobalComponents = {
     Vue.component(fgInputEstado.name, fgInputEstado)
     Vue.component(formGroupDatePicker.name, formGroupDatePicker)
     Vue.component(formGroupRadioButton.name, formGroupRadioButton)
+    Vue.component(fgDateTimePicker.name, fgDateTimePicker)
     Vue.component(fgSelect.name, fgSelect)
     Vue.component(DropDown.name, DropDown)
     Vue.component(Checkbox.name, Checkbox)

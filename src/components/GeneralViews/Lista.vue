@@ -170,6 +170,10 @@
       }
     },
     methods: {
+      formatMoney(row, column) {
+        console.log(row);
+        // return row.address;
+      },
       handleDelete(index, object) {
         this.$emit('deleteItem', { index, object });
       },

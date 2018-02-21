@@ -7,6 +7,7 @@ import lang from 'element-ui/lib/locale/lang/pt-br'
 import locale from 'element-ui/lib/locale'
 import AsyncComputed from 'vue-async-computed'
 import VueTheMask from 'vue-the-mask'
+import money from 'v-money'
 import store from './store'
 import App from './App.vue'
 
@@ -47,6 +48,7 @@ Vue.use(VueNotify)
 Vue.use(SideBar)
 Vue.use(AsyncComputed)
 Vue.use(VueTheMask)
+Vue.use(money)
 
 Validator.installDateTimeValidators(moment);
 Validator.extend('cpf', CpfValidator)

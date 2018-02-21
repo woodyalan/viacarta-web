@@ -92,6 +92,9 @@ import ListaProjeto from 'src/components/Dashboard/Views/Projeto/ListaProjeto.vu
 import CadastroFuncionarioProjeto from 'src/components/Dashboard/Views/FuncionarioProjeto/CadastroFuncionarioProjeto.vue'
 import ListaFuncionarioProjeto from 'src/components/Dashboard/Views/FuncionarioProjeto/ListaFuncionarioProjeto.vue'
 
+import CadastroCusteio from 'src/components/Dashboard/Views/Custeio/CadastroCusteio.vue'
+import ListaCusteio from 'src/components/Dashboard/Views/Custeio/ListaCusteio.vue'
+
 const routes = [
   {
     path: '/',
@@ -427,6 +430,22 @@ const routes = [
         path: 'banco',
         name: 'Banco',
         component: ListaBanco
+      },
+      //Custeio
+      {
+        path: 'custeio/new',
+        name: 'Novo Custeio',
+        component: CadastroCusteio
+      },
+      {
+        path: 'custeio/edit/:id?',
+        name: 'Editar Custeio',
+        component: CadastroCusteio
+      },
+      {
+        path: 'custeio',
+        name: 'Custeio',
+        component: ListaCusteio
       }
     ]
   },
