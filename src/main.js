@@ -29,10 +29,12 @@ import routes from './routes/routes'
 
 // library imports
 
+import 'vue2-dropzone/dist/vue2Dropzone.css'
 import './assets/sass/paper-dashboard.scss'
 import './assets/sass/demo.scss'
 import './assets/sass/paper-dashboard-override.scss'
 import './assets/sass/demo.scss'
+import './assets/sass/dropzone.scss'
 import 'es6-promise/auto'
 
 // import sidebarLinks from './sidebarLinks'

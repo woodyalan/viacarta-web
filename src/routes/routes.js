@@ -95,6 +95,9 @@ import ListaFuncionarioProjeto from 'src/components/Dashboard/Views/FuncionarioP
 import CadastroCusteio from 'src/components/Dashboard/Views/Custeio/CadastroCusteio.vue'
 import ListaCusteio from 'src/components/Dashboard/Views/Custeio/ListaCusteio.vue'
 
+import CadastroDespesa from 'src/components/Dashboard/Views/Despesa/CadastroDespesa.vue'
+import ListaDespesa from 'src/components/Dashboard/Views/Despesa/ListaDespesa.vue'
+
 const routes = [
   {
     path: '/',
@@ -414,6 +417,22 @@ const routes = [
         path: 'tipoDespesa',
         name: 'Tipo de Despesa',
         component: ListaTipoDespesa
+      },
+      //Despesa
+      {
+        path: 'despesa/new',
+        name: 'Nova Despesa',
+        component: CadastroDespesa
+      },
+      {
+        path: 'despesa/edit/:id?',
+        name: 'Editar Despesa',
+        component: CadastroDespesa
+      },
+      {
+        path: 'despesa',
+        name: 'Despesa',
+        component: ListaDespesa
       },
       //Banco
       {

@@ -10,6 +10,7 @@ import fgSelect from './components/UIComponents/Inputs/formGroupSelect.vue'
 import formGroupDatePicker from './components/UIComponents/Inputs/formGroupDatePicker.vue'
 import fgDateTimePicker from './components/UIComponents/Inputs/formGroupDateTimePicker.vue'
 import formGroupRadioButton from './components/UIComponents/Inputs/formGroupRadioButton.vue'
+import fgDropzone from './components/UIComponents/Inputs/formGroupDropzone.vue'
 import fgTextarea from './components/UIComponents/Inputs/formGroupTextarea.vue'
 import DropDown from './components/UIComponents/Dropdown.vue'
 import Checkbox from './components/UIComponents/Inputs/Checkbox.vue'
@@ -34,6 +35,7 @@ const GlobalComponents = {
     Vue.component(formGroupDatePicker.name, formGroupDatePicker)
     Vue.component(formGroupRadioButton.name, formGroupRadioButton)
     Vue.component(fgDateTimePicker.name, fgDateTimePicker)
+    Vue.component(fgDropzone.name, fgDropzone)
     Vue.component(fgSelect.name, fgSelect)
     Vue.component(DropDown.name, DropDown)
     Vue.component(Checkbox.name, Checkbox)

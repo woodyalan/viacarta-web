@@ -1,0 +1,32 @@
+.vue-dropzone {
+    border: 2px dashed #e8e7e3;
+    border-radius: 4px;
+    font-family: 'Arial', sans-serif;
+    letter-spacing: normal;
+    color: #66615b;
+    transition: background-color 0.2s linear;
+    font-family: 'Muli', Arial, sans-serif;
+}
+
+.dropzone {
+    min-height: 200px;
+    background-color: #F3F2EE;
+}
+
+.dropzone .dz-message {
+    font-size: 18px;
+    margin-top: 80px;
+    margin-bottom: 80px;
+}
+
+.dropzone .dz-message small {
+    font-weight: 100;
+}
+
+.vue-dropzone .dz-preview .dz-details {
+    background-color: #66615b;
+}
+
+.dropzone .dz-preview {
+    width: 22%;
+}
