@@ -98,6 +98,9 @@ import ListaCusteio from 'src/components/Dashboard/Views/Custeio/ListaCusteio.vu
 import CadastroDespesa from 'src/components/Dashboard/Views/Despesa/CadastroDespesa.vue'
 import ListaDespesa from 'src/components/Dashboard/Views/Despesa/ListaDespesa.vue'
 
+import CadastroOcorrencia from 'src/components/Dashboard/Views/Ocorrencia/CadastroOcorrencia.vue'
+import ListaOcorrencia from 'src/components/Dashboard/Views/Ocorrencia/ListaOcorrencia.vue'
+
 const routes = [
   {
     path: '/',
@@ -230,6 +233,22 @@ const routes = [
         path: 'tiposVeiculo',
         name: 'Tipos de Veículo',
         component: ListaTiposVeiculo
+      },
+      //Ocorrencia
+      {
+        path: 'ocorrencia/new',
+        name: 'Nova Ocorrência',
+        component: CadastroOcorrencia
+      },
+      {
+        path: 'ocorrencia/edit/:id?',
+        name: 'Editar Ocorrência',
+        component: CadastroOcorrencia
+      },
+      {
+        path: 'ocorrencia',
+        name: 'Ocorrências',
+        component: ListaOcorrencia
       },
       //Seguradora
       {
