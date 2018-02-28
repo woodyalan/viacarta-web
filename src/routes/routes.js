@@ -104,6 +104,9 @@ import ListaOcorrencia from 'src/components/Dashboard/Views/Ocorrencia/ListaOcor
 import CadastroManutencao from 'src/components/Dashboard/Views/Manutencao/CadastroManutencao.vue'
 import ListaManutencao from 'src/components/Dashboard/Views/Manutencao/ListaManutencao.vue'
 
+import CadastroViagem from 'src/components/Dashboard/Views/Viagem/CadastroViagem.vue'
+import ListaViagem from 'src/components/Dashboard/Views/Viagem/ListaViagem.vue'
+
 const routes = [
   {
     path: '/',
@@ -268,6 +271,22 @@ const routes = [
         path: 'ocorrencia',
         name: 'Ocorrência',
         component: ListaOcorrencia
+      },
+      //Viagem
+      {
+        path: 'viagem/new',
+        name: 'Nova Viagem',
+        component: CadastroViagem
+      },
+      {
+        path: 'viagem/edit/:id?',
+        name: 'Editar Viagem',
+        component: CadastroViagem
+      },
+      {
+        path: 'viagem',
+        name: 'Viagem',
+        component: ListaViagem
       },
       //Seguradora
       {
