@@ -101,6 +101,9 @@ import ListaDespesa from 'src/components/Dashboard/Views/Despesa/ListaDespesa.vu
 import CadastroOcorrencia from 'src/components/Dashboard/Views/Ocorrencia/CadastroOcorrencia.vue'
 import ListaOcorrencia from 'src/components/Dashboard/Views/Ocorrencia/ListaOcorrencia.vue'
 
+import CadastroManutencao from 'src/components/Dashboard/Views/Manutencao/CadastroManutencao.vue'
+import ListaManutencao from 'src/components/Dashboard/Views/Manutencao/ListaManutencao.vue'
+
 const routes = [
   {
     path: '/',
@@ -234,6 +237,22 @@ const routes = [
         name: 'Tipos de Veículo',
         component: ListaTiposVeiculo
       },
+      //Manutenção
+      {
+        path: 'manutencao/new',
+        name: 'Nova Manutenção',
+        component: CadastroManutencao
+      },
+      {
+        path: 'manutencao/edit/:id?',
+        name: 'Editar Manutenção',
+        component: CadastroManutencao
+      },
+      {
+        path: 'manutencao',
+        name: 'Manutenção',
+        component: ListaManutencao
+      },
       //Ocorrencia
       {
         path: 'ocorrencia/new',
@@ -247,7 +266,7 @@ const routes = [
       },
       {
         path: 'ocorrencia',
-        name: 'Ocorrências',
+        name: 'Ocorrência',
         component: ListaOcorrencia
       },
       //Seguradora
