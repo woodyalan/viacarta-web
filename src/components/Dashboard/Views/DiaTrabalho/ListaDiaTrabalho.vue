@@ -1,30 +1,32 @@
 <template lang="pug">
-  lista-dropdown(
+  lista(
+    :param-value='param',
     :table-columns='tableColumns',
     :table-data='tableData',
-    :route='route'
-    :dropdown-links='dropdownLinks'
+    :route='route',
+    navigation-back='planoTrabalho',
     @deleteItem='deleteItem($event)'
   )
 </template>
 <script>
-  import ListaDropdown from 'src/components/GeneralViews/ListaDropdown.vue'
-  import PlanoTrabalhoService from 'src/domain/planoTrabalho/PlanoTrabalhoService'
+  import Lista from 'src/components/GeneralViews/Lista.vue'
+  import DiaTrabalhoService from 'src/domain/diaTrabalho/DiaTrabalhoService'
   import swal from 'sweetalert2'
   
   export default {
     components: {
-      'lista-dropdown': ListaDropdown
+      'lista': Lista
     },
     asyncComputed: {
       tableData() {
-        this.service = new PlanoTrabalhoService(this.$resource);
-        return this.service.get(planosTrabalho => planosTrabalho);
+        this.service = new DiaTrabalhoService(this.$resource);
+        return this.service.get(diasTrabalho => diasTrabalho);
       }
     },
     data () {
       return {
-        route: "planoTrabalho",
+        route: "diaTrabalho",
+        param: this.$route.params.planoTrabalhoId,
         tableColumns: [
           {
             prop: 'id',
@@ -33,15 +35,14 @@
             minWidth: '20'
           },
           {
-            prop: 'nome',
-            label: 'Nome',
+            prop: 'planoTrabalhoObject.nome',
+            label: 'Plano de Trabalho',
             class: ''
-          }
-        ],
-        dropdownLinks: [
+          },
           {
-            label: 'Cadastrar Dia de Trabalho',
-            route: 'diaTrabalho'
+            prop: 'diaSemana',
+            label: 'Dia da Semana',
+            class: ''
           }
         ]
       }
@@ -60,7 +61,7 @@
           cancelButtonClass: 'btn btn-danger btn-fill',
           allowOutsideClick: false
         }).then(function() {
-          app.service = new PlanoTrabalhoService(app.$resource);
+          app.service = new DiaTrabalhoService(app.$resource);
           app.service
             .delete(item.object.id)
             .then(result => {

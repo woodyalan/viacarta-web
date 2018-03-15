@@ -107,6 +107,9 @@ import ListaManutencao from 'src/components/Dashboard/Views/Manutencao/ListaManu
 import CadastroViagem from 'src/components/Dashboard/Views/Viagem/CadastroViagem.vue'
 import ListaViagem from 'src/components/Dashboard/Views/Viagem/ListaViagem.vue'
 
+import CadastroDiaTrabalho from 'src/components/Dashboard/Views/DiaTrabalho/CadastroDiaTrabalho.vue'
+import ListaDiaTrabalho from 'src/components/Dashboard/Views/DiaTrabalho/ListaDiaTrabalho.vue'
+
 const routes = [
   {
     path: '/',
@@ -544,6 +547,22 @@ const routes = [
         path: 'cargo',
         name: 'Cargo',
         component: ListaCargo
+      },
+      //DiaTrabalho
+      {
+        path: 'diaTrabalho/:planoTrabalhoId/new',
+        name: 'Novo Dia de Trabalho',
+        component: CadastroDiaTrabalho
+      },
+      {
+        path: 'diaTrabalho/:planoTrabalhoId/edit/:id?',
+        name: 'Editar Dia de Trabalho',
+        component: CadastroDiaTrabalho
+      },
+      {
+        path: 'diaTrabalho/:planoTrabalhoId',
+        name: 'Dia de Trabalho',
+        component: ListaDiaTrabalho
       },
       //Plano de Trabalho
       {

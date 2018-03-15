@@ -12,7 +12,8 @@
               v-model='pessoaFisica.cpf', 
               name='cpf', 
               :rules='{ required: true, min: 14, cpf: true }',
-              :mask="['###.###.###-##']"
+              :mask="['###.###.###-##']",
+              :disabled='pessoa.id != null'
             )
 
           .col-md-6
@@ -206,7 +207,10 @@ import Cadastro from 'src/components/GeneralViews/Cadastro.vue'
 import FuncionarioService from 'src/domain/funcionario/FuncionarioService'
 import CargoService from 'src/domain/cargo/CargoService'
 import Endereco from 'src/domain/cep/Endereco'
+import Pessoa from 'src/domain/pessoa/Pessoa'
+import PessoaFisica from 'src/domain/pessoaFisica/PessoaFisica'
 import PlanoTrabalhoService from 'src/domain/planoTrabalho/PlanoTrabalhoService'
+import PessoaFisicaService from 'src/domain/pessoaFisica/PessoaFisicaService'
 import swal from 'sweetalert2'
 import moment from 'moment'
 
@@ -248,6 +252,8 @@ export default {
       pessoa: {
         id: null,
         nome: null,
+        telefone: null,
+        celular: null,
         cep: null,
         endereco: null,
         numero: null,
@@ -286,7 +292,63 @@ export default {
         });
     }
   },
+  computed: {
+    cpf() {
+      return this.pessoaFisica.cpf;
+    }
+  },
+  watch: {
+    cpf(value) {
+      if(value && (value.length == 14) && !this.$route.params.id) {
+        let pessoaFisica = this.findPessoaFisica(value);
+      }
+    }
+  },
   methods: {
+    findPessoaFisica(cpf) {
+      let app = this;
+
+      this._resource = new PessoaFisicaService(this.$http);
+      this._resource
+        .get(cpf)
+        .then(pessoaFisica => {
+          if(pessoaFisica) {
+            swal({
+              title: 'O que deseja fazer?',
+              html: `Encontrei um registro para <strong>${pessoaFisica.pessoaObject.nome}</strong> com o cpf <strong>${pessoaFisica.cpf}</strong>.`,
+              buttonsStyling: false,
+              type: 'question',
+              showCancelButton: true,
+              confirmButtonClass: 'btn btn-success btn-fill',
+              cancelButtonClass: 'btn btn-danger btn-fill',
+              cancelButtonText: 'Cancelar',
+              confirmButtonText: 'Utilizar',
+              allowOutsideClick: false
+            }).then(function(result) {
+              if(result) {
+                let nascimento = pessoaFisica.nascimento;
+                nascimento = moment(nascimento, 'YYYY-MM-DD').format('DD/MM/YYYY');
+                pessoaFisica.nascimento = nascimento;
+
+                app.pessoaFisica = pessoaFisica;
+                app.pessoa = pessoaFisica.pessoaObject;
+              }
+            }, function(dismiss) {
+              if(dismiss === 'cancel') {
+                app.pessoaFisica = new PessoaFisica();
+                app.pessoa = new Pessoa();
+              }
+            });
+          } else {
+            let cpf = app.cpf;
+
+            app.pessoaFisica = new PessoaFisica();
+            app.pessoa = new Pessoa();
+
+            app.pessoaFisica.cpf = cpf;
+          }            
+        });
+    },
     validate() {
       return this.$validator
         .validateAll()
@@ -311,7 +373,7 @@ export default {
 
             let nascimento = funcionario.pessoaFisica.nascimento;
             nascimento = moment(nascimento, 'DD/MM/YYYY').format('YYYY-MM-DD');
-            funcionario.pessoaFisica.nascimento = nascimento;
+            funcionario.pessoaFisica.nascimento = moment.utc(nascimento).format();
 
             funcionario.pessoaFisica.apelido = funcionario.pessoaFisica.apelido || null;
             funcionario.pessoaFisica.rg = funcionario.pessoaFisica.rg || null;

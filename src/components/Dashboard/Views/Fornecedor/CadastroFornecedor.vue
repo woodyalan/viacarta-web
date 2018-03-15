@@ -25,7 +25,8 @@
               v-model='pessoaFisica.cpf', 
               name='cpf', 
               :rules='{ required: true, min: 14, cpf: true }',
-              :mask="['###.###.###-##']"
+              :mask="['###.###.###-##']",
+              :disabled='pessoa.id != null'
             )
 
           .col-md-3(v-if='tipoPessoa == "J"')
@@ -35,7 +36,8 @@
               v-model='pessoaJuridica.cnpj', 
               name='cnpj', 
               :rules='{ required: true, min: 18, cnpj: true }',
-              :mask="['##.###.###/####-##']"
+              :mask="['##.###.###/####-##']",
+              :disabled='pessoa.id != null'
             )
 
           .col-md-6
@@ -213,8 +215,11 @@
 <script>
 import Cadastro from 'src/components/GeneralViews/Cadastro.vue'
 import FornecedorService from 'src/domain/fornecedor/FornecedorService'
+import Pessoa from 'src/domain/pessoa/Pessoa'
 import PessoaFisica from 'src/domain/pessoaFisica/PessoaFisica'
+import PessoaFisicaService from 'src/domain/pessoaFisica/PessoaFisicaService'
 import PessoaJuridica from 'src/domain/pessoaJuridica/PessoaJuridica'
+import PessoaJuridicaService from 'src/domain/pessoaJuridica/PessoaJuridicaService'
 import CargoService from 'src/domain/cargo/CargoService'
 import Endereco from 'src/domain/cep/Endereco'
 import PlanoTrabalhoService from 'src/domain/planoTrabalho/PlanoTrabalhoService'
@@ -272,6 +277,8 @@ export default {
       pessoa: {
         id: null,
         nome: null,
+        telefone: null,
+        celular: null,
         cep: null,
         endereco: null,
         numero: null,
@@ -310,7 +317,111 @@ export default {
         });
     }
   },
+  computed: {
+    cnpj() {
+      return this.pessoaJuridica.cnpj;
+    },
+    cpf() {
+      return this.pessoaFisica.cpf;
+    }
+  },
+  watch: {
+    cpf(value) {
+      if(value && (value.length == 14) && !this.$route.params.id) {
+        this.findPessoaFisica(value);
+      }
+    },
+    cnpj(value) {
+      if(value && (value.length == 18) && !this.$route.params.id) {
+        this.findPessoaJuridica(value);
+      }
+    }
+  },
   methods: {
+    findPessoaFisica(cpf) {
+      let app = this;
+
+      this._resource = new PessoaFisicaService(this.$http);
+      this._resource
+        .get(cpf)
+        .then(pessoaFisica => {
+          if(pessoaFisica) {
+            swal({
+              title: 'O que deseja fazer?',
+              html: `Encontrei um registro para <strong>${pessoaFisica.pessoaObject.nome}</strong> com o cpf <strong>${pessoaFisica.cpf}</strong>.`,
+              buttonsStyling: false,
+              type: 'question',
+              showCancelButton: true,
+              confirmButtonClass: 'btn btn-success btn-fill',
+              cancelButtonClass: 'btn btn-danger btn-fill',
+              confirmButtonText: 'Utilizar',
+              cancelButtonText: 'Cancelar',
+              allowOutsideClick: false
+            }).then(function(result) {
+              if(result) {
+                let nascimento = pessoaFisica.nascimento;
+                nascimento = moment(nascimento, 'YYYY-MM-DD').format('DD/MM/YYYY');
+                pessoaFisica.nascimento = nascimento;
+
+                app.pessoaFisica = pessoaFisica;
+                app.pessoa = pessoaFisica.pessoaObject;
+              }
+            }, function(dismiss) {
+              if(dismiss === 'cancel') {
+                app.pessoaFisica = new PessoaFisica();
+                app.pessoa = new Pessoa();
+              }
+            });
+          } else {
+            let cpf = app.cpf;
+
+            app.pessoaFisica = new PessoaFisica();
+            app.pessoa = new Pessoa();
+
+            app.pessoaFisica.cpf = cpf;
+          }            
+        });
+    },
+    findPessoaJuridica(cnpj) {
+      let app = this;
+
+      this._resource = new PessoaJuridicaService(this.$http);
+      this._resource
+        .get(cnpj)
+        .then(pessoaJuridica => {
+          if(pessoaJuridica) {
+            swal({
+              title: 'O que deseja fazer?',
+              html: `Encontrei um registro para <strong>${pessoaJuridica.pessoaObject.nome}</strong> com o cnpj <strong>${pessoaJuridica.cnpj}</strong>.`,
+              buttonsStyling: false,
+              type: 'question',
+              showCancelButton: true,
+              confirmButtonClass: 'btn btn-success btn-fill',
+              cancelButtonClass: 'btn btn-danger btn-fill',
+              cancelButtonText: 'Cancelar',
+              confirmButtonText: 'Utilizar',
+              allowOutsideClick: false
+            }).then(function(result) {
+              if(result) {
+                app.pessoaJuridica = pessoaJuridica;
+                app.pessoa = pessoaJuridica.pessoaObject;
+              }
+            }, function(dismiss) {
+              if(dismiss === 'cancel') {
+                app.pessoaJuridica = new PessoaJuridica();
+                app.pessoa = new Pessoa();
+              }
+            });
+          } else {
+            let cnpj = app.cnpj;
+
+            app.pessoaJuridica = new PessoaJuridica();
+            app.pessoa = new Pessoa();
+
+            app.pessoaJuridica.cnpj = cnpj;
+          }            
+        });
+    },
     validate() {
       return this.$validator
         .validateAll()
@@ -328,7 +439,7 @@ export default {
             this.loading = true;
 
             let fornecedor = {
-              tipo: this.tipo,
+              tipo: this.tipoPessoa,
               fornecedor: this.fornecedor,
               pessoaFisica: this.pessoaFisica,
               pessoaJuridica: this.pessoaJuridica,

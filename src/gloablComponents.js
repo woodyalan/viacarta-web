@@ -8,6 +8,7 @@ import fgInputMask from './components/UIComponents/Inputs/formGroupInputMask.vue
 import fgInputMoney from './components/UIComponents/Inputs/formGroupInputMoney.vue'
 import fgSelect from './components/UIComponents/Inputs/formGroupSelect.vue'
 import formGroupDatePicker from './components/UIComponents/Inputs/formGroupDatePicker.vue'
+import fgTimePicker from './components/UIComponents/Inputs/formGroupTimePicker.vue'
 import fgDateTimePicker from './components/UIComponents/Inputs/formGroupDateTimePicker.vue'
 import formGroupRadioButton from './components/UIComponents/Inputs/formGroupRadioButton.vue'
 import fgDropzone from './components/UIComponents/Inputs/formGroupDropzone.vue'
@@ -34,6 +35,7 @@ const GlobalComponents = {
     Vue.component(fgInputEstado.name, fgInputEstado)
     Vue.component(formGroupDatePicker.name, formGroupDatePicker)
     Vue.component(formGroupRadioButton.name, formGroupRadioButton)
+    Vue.component(fgTimePicker.name, fgTimePicker)
     Vue.component(fgDateTimePicker.name, fgDateTimePicker)
     Vue.component(fgDropzone.name, fgDropzone)
     Vue.component(fgSelect.name, fgSelect)
