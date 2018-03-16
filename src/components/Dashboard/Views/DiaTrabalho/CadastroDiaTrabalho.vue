@@ -49,6 +49,10 @@
               )
               el-table-column(width='150' class-name='text-center', fixed='right')
                 template(scope='props')
+                  a.btn.btn-simple.btn-warning.btn-xs.btn-icon.edit(
+                    @click='editHorario(props.$index)'
+                  )
+                    i.ti-pencil-alt
                   a.btn.btn-simple.btn-danger.btn-xs.btn-icon.remove(
                     @click='removeHorario(props.$index)'
                   )
@@ -117,12 +121,18 @@ export default {
         horarios: []
       },
       horarioTrabalho: {
+        index: null,
         horario: null,
         horarios: []
       }
     }
   },
   methods: {
+    editHorario(index) {
+      let horario = this.diaTrabalho.horarios[index];
+      this.horarioTrabalho.index = index;
+      this.horarioTrabalho.horario = moment(horario.horario, 'HH:mm').format('YYYY-MM-DD HH:mm');
+    },
     addHorario() {
       if(!this.horarioTrabalho.horario) {
         swal({
@@ -136,7 +146,16 @@ export default {
       } else {
         let horario = moment(this.horarioTrabalho.horario, 'HH:mm').format('HH:mm');
 
-        this.diaTrabalho.horarios.push({ horario });
+        if(this.horarioTrabalho.index != undefined) {
+          let horarioEdit = this.diaTrabalho.horarios[this.horarioTrabalho.index];
+          horarioEdit.horario = horario;
+
+          this.diaTrabalho.horarios[this.horarioTrabalho.index] = horarioEdit;
+        } else {
+          this.diaTrabalho.horarios.push({ horario });
+        }
+
+        this.horarioTrabalho.index = null;
         this.horarioTrabalho.horario = null;
       }
     },
