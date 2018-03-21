@@ -28,7 +28,7 @@
                   el-table-column(v-for='column in tableColumns', :class-name='column.class', :prop='column.prop', :label='column.label', sortable='', :min-width='column.minWidth')
                   el-table-column(width='150' class-name='text-center', fixed='right')
                     template(scope='props')
-                      router-link(:to='`${telaInfo.rota}/edit/${props.row[tableKey]}`')
+                      router-link(:to='`${rota}/edit/${props.row[tableKey]}`')
                         a.btn.btn-simple.btn-warning.btn-xs.btn-icon.edit
                           i.ti-pencil-alt
                       a.btn.btn-simple.btn-danger.btn-xs.btn-icon.remove(@click='handleDelete(props.$index, props.row)')
@@ -43,13 +43,14 @@
           .row.buttons-with-margin
             .col-sm-6
               router-link(
-                v-if='navigationBack', 
-                :to="`/${telaInfo.menuPath}/${navigationBack}`"
+                v-if='routeNavigationBack', 
+                :to="routeNavigationBack"
               )
                 button.btn.btn-primary.btn-move-left.btn-fill(type='button')
                   i.ti-angle-left
                   |  Voltar
-              router-link(:to='`${telaInfo.rota}/new`')
+              
+              router-link(:to='`${rota}/new`')
                 button.btn.btn-default(type='button')
                   i.ti-plus
                   |  Novo
@@ -90,12 +91,19 @@
       },
       tableKey: {
         default: 'id'
-      }
-    },
+      }    },
     components: {
       PPagination
     },
     computed: {
+      rota() {
+        let param = this.paramValue ? `/${this.paramValue}` : '';
+        return this.$route.params.backRoute ? `/${this.telaInfo.menuPath}/${this.$route.params.backRoute}/${this.telaInfo.tela}${param}` : this.telaInfo.rota;
+      },
+      routeNavigationBack() {
+        if(this.$route.params.backRoute || this.navigationBack)
+          return this.$route.params.backRoute ? `/${this.telaInfo.menuPath}/${this.$route.params.backRoute}` : `/${this.telaInfo.menuPath}/${this.navigationBack}`;
+      },
       pagedData () {
         return this.tableData.slice(this.from, this.to)
       },
@@ -144,17 +152,23 @@
     },
     asyncComputed: {
       telaInfo() {
+        let app = this;
         this.service = new LoginService(this.$http);
         return this.service
           .getTelaInfo(this.route)
           .then(telaInfo => {
             let param = this.paramValue ? `/${this.paramValue}` : '';
 
-            return {
+            let result = {
               title: telaInfo.descricao,
               menuPath: telaInfo.menuObject.path,
+              tela: telaInfo.rota,
               rota: `/${telaInfo.menuObject.path}/${telaInfo.rota}${param}`  
             }
+            
+            app.$store.dispatch('setLastRoute', result);
+
+            return result;
           });
       }
     },

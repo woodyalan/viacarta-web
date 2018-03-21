@@ -255,60 +255,49 @@ export default {
 
       this.validate().then(success => {
         if (success && !this.loading) {
-          if(this.dropzoneFiles > 0) {
-            this.loading = true;
-  
-            this.service = new DespesaService(this.$resource);
-  
-            if (this.$route.params.id) {
-              this.service
-                .update(this.$route.params.id, this.despesa)
-                .then(response => {
-                  let success = response.success;
-  
-                  swal({
-                    title: success ? "Muito bem!" : "Ops!",
-                    html: success
-                      ? `O registro foi atualizado com sucesso`
-                      : `Falha ao salvar o registro. ${response.error}`,
-                    buttonsStyling: false,
-                    type: success ? "success" : "error",
-                    confirmButtonClass: "btn btn-success btn-fill",
-                    allowOutsideClick: false
-                  }).then(function() {
-                    if (success) app.$store.dispatch("setBackToList", true);
-                  });
+          this.loading = true;
+
+          this.service = new DespesaService(this.$resource);
+
+          if (this.$route.params.id) {
+            this.service
+              .update(this.$route.params.id, this.despesa)
+              .then(response => {
+                let success = response.success;
+
+                swal({
+                  title: success ? "Muito bem!" : "Ops!",
+                  html: success
+                    ? `O registro foi atualizado com sucesso`
+                    : `Falha ao salvar o registro. ${response.error}`,
+                  buttonsStyling: false,
+                  type: success ? "success" : "error",
+                  confirmButtonClass: "btn btn-success btn-fill",
+                  allowOutsideClick: false
+                }).then(function() {
+                  if (success) app.$store.dispatch("setBackToList", true);
                 });
-            } else {
-              this.service
-                .save(this.despesa)
-                .then(response => {
-                  let success = response.success;
-  
-                  swal({
-                    title: success ? "Muito bem!" : "Ops!",
-                    html: success
-                      ? `O registro foi salvo com sucesso`
-                      : `Falha ao salvar o registro. ${response.error}`,
-                    buttonsStyling: false,
-                    type: success ? "success" : "error",
-                    confirmButtonClass: "btn btn-success btn-fill",
-                    allowOutsideClick: false
-                  }).then(function() {
-                    if (success) app.$store.dispatch("setBackToList", true);
-                  });
-              }, err => {
-                this.loading = false;
               });
-            }
           } else {
-            swal({
-              title: "Ops!",
-              html: `Você deve enviar os comprovantes`,
-              buttonsStyling: false,
-              type: "info",
-              confirmButtonClass: "btn btn-success btn-fill",
-              allowOutsideClick: false
+            this.service
+              .save(this.despesa)
+              .then(response => {
+                let success = response.success;
+
+                swal({
+                  title: success ? "Muito bem!" : "Ops!",
+                  html: success
+                    ? `O registro foi salvo com sucesso`
+                    : `Falha ao salvar o registro. ${response.error}`,
+                  buttonsStyling: false,
+                  type: success ? "success" : "error",
+                  confirmButtonClass: "btn btn-success btn-fill",
+                  allowOutsideClick: false
+                }).then(function() {
+                  if (success) app.$store.dispatch("setBackToList", true);
+                });
+            }, err => {
+              this.loading = false;
             });
           }
         }

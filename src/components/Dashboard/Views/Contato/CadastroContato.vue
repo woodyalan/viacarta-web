@@ -46,6 +46,15 @@
               :rules='{ required: false, min: 14 }',
               :mask="['(##) ####-####']"
             )
+
+          .col-md-3
+            fg-input(
+              label='Setor',
+              placeholder='Setor', 
+              v-model='contato.setor', 
+              name='setor', 
+              :rules='{ required: false }'
+            )
   
     button.btn.btn-fill.btn-info(
       :class='{ disabled: loading }'
@@ -76,7 +85,8 @@ export default {
         nome: null,
         email: null,
         telefone: null,
-        celular: null
+        celular: null,
+        setor: null
       }      
     }
   },

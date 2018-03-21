@@ -653,7 +653,12 @@ const routes = [
       //Contato
       {
         path: 'contato/:pessoaId/new',
-        name: 'Nova Contato',
+        name: 'Novo Contato',
+        component: CadastroContato
+      },
+      {
+        path: ':backRoute/contato/:pessoaId/new',
+        name: 'Novo Contato ',
         component: CadastroContato
       },
       {
@@ -662,8 +667,18 @@ const routes = [
         component: CadastroContato
       },
       {
+        path: ':backRoute/contato/:pessoaId/edit/:id?',
+        name: 'Editar Contato ',
+        component: CadastroContato
+      },
+      {
         path: 'contato/:pessoaId',
         name: 'Contato',
+        component: ListaContato
+      },
+      {
+        path: ':backRoute/contato/:pessoaId',
+        name: 'Contato ',
         component: ListaContato
       },
       //Cliente

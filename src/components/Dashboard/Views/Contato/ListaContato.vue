@@ -45,6 +45,11 @@
             prop: 'nome',
             label: 'Nome',
             class: ''
+          },
+          {
+            prop: 'setor',
+            label: 'Setor',
+            class: ''
           }
         ]
       }

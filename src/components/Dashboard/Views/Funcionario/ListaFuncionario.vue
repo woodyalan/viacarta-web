@@ -47,6 +47,11 @@
           {
             label: 'Cadastrar Contas Bancárias',
             route: 'contaBancaria'
+          },
+          {
+            label: 'Cadastrar Contatos',
+            route: 'contato',
+            navigationBack: 'funcionario'
           }
         ]
       }

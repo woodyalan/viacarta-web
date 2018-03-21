@@ -10,6 +10,7 @@ const state = {
     user: null,
     menus: null,
     backToList: false,
+    lastRoute: null,
     endereco: new Endereco()
 }
 
@@ -28,6 +29,9 @@ const mutations = {
     },
     updateEndereco(state, endereco) {
         state.endereco = endereco
+    },
+    updateLastRoute(state, lastRoute) {
+        state.lastRoute = lastRoute
     }
 }
 
@@ -47,11 +51,15 @@ const actions = {
     setEndereco(state, endereco) {
         state.commit('updateEndereco', endereco);
     },
+    setLastRoute(state, lastRoute) {
+        state.commit('updateLastRoute', lastRoute);
+    },
     resetData(state) {
         state.commit('updateToken', null);
         state.commit('updateUser', null);
         state.commit('updateMenus', null);
         state.commit('updateBackToList', false);
+        state.commit('updateLastRoute', null);
         state.commit('updateEndereco', new Endereco());
     }
 }

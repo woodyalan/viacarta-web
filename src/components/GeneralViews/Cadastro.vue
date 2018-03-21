@@ -7,7 +7,7 @@
         .card-header
           h4.title
             | {{ telaInfo.title }}
-            router-link.pull-right(:to='telaInfo.rota')
+            router-link.pull-right(:to='rota')
               a.btn.btn-default.btn-icon(href='#')
                 i.ti-view-list-alt
         
@@ -19,7 +19,7 @@
             hr
             .row
               .col-xs-6
-                router-link(:to='telaInfo.rota')
+                router-link(:to='rota')
                   a.btn.btn-default(href='#')
                     i.ti-view-list-alt
                     |  Listagem
@@ -43,27 +43,37 @@
     computed: {
       backToList() {
         return this.$store.state.backToList;
+      },
+      rota() {
+        let param = this.paramValue ? `/${this.paramValue}` : '';
+        return this.$route.params.backRoute ? `/${this.telaInfo.menuPath}/${this.$route.params.backRoute}/${this.telaInfo.tela}${param}` : this.telaInfo.rota;
       }
     },
     watch: {
       backToList(value) {
         if(value)
-          this.$router.push(this.telaInfo.rota);
+          this.$router.push(this.rota);
       }
     },
     asyncComputed: {
       telaInfo() {
+        let app = this;
         this.service = new LoginService(this.$http);
         return this.service
           .getTelaInfo(this.route)
           .then(telaInfo => {
             let param = this.paramValue ? `/${this.paramValue}` : '';
             
-            return {
+            let result = {
               title: telaInfo.descricao,
               menuPath: telaInfo.menuObject.path,
+              tela: telaInfo.rota,
               rota: `/${telaInfo.menuObject.path}/${telaInfo.rota}${param}`  
             }
+            
+            app.$store.dispatch('setLastRoute', result);
+
+            return result;
           });
       }
     },

@@ -5,7 +5,7 @@
         .card-header
           h4.title
             | {{ telaInfo.title }}
-            router-link.pull-right(:to='`${telaInfo.rota}/new`')
+            router-link.pull-right(:to='`${rota}/new`')
               a.btn.btn-icon.btn-default(href='#')
                 i.ti-plus
         .card-content
@@ -34,10 +34,12 @@
                           span.caret
                         el-dropdown-menu(slot="dropdown")
                           el-dropdown-item(v-for='item in dropdownLinks')
-                            router-link(:to='`/${telaInfo.menuPath}/${item.route}/${props.row.id}/`')
+                            router-link(v-if='item.navigationBack' :to='`/${telaInfo.menuPath}/${item.navigationBack}/${item.route}/${props.row.id}/`')
+                              | {{ item.label }}
+                            router-link(v-else :to='`/${telaInfo.menuPath}/${item.route}/${props.row.id}/`')
                               | {{ item.label }}
                           el-dropdown-item(:divided="true")
-                          el-dropdown-item.text-info(:command='{ action: "edit", url: `${telaInfo.rota}/edit/${props.row.id}` }')
+                          el-dropdown-item.text-info(:command='{ action: "edit", url: `${rota}/edit/${props.row.id}` }')
                             i.ti-pencil-alt 
                             |   Editar
                           el-dropdown-item.text-danger(:command='{ action: "delete", index: props.$index, object: props.row }')
@@ -52,7 +54,14 @@
           hr
           .row
             .col-sm-6
-              router-link(:to='`${telaInfo.rota}/new`')
+              router-link(
+                v-if='routeNavigationBack', 
+                :to="routeNavigationBack"
+              )
+                button.btn.btn-primary.btn-move-left.btn-fill(type='button')
+                  i.ti-angle-left
+                  |  Voltar
+              router-link(:to='`${rota}/new`')
                 a.btn.btn-default(href='#')
                   i.ti-plus
                   |  Novo
@@ -88,12 +97,23 @@
       dropdownLinks: {
         type: Array,
         required: true
+      },
+      navigationBack: {
+        type: String
       }
     },
     components: {
       PPagination
     },
     computed: {
+      rota() {
+        let param = this.paramValue ? `/${this.paramValue}` : '';
+        return this.$route.params.backRoute ? `/${this.telaInfo.menuPath}/${this.$route.params.backRoute}/${this.telaInfo.tela}${param}` : this.telaInfo.rota;
+      },
+      routeNavigationBack() {
+        if(this.$route.params.backRoute || this.navigationBack)
+          return this.$route.params.backRoute ? `/${this.telaInfo.menuPath}/${this.$route.params.backRoute}` : `/${this.telaInfo.menuPath}/${this.navigationBack}`;
+      },
       pagedData () {
         return this.tableData.slice(this.from, this.to)
       },
@@ -142,15 +162,21 @@
     },
     asyncComputed: {
       telaInfo() {
+        let app = this;
         this.service = new LoginService(this.$http);
         return this.service
           .getTelaInfo(this.route)
           .then(telaInfo => {
-            return {
+            let result = {
               title: telaInfo.descricao,
               menuPath: telaInfo.menuObject.path,
+              tela: telaInfo.rota,
               rota: `/${telaInfo.menuObject.path}/${telaInfo.rota}`  
             }
+            
+            app.$store.dispatch('setLastRoute', result);
+
+            return result;
           });
       }
     },
