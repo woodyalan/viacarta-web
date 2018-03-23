@@ -1,9 +1,9 @@
 <template lang="pug">
 .row
-  .col-sm-6.col-md-4
+  .col-sm-6.col-lg-4
     saldos-funcionarios
 
-  .col-sm-6.col-md-4
+  .col-sm-6.col-lg-4
     despesas-projetos
 
 </template>

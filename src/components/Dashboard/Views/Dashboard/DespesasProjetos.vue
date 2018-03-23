@@ -12,7 +12,7 @@
           v-for='despesa in despesasProjetos'
         )
           td {{ despesa.nome }}
-          td.text-right R$ {{ despesa.despesas }} 
+          td.text-right.col-xs-4 R$ {{ despesa.despesas }} 
       tfoot
         tr.active
           th.text-right 

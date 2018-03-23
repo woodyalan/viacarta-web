@@ -1,11 +1,20 @@
 export default class DiaTrabalhoService {
     constructor(resource) {
-        this._resource = resource('diaTrabalho{/id}');
+        this._resource = resource;
     }
 
     get(id) {
         return this._resource
-            .get({ id })
+            .get(`diaTrabalho/${id}`)
+            .then(res => res.json(), err => {
+                console.log(err);
+                throw new Error('Não foi possível obter o registro');
+            })
+    }
+
+    getDiasTrabalhoPlano(planoTrabalho) {
+        return this._resource
+            .get(`diaPlanoTrabalho/${planoTrabalho}`)
             .then(res => res.json(), err => {
                 console.log(err);
                 throw new Error('Não foi possível obter o registro');
@@ -14,7 +23,7 @@ export default class DiaTrabalhoService {
 
     save(diaTrabalho) {
         return this._resource
-            .save(diaTrabalho)
+            .post(`diaTrabalho`, diaTrabalho)
             .then(res => res.json(), err => {
                 console.log(err);
                 throw new Error('Não foi possível salvar o registro');
@@ -23,7 +32,7 @@ export default class DiaTrabalhoService {
 
     update(id, diaTrabalho) {
         return this._resource
-            .update({ id }, diaTrabalho)
+            .put(`diaTrabalho/${id}`, diaTrabalho)
             .then(res => res.json(), err => {
                 console.log(err);
                 throw new Error('Não foi possível salvar o registro');
@@ -32,7 +41,7 @@ export default class DiaTrabalhoService {
 
     delete(id) {
         return this._resource
-            .delete({ id })
+            .delete(`diaTrabalho/${id}`)
             .then(res => res.json(), err => {
                 console.log(err);
                 throw new Error('Não foi possível remover o registro');

@@ -177,7 +177,7 @@ export default {
           app.diaTrabalho.horarios.splice(index, 1);
 
           if (horario.id != undefined) {
-            app.service = new HorarioDiaTrabalhoService(app.$http);
+            app.service = new HorarioDiaTrabalhoService(app.$resource);
             app.service
               .delete(horario.id)
           }
@@ -201,7 +201,7 @@ export default {
             if(this.diaTrabalho.horarios.length > 0) {
               this.loading = true;
 
-              this.service = new DiaTrabalhoService(this.$resource);
+              this.service = new DiaTrabalhoService(this.$http);
 
               if(this.$route.params.id) {
                 this.service
@@ -259,7 +259,7 @@ export default {
     this.diaTrabalho = new DiaTrabalho(this.$route.params.planoTrabalhoId);
 
     if(this.$route.params.id) {
-      this.service = new DiaTrabalhoService(this.$resource);
+      this.service = new DiaTrabalhoService(this.$http);
       this.service
         .get(this.$route.params.id)
         .then(diaTrabalho => {

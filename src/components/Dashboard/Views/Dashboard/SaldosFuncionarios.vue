@@ -12,7 +12,7 @@
           v-for='saldo in saldosFuncionarios'
         )
           td {{ saldo.nome }}
-          td.text-right R$ {{ saldo.saldo }} 
+          td.text-right.col-xs-4 R$ {{ saldo.saldo }} 
       tfoot
         tr.active
           th.text-right 

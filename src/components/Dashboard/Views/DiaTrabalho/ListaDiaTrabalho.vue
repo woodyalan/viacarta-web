@@ -19,8 +19,10 @@
     },
     asyncComputed: {
       tableData() {
-        this.service = new DiaTrabalhoService(this.$resource);
-        return this.service.get(diasTrabalho => diasTrabalho);
+        this.service = new DiaTrabalhoService(this.$http);
+        return this.service
+          .getDiasTrabalhoPlano(this.$route.params.planoTrabalhoId)
+          .then(diasTrabalho => diasTrabalho);
       }
     },
     data () {
@@ -61,7 +63,7 @@
           cancelButtonClass: 'btn btn-danger btn-fill',
           allowOutsideClick: false
         }).then(function() {
-          app.service = new DiaTrabalhoService(app.$resource);
+          app.service = new DiaTrabalhoService(app.$http);
           app.service
             .delete(item.object.id)
             .then(result => {
