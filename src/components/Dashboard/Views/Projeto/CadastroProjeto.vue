@@ -39,25 +39,23 @@
             )
 
           .col-md-3
-            fg-datepicker(
+            fg-input-mask(
               label='Início',
-              placeholder='Selecione', 
+              placeholder='Início', 
               v-model="projeto.inicio",
               name="inicio",
-              format='dd/MM/yyyy',
-              value-format='yyyy-MM-dd',
-              :rules='{ required: true }'
+              :rules="{ required: true, date_format: 'DD/MM/YYYY' }",
+              :mask="['##/##/####']"
             )
 
           .col-md-3
-            fg-datepicker(
+            fg-input-mask(
               label='Fim',
-              placeholder='Selecione', 
+              placeholder='Fim', 
               v-model="projeto.fim",
               name="fim",
-              format='dd/MM/yyyy',
-              value-format='yyyy-MM-dd',
-              :rules='{ required: false }'
+              :rules="{ required: true, date_format: 'DD/MM/YYYY' }",
+              :mask="['##/##/####']"
             )
           
         .row
@@ -98,11 +96,7 @@ import CentroCustoService from 'src/domain/centroCusto/CentroCustoService'
 import FuncionarioService from 'src/domain/funcionario/FuncionarioService'
 import ProjetoService from 'src/domain/projeto/ProjetoService'
 import swal from 'sweetalert2'
-import { Select, Option, DatePicker } from 'element-ui'
-
-Vue.use(DatePicker);
-Vue.use(Option);
-Vue.use(Select);
+import moment from 'moment';
 
 export default {
   $validates: true,
@@ -195,11 +189,20 @@ export default {
           if(success && !this.loading) {
             this.loading = true;
 
+            let projeto = Object.assign({}, this.projeto);
+
+            let inicio = projeto.inicio; 
+            let fim = projeto.fim; 
+            inicio = moment(inicio, 'DD/MM/YYYY').format('YYYY-MM-DD');
+            fim = moment(fim, 'DD/MM/YYYY').format('YYYY-MM-DD');
+            projeto.inicio = inicio;
+            projeto.fim = fim;
+
             this.service = new ProjetoService(this.$resource);
 
             if(this.$route.params.id) {
               this.service
-                .update(this.$route.params.id, this.projeto)
+                .update(this.$route.params.id, projeto)
                 .then(response => {
                   let success = response.success;
 
@@ -217,7 +220,7 @@ export default {
                 });
             } else {
               this.service
-                .save(this.projeto)
+                .save(projeto)
                 .then(response => {
                   let success = response.success;
 
@@ -245,7 +248,16 @@ export default {
       this.service = new ProjetoService(this.$resource);
       this.service
         .get(this.$route.params.id)
-        .then(projeto => this.projeto = projeto);
+        .then(projeto => {
+          let inicio = projeto.inicio;
+          let fim = projeto.fim;
+          inicio = moment(inicio, 'YYYY-MM-DD').format('DD/MM/YYYY');
+          fim = moment(fim, 'YYYY-MM-DD').format('DD/MM/YYYY');
+          projeto.inicio = inicio;
+          projeto.fim = fim;
+
+          this.projeto = projeto
+        });
     }
   }
 }

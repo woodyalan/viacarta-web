@@ -22,7 +22,7 @@
       disabled: Boolean,
       placeholder: String,
       mask: [String, Array],
-      value: [String, Number],
+      value: [String, Number, Date],
       rules: {
         type: Object,
         default: {}

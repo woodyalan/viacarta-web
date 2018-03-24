@@ -28,14 +28,13 @@
             )
 
           .col-md-3
-            fg-datepicker(
+            fg-input-mask(
               label='Data da Ocorrência',
               placeholder='Selecione', 
               v-model="ocorrencia.data",
               name="data",
-              format='dd/MM/yyyy',
-              value-format='yyyy-MM-dd',
-              :rules='{ required: true }'
+              :rules="{ required: true, date_format: 'DD/MM/YYYY' }",
+              :mask="['##/##/####']"
             )
   
     button.btn.btn-fill.btn-info(
@@ -52,6 +51,7 @@ import TipoOcorrenciaService from 'src/domain/tipoOcorrencia/TipoOcorrenciaServi
 import OcorrenciaService from 'src/domain/ocorrencia/OcorrenciaService'
 import Ocorrencia from 'src/domain/ocorrencia/Ocorrencia'
 import swal from 'sweetalert2'
+import moment from 'moment'
 
 export default {
   $validates: true,
@@ -114,11 +114,17 @@ export default {
           if(success && !this.loading) {
             this.loading = true;
 
+            let ocorrencia = Object.assign({}, this.ocorrencia);
+
+            let data = ocorrencia.data; 
+            data = moment(data, 'DD/MM/YYYY').format('YYYY-MM-DD');
+            ocorrencia.data = data;
+
             this.service = new OcorrenciaService(this.$resource);
 
             if(this.$route.params.id) {
               this.service
-                .update(this.$route.params.id, this.ocorrencia)
+                .update(this.$route.params.id, ocorrencia)
                 .then(response => {
                   let success = response.success;
 
@@ -136,7 +142,7 @@ export default {
                 });
             } else {
               this.service
-                .save(this.ocorrencia)
+                .save(ocorrencia)
                 .then(response => {
                   let success = response.success;
 
@@ -166,6 +172,10 @@ export default {
       this.service
         .get(this.$route.params.id)
         .then(ocorrencia => {
+          let data = ocorrencia.data;
+          data = moment(data, 'YYYY-MM-DD').format('DD/MM/YYYY');
+          ocorrencia.data = data;
+          
           this.ocorrencia = ocorrencia;
         });
     }

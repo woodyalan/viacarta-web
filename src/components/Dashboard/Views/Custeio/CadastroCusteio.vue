@@ -28,15 +28,13 @@
 
         .row
           .col-md-3
-            fg-datepicker(
+            fg-input-mask(
               label='Data do Envio',
-              placeholder='Selecione', 
+              placeholder='Data do Envio', 
               v-model="custeio.data",
-              name="data",
-              format='dd/MM/yyyy',
-              value-format='yyyy-MM-dd',
-              :rules='{ required: true }',
-              :disabled='true'
+              name="data", 
+              :rules="{ required: true, date_format: 'DD/MM/YYYY' }",
+              :mask="['##/##/####']"
             )
 
           .col-md-3
@@ -71,6 +69,7 @@ import Cadastro from 'src/components/GeneralViews/Cadastro.vue'
 import FuncionarioService from 'src/domain/funcionario/FuncionarioService'
 import CusteioService from 'src/domain/custeio/CusteioService'
 import Custeio from 'src/domain/custeio/Custeio'
+import moment from 'moment'
 import swal from 'sweetalert2'
 
 export default {
@@ -130,11 +129,17 @@ export default {
           if(success && !this.loading) {
             this.loading = true;
 
+            let custeio = Object.assign({}, this.custeio);
+
+            let data = custeio.data; 
+            data = moment(data, 'DD/MM/YYYY').format('YYYY-MM-DD');
+            custeio.data = data;
+
             this.service = new CusteioService(this.$resource);
 
             if(this.$route.params.id) {
               this.service
-                .update(this.$route.params.id, this.custeio)
+                .update(this.$route.params.id, custeio)
                 .then(response => {
                   let success = response.success;
 
@@ -152,7 +157,7 @@ export default {
                 });
             } else {
               this.service
-                .save(this.custeio)
+                .save(custeio)
                 .then(response => {
                   let success = response.success;
 
@@ -182,6 +187,10 @@ export default {
       this.service
         .get(this.$route.params.id)
         .then(custeio => {
+          let data = custeio.data;
+          data = moment(data, 'YYYY-MM-DD').format('DD/MM/YYYY');
+          custeio.data = data;
+          
           this.custeio = custeio;
           this.custeio.valor = parseFloat(custeio.valor);
         });

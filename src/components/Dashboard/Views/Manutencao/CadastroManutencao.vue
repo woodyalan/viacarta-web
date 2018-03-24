@@ -38,14 +38,13 @@
             )
 
           .col-sm-6.col-md-3
-            fg-datepicker(
+            fg-input-mask(
               label='Data da Manutenção',
-              placeholder='Selecione', 
+              placeholder='Data da Manutenção', 
               v-model="manutencao.data",
               name="data",
-              format='dd/MM/yyyy',
-              value-format='yyyy-MM-dd',
-              :rules='{ required: true }'
+              :rules="{ required: true, date_format: 'DD/MM/YYYY' }",
+              :mask="['##/##/####']"
             )
 
           .col-sm-6.col-md-3
@@ -113,6 +112,7 @@ import ServicoAvisoManutencaoService from 'src/domain/servicoAvisoManutencao/Ser
 import ServicoPlanoManutencaoService  from 'src/domain/servicoPlanoManutencao/ServicoPlanoManutencaoService'
 import Manutencao from 'src/domain/manutencao/Manutencao'
 import swal from 'sweetalert2'
+import moment from 'moment'
 
 export default {
   $validates: true,
@@ -278,11 +278,17 @@ export default {
             if(this.manutencao.servicos.length > 0) {
               this.loading = true;
 
+              let manutencao = Object.assign({}, this.manutencao);
+
+              let data = manutencao.data; 
+              data = moment(data, 'DD/MM/YYYY').format('YYYY-MM-DD');
+              manutencao.data = data;
+
               this.service = new ManutencaoService(this.$resource);
 
               if(this.$route.params.id) {
                 this.service
-                  .update(this.$route.params.id, this.manutencao)
+                  .update(this.$route.params.id, manutencao)
                   .then(response => {
                     let success = response.success;
 
@@ -300,7 +306,7 @@ export default {
                   });
               } else {
                 this.service
-                  .save(this.manutencao)
+                  .save(manutencao)
                   .then(response => {
                     let success = response.success;
 
@@ -340,6 +346,10 @@ export default {
       this.service
         .get(this.$route.params.id)
         .then(manutencao => {
+          let data = manutencao.data;
+          data = moment(data, 'YYYY-MM-DD').format('DD/MM/YYYY');
+          manutencao.data = data;
+
           this.manutencao = manutencao;
         });
     }

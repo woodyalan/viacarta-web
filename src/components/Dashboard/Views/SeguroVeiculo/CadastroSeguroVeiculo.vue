@@ -17,25 +17,23 @@
             )
 
           .col-md-3
-            fg-datepicker(
+            fg-input-mask(
               label='Início',
               placeholder='Selecione', 
               v-model="seguroVeiculo.inicio",
               name="inicio",
-              format='dd/MM/yyyy',
-              value-format='yyyy-MM-dd',
-              :rules='{ required: true }'
+              :rules="{ required: true, date_format: 'DD/MM/YYYY' }",
+              :mask="['##/##/####']"
             )
 
           .col-md-3
-            fg-datepicker(
+            fg-input-mask(
               label='Fim',
               placeholder='Selecione', 
               v-model="seguroVeiculo.fim",
               name="fim",
-              format='dd/MM/yyyy',
-              value-format='yyyy-MM-dd',
-              :rules='{ required: true }'
+              :rules="{ required: true, date_format: 'DD/MM/YYYY' }",
+              :mask="['##/##/####']"
             )
   
     button.btn.btn-fill.btn-info(
@@ -47,7 +45,6 @@
 </template>
 <script>
 import Vue from 'vue'
-import { DatePicker } from 'element-ui'
 
 import Cadastro from 'src/components/GeneralViews/Cadastro.vue'
 import VeiculoService from 'src/domain/veiculo/VeiculoService'
@@ -55,8 +52,7 @@ import SeguradoraService from 'src/domain/seguradora/SeguradoraService'
 import SeguroVeiculoService from 'src/domain/seguroVeiculo/SeguroVeiculoService'
 import SeguroVeiculo from 'src/domain/seguroVeiculo/SeguroVeiculo'
 import swal from 'sweetalert2'
-
-Vue.use(DatePicker);
+import moment from 'moment'
 
 export default {
   $validates: true,
@@ -122,11 +118,20 @@ export default {
           if(success && !this.loading) {
             this.loading = true;
 
+            let seguroVeiculo = Object.assign({}, this.seguroVeiculo);
+
+            let inicio = seguroVeiculo.inicio; 
+            let fim = seguroVeiculo.fim; 
+            inicio = moment(inicio, 'DD/MM/YYYY').format('YYYY-MM-DD');
+            fim = moment(fim, 'DD/MM/YYYY').format('YYYY-MM-DD');
+            seguroVeiculo.inicio = inicio;
+            seguroVeiculo.fim = fim;
+
             this.service = new SeguroVeiculoService(this.$http);
 
             if(this.$route.params.id) {
               this.service
-                .update(this.$route.params.id, this.seguroVeiculo)
+                .update(this.$route.params.id, seguroVeiculo)
                 .then(response => {
                   let success = response.success;
 
@@ -144,7 +149,7 @@ export default {
                 });
             } else {
               this.service
-                .save(this.seguroVeiculo)
+                .save(seguroVeiculo)
                 .then(response => {
                   let success = response.success;
 
@@ -173,7 +178,16 @@ export default {
       this.service = new SeguroVeiculoService(this.$http);
       this.service
         .get(this.$route.params.id)
-        .then(seguroVeiculo => this.seguroVeiculo = seguroVeiculo);
+        .then(seguroVeiculo => {
+          let inicio = seguroVeiculo.inicio;
+          let fim = seguroVeiculo.fim;
+          inicio = moment(inicio, 'YYYY-MM-DD').format('DD/MM/YYYY');
+          fim = moment(fim, 'YYYY-MM-DD').format('DD/MM/YYYY');
+          seguroVeiculo.inicio = inicio;
+          seguroVeiculo.fim = fim;
+
+          this.seguroVeiculo = seguroVeiculo
+        });
     }
   }
 }

@@ -366,9 +366,9 @@ export default {
             this.loading = true;
 
             let funcionario = {
-              funcionario: this.funcionario,
-              pessoaFisica: this.pessoaFisica,
-              pessoa: this.pessoa
+              funcionario: Object.assign({}, this.funcionario),
+              pessoaFisica: Object.assign({}, this.pessoaFisica),
+              pessoa: Object.assign({}, this.pessoa)
             }
 
             let nascimento = funcionario.pessoaFisica.nascimento;

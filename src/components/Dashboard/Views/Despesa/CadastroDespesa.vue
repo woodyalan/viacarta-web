@@ -45,14 +45,13 @@
             )
 
           .col-sm-6.col-md-3
-            fg-datepicker(
+            fg-input-mask(
               label='Data da Despesa',
-              placeholder='Selecione', 
+              placeholder='Data da Despesa', 
               v-model="despesa.data",
               name="data",
-              format='dd/MM/yyyy',
-              value-format='yyyy-MM-dd',
-              :rules='{ required: true }'
+              :rules="{ required: true, date_format: 'DD/MM/YYYY' }",
+              :mask="['##/##/####']"
             )
 
           .col-md-6
@@ -129,6 +128,7 @@ import ProjetoService from "src/domain/projeto/ProjetoService";
 import DespesaService from "src/domain/despesa/DespesaService";
 import Despesa from "src/domain/despesa/Despesa";
 import swal from "sweetalert2";
+import moment from "moment";
 
 export default {
   $validates: true,
@@ -257,11 +257,17 @@ export default {
         if (success && !this.loading) {
           this.loading = true;
 
+          let despesa = Object.assign({}, this.despesa);
+
+          let data = despesa.data; 
+          data = moment(data, 'DD/MM/YYYY').format('YYYY-MM-DD');
+          despesa.data = data;
+
           this.service = new DespesaService(this.$resource);
 
           if (this.$route.params.id) {
             this.service
-              .update(this.$route.params.id, this.despesa)
+              .update(this.$route.params.id, despesa)
               .then(response => {
                 let success = response.success;
 
@@ -280,7 +286,7 @@ export default {
               });
           } else {
             this.service
-              .save(this.despesa)
+              .save(despesa)
               .then(response => {
                 let success = response.success;
 
@@ -310,6 +316,10 @@ export default {
     if (this.$route.params.id) {
       this.service = new DespesaService(this.$resource);
       this.service.get(this.$route.params.id).then(despesa => {
+        let data = despesa.data;
+        data = moment(data, 'YYYY-MM-DD').format('DD/MM/YYYY');
+        despesa.data = data;
+
         this.despesa = despesa;
         this.despesa.valor = parseFloat(despesa.valor);
 

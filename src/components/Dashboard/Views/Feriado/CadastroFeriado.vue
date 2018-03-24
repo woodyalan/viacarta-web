@@ -17,14 +17,13 @@
             )
 
           .col-md-3
-            fg-datepicker(
+            fg-input-mask(
               label='Data',
-              placeholder='Selecione', 
+              placeholder='Data', 
               v-model="feriado.dia",
-              name="dia",
-              format='dd/MM/yyyy',
-              value-format='yyyy-MM-dd',
-              :rules='{ required: true }'
+              name="dia"
+              :rules="{ required: true, date_format: 'DD/MM/YYYY' }",
+              :mask="['##/##/####']"
             )
   
     button.btn.btn-fill.btn-info(
@@ -96,11 +95,17 @@ export default {
           if(success && !this.loading) {
             this.loading = true;
 
+            let feriado = Object.assign({}, this.feriado);
+
+            let dia = feriado.dia; 
+            dia = moment(dia, 'DD/MM/YYYY').format('YYYY-MM-DD');
+            feriado.dia = dia;
+
             this.service = new FeriadoService(this.$http);
             
             if(this.$route.params.id) {
               this.service
-                .update(this.$route.params.id, this.feriado)
+                .update(this.$route.params.id, feriado)
                 .then(response => {
                   let success = response.success;
 
@@ -118,7 +123,7 @@ export default {
                 });
             } else {
               this.service
-                .save(this.feriado)
+                .save(feriado)
                 .then(response => {
                   let success = response.success;
 
@@ -146,7 +151,13 @@ export default {
       this.service = new FeriadoService(this.$http);
       this.service
         .get(this.$route.params.id)
-        .then(feriado => this.feriado = feriado);
+        .then(feriado => {
+          let dia = feriado.dia;
+          dia = moment(dia, 'YYYY-MM-DD').format('DD/MM/YYYY');
+          feriado.dia = dia;
+
+          this.feriado = feriado;
+        });
     }
   }
 }

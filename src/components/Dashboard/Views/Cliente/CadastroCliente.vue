@@ -440,10 +440,10 @@ export default {
 
             let cliente = {
               tipo: this.tipoPessoa,
-              cliente: this.cliente,
-              pessoaFisica: this.pessoaFisica,
-              pessoaJuridica: this.pessoaJuridica,
-              pessoa: this.pessoa
+              cliente: Object.assign({}, this.cliente),
+              pessoaFisica: Object.assign({}, this.pessoaFisica),
+              pessoaJuridica: Object.assign({}, this.pessoaJuridica),
+              pessoa: Object.assign({}, this.pessoa)
             }
 
             if(this.tipoPessoa == 'F') {
