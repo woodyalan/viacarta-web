@@ -21,6 +21,15 @@ export default class FuncionarioProjetoService {
             })
     }
 
+    getProjetos(funcionario) {
+        return this._resource
+            .get(`funcionarioProjeto/funcionario/${funcionario}`)
+            .then(res => res.json(), err => {
+                console.log(err);
+                throw new Error('Não foi possível obter o registro');
+            })
+    }
+
     save(funcionarioProjeto) {
         return this._resource
             .post('funcionarioProjeto', funcionarioProjeto)

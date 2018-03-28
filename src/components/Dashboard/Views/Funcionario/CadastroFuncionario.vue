@@ -61,6 +61,17 @@
             )
 
           .col-md-3
+            fg-input-mask(
+              type='text',
+              label='Data do Registro',
+              placeholder='Data do Registro', 
+              v-model='funcionario.registro', 
+              name='registro', 
+              :rules="{ required: false, date_format: 'DD/MM/YYYY' }",
+              :mask="['##/##/####']"
+            )
+
+          .col-md-3
             fg-select(
               label='Ativo',
               placeholder='Ativo', 
@@ -80,6 +91,24 @@
               placeholder='RG', 
               v-model='pessoaFisica.rg', 
               name='rg', 
+              :rules='{ required: false }'
+            )
+
+          .col-md-3
+            fg-input(
+              label='CNH',
+              placeholder='CNH', 
+              v-model='funcionario.cnh', 
+              name='cnh', 
+              :rules='{ required: false }'
+            )
+
+          .col-md-3
+            fg-input(
+              label='Plano de Saúde',
+              placeholder='Plano de Saúde', 
+              v-model='funcionario.planoSaude', 
+              name='planoSaude', 
               :rules='{ required: false }'
             )
 
@@ -239,7 +268,10 @@ export default {
         id: null,
         cargo: null,
         planoTrabalho: null,
-        ativo: null
+        ativo: null,
+        registro: null,
+        cnh: null,
+        planoSaude: null
       },
       pessoaFisica: {
         pessoa: null,
@@ -371,9 +403,8 @@ export default {
               pessoa: Object.assign({}, this.pessoa)
             }
 
-            let nascimento = funcionario.pessoaFisica.nascimento;
-            nascimento = moment(nascimento, 'DD/MM/YYYY').format('YYYY-MM-DD');
-            funcionario.pessoaFisica.nascimento = moment.utc(nascimento).format();
+            funcionario.pessoaFisica.nascimento = moment(funcionario.pessoaFisica.nascimento, 'DD/MM/YYYY').format('YYYY-MM-DD');
+            funcionario.funcionario.registro = moment(funcionario.funcionario.registro, 'DD/MM/YYYY').format('YYYY-MM-DD');            
 
             funcionario.pessoaFisica.apelido = funcionario.pessoaFisica.apelido || null;
             funcionario.pessoaFisica.rg = funcionario.pessoaFisica.rg || null;
@@ -381,6 +412,9 @@ export default {
             funcionario.pessoa.celular = funcionario.pessoa.celular || null;
             funcionario.pessoa.telefone = funcionario.pessoa.telefone || null;
             funcionario.pessoa.complemento = funcionario.pessoa.complemento || null;
+            funcionario.funcionario.cnh = funcionario.funcionario.cnh || null;
+            funcionario.funcionario.registro = funcionario.funcionario.registro || null;
+            funcionario.funcionario.planoSaude = funcionario.funcionario.planoSaude || null;
 
             this.service = new FuncionarioService(this.$resource);
 
@@ -401,6 +435,17 @@ export default {
                     if(success)
                       app.$store.dispatch('setBackToList', true);
                   });
+                }, err => {
+                  this.loading = false;
+                  
+                  swal({
+                    title: 'Ops!',
+                    html: `Falha ao salvar o registro. ${err}`,
+                    buttonsStyling: false,
+                    type: 'error',
+                    confirmButtonClass: 'btn btn-danger btn-fill',
+                    allowOutsideClick: false
+                  });
                 });
             } else {
               this.service
@@ -419,6 +464,17 @@ export default {
                     if(success)
                       app.$store.dispatch('setBackToList', true);
                   });
+                }, err => {
+                  this.loading = false;
+                  
+                  swal({
+                    title: 'Ops!',
+                    html: `Falha ao salvar o registro. ${err}`,
+                    buttonsStyling: false,
+                    type: 'error',
+                    confirmButtonClass: 'btn btn-danger btn-fill',
+                    allowOutsideClick: false
+                  });
                 });
             }
           }
@@ -435,7 +491,10 @@ export default {
               id: funcionario.id,
               cargo: funcionario.cargo,
               planoTrabalho: funcionario.planoTrabalho,
-              ativo: funcionario.ativo
+              ativo: funcionario.ativo,
+              registro: moment(funcionario.registro, 'YYYY-MM-DD').format('DD/MM/YYYY'),
+              cnh: funcionario.cnh,
+              planoSaude: funcionario.planoSaude
             }
 
             let nascimento = funcionario.pessoaFisicaObject.nascimento;

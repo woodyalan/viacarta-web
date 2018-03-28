@@ -65,7 +65,7 @@
           cancelButtonClass: 'btn btn-danger btn-fill',
           allowOutsideClick: false
         }).then(function() {
-          app.service = new ServicoService(app.$resource);
+          app.service = new ProjetoService(app.$resource);
           app.service
             .delete(item.object.id)
             .then(result => {
@@ -78,7 +78,7 @@
                   html: `Falha ao remover o registro.`,
                   buttonsStyling: false,
                   type: 'error',
-                  confirmButtonClass: 'btn btn-success btn-fill',
+                  confirmButtonClass: 'btn btn-danger btn-fill',
                   allowOutsideClick: false
                 });
             })  

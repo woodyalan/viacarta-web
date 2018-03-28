@@ -46,6 +46,17 @@
               :rules='{ required: true }'
             )
 
+          .col-md-6
+            fg-select(
+              v-if='contasBancarias',
+              label='Conta Bancária',
+              placeholder='Conta Bancária', 
+              v-model='custeio.contaBancaria', 
+              name='contaBancaria', 
+              :rules='{ required: true }',
+              :options='contasBancarias'
+            )
+
         .row
           .col-md-12
             fg-textarea(
@@ -67,6 +78,7 @@
 <script>
 import Cadastro from 'src/components/GeneralViews/Cadastro.vue'
 import FuncionarioService from 'src/domain/funcionario/FuncionarioService'
+import ContaBancariaService from 'src/domain/contaBancaria/ContaBancariaService'
 import CusteioService from 'src/domain/custeio/CusteioService'
 import Custeio from 'src/domain/custeio/Custeio'
 import moment from 'moment'
@@ -93,6 +105,7 @@ export default {
         descricao: null,
         data: null,
         valor: null,
+        contaBancaria: null,
         observacoes: null
       }
     }
@@ -109,6 +122,19 @@ export default {
               text: funcionario.pessoaFisicaObject.pessoaObject.nome
             }
           });
+        });
+    },
+    contasBancarias() {
+      this.service = new ContaBancariaService(this.$http); 
+      return this.service
+        .getContasBancariasPessoa(this.custeio.funcionario)
+        .then(contasBancarias => {
+          return contasBancarias.map(contaBancaria => {
+            return {
+              value: contaBancaria.id,
+              text: `${contaBancaria.bancoObject.nome} - ${contaBancaria.agencia} - ${contaBancaria.conta}` 
+            }
+          })
         });
     }
   },
@@ -154,6 +180,17 @@ export default {
                     if(success)
                       app.$store.dispatch('setBackToList', true);
                   });
+                }, err => {
+                  this.loading = false;
+                  
+                  swal({
+                    title: 'Ops!',
+                    html: `Falha ao salvar o registro. ${err}`,
+                    buttonsStyling: false,
+                    type: 'error',
+                    confirmButtonClass: 'btn btn-danger btn-fill',
+                    allowOutsideClick: false
+                  });
                 });
             } else {
               this.service
@@ -171,6 +208,17 @@ export default {
                   }).then(function() {
                     if(success)
                       app.$store.dispatch('setBackToList', true);
+                  });
+                }, err => {
+                  this.loading = false;
+                  
+                  swal({
+                    title: 'Ops!',
+                    html: `Falha ao salvar o registro. ${err}`,
+                    buttonsStyling: false,
+                    type: 'error',
+                    confirmButtonClass: 'btn btn-danger btn-fill',
+                    allowOutsideClick: false
                   });
                 });
             }

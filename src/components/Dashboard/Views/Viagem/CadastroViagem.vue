@@ -90,7 +90,7 @@
               v-model='projetoViagem.projeto', 
               name='projeto',
               :rules='{ required: false }',
-              :options='projetoViagem.projetos'
+              :options='projetosFuncionario'
             )   
 
           .col-sm-3.col-md-2   
@@ -128,6 +128,7 @@
 import Cadastro from 'src/components/GeneralViews/Cadastro.vue'
 import VeiculoService from 'src/domain/veiculo/VeiculoService'
 import FuncionarioService from 'src/domain/funcionario/FuncionarioService'
+import FuncionarioProjetoService from 'src/domain/funcionarioProjeto/FuncionarioProjetoService'
 import ViagemService from 'src/domain/viagem/ViagemService'
 import ProjetoService from 'src/domain/projeto/ProjetoService'
 import ProjetoViagemService  from 'src/domain/projetoViagem/ProjetoViagemService'
@@ -155,8 +156,7 @@ export default {
         projetos: null
       },
       projetoViagem: {
-        projeto: null,
-        projetos: []
+        projeto: null
       }
     }
   },
@@ -172,18 +172,6 @@ export default {
               this.viagem.odometroTermino = veiculo.odometro;
             }
           });
-
-        this.service = new ProjetoService(this.$resource);
-          this.service
-            .get()
-            .then(projetos => {
-              this.projetoViagem.projetos = projetos.map(projeto => {
-                return {
-                  value: projeto.id,
-                  text: projeto.nome
-                }
-              });
-            })
       }
     }
   },
@@ -193,6 +181,23 @@ export default {
     }
   },
   asyncComputed: {
+    projetosFuncionario() {
+      if(this.viagem.funcionario) {
+        this.service = new FuncionarioProjetoService(this.$http);
+        return this.service
+          .getProjetos(this.viagem.funcionario)
+          .then(projetos => {
+            return projetos.map(projeto => {
+              return {
+                value: projeto.projeto,
+                text: projeto.projetoObject.nome
+              }
+            });
+          })
+      }
+
+      return;
+    },
     veiculos() {
       this.service = new VeiculoService(this.$resource);
       return this.service
@@ -232,7 +237,7 @@ export default {
           allowOutsideClick: false
         });
       } else {
-        let projetoSelecionado = this.projetoViagem.projetos.filter(p => {
+        let projetoSelecionado = this.projetosFuncionario.filter(p => {
           if(p.value == this.projetoViagem.projeto) {
             return p;
           }
@@ -315,6 +320,17 @@ export default {
                       if(success)
                         app.$store.dispatch('setBackToList', true);
                     });
+                  }, err => {
+                    this.loading = false;
+                    
+                    swal({
+                      title: 'Ops!',
+                      html: `Falha ao salvar o registro. ${err}`,
+                      buttonsStyling: false,
+                      type: 'error',
+                      confirmButtonClass: 'btn btn-danger btn-fill',
+                      allowOutsideClick: false
+                    });
                   });
               } else {
                 this.service
@@ -335,6 +351,17 @@ export default {
                     });
                   }, err => {
                     this.loading = false;
+                  }, err => {
+                    this.loading = false;
+                    
+                    swal({
+                      title: 'Ops!',
+                      html: `Falha ao salvar o registro. ${err}`,
+                      buttonsStyling: false,
+                      type: 'error',
+                      confirmButtonClass: 'btn btn-danger btn-fill',
+                      allowOutsideClick: false
+                    });
                   });
               }
             } else {

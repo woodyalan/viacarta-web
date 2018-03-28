@@ -35,7 +35,7 @@
               placeholder='CNPJ', 
               v-model='pessoaJuridica.cnpj', 
               name='cnpj', 
-              :rules='{ required: true, min: 18, cnpj: true }',
+              :rules='{ required: false, min: 18, cnpj: true }',
               :mask="['##.###.###/####-##']",
               :disabled='pessoa.id != null'
             )
@@ -462,10 +462,10 @@ export default {
               fornecedor.pessoaFisica = new PessoaFisica();
             }
             
-            
             fornecedor.pessoa.celular = fornecedor.pessoa.celular || null;
             fornecedor.pessoa.telefone = fornecedor.pessoa.telefone || null;
             fornecedor.pessoa.complemento = fornecedor.pessoa.complemento || null;
+            fornecedor.pessoaFisica.cnpj = fornecedor.pessoaFisica.cnpj || null;
 
             this.service = new FornecedorService(this.$resource);
 
@@ -487,7 +487,16 @@ export default {
                       app.$store.dispatch('setBackToList', true);
                   });
                 }, err => {
-                    this.loading = false;
+                  this.loading = false;
+                  
+                  swal({
+                    title: 'Ops!',
+                    html: `Falha ao salvar o registro. ${err}`,
+                    buttonsStyling: false,
+                    type: 'error',
+                    confirmButtonClass: 'btn btn-danger btn-fill',
+                    allowOutsideClick: false
+                  });
                 });
             } else {
               this.service
@@ -496,10 +505,10 @@ export default {
                   let success = response.success;
 
                   swal({
-                    title: success ? 'Muito bem!' : 'Ops!',
-                    html: success ? `O registro foi salvo com sucesso` : `Falha ao salvar o registro. ${response.error}`,
+                    title: 'Muito bem!',
+                    html: `O registro foi salvo com sucesso`,
                     buttonsStyling: false,
-                    type: success ? 'success' : 'error',
+                    type: 'success',
                     confirmButtonClass: 'btn btn-success btn-fill',
                     allowOutsideClick: false
                   }).then(function() {
@@ -507,7 +516,16 @@ export default {
                       app.$store.dispatch('setBackToList', true);
                   });
                 }, err => {
-                    this.loading = false;
+                  this.loading = false;
+                  
+                  swal({
+                    title: 'Ops!',
+                    html: `Falha ao salvar o registro. ${err}`,
+                    buttonsStyling: false,
+                    type: 'error',
+                    confirmButtonClass: 'btn btn-danger btn-fill',
+                    allowOutsideClick: false
+                  });
                 });
             }
           }

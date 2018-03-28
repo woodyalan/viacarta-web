@@ -120,6 +120,17 @@ export default {
                     if(success)
                       app.$store.dispatch('setBackToList', true);
                   });
+                }, err => {
+                  this.loading = false;
+                  
+                  swal({
+                    title: 'Ops!',
+                    html: `Falha ao salvar o registro. ${err}`,
+                    buttonsStyling: false,
+                    type: 'error',
+                    confirmButtonClass: 'btn btn-danger btn-fill',
+                    allowOutsideClick: false
+                  });
                 });
             } else {
               this.service
@@ -137,6 +148,17 @@ export default {
                   }).then(function() {
                     if(success)
                       app.$store.dispatch('setBackToList', true);
+                  });
+                }, err => {
+                  this.loading = false;
+                  
+                  swal({
+                    title: 'Ops!',
+                    html: `Falha ao salvar o registro. ${err}`,
+                    buttonsStyling: false,
+                    type: 'error',
+                    confirmButtonClass: 'btn btn-danger btn-fill',
+                    allowOutsideClick: false
                   });
                 });
             }
