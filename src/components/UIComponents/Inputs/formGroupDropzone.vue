@@ -57,7 +57,7 @@ export default {
         acceptedFiles: this.acceptedFiles,
         thumbnailWidth: 150,
         maxFiles: this.maxFiles,
-        maxFilesize: 2,
+        maxFilesize: 10,
         headers: {
           "x-access-token": this.$store.state.token
         }

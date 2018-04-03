@@ -40,3 +40,10 @@ a .btn {
 .select-default.el-select .el-input .el-input__icon {
     border-radius: 4px;
 }
+
+.vue-dropzone .dz-preview .dz-remove {
+    border: none;
+    opacity: 1;
+    background-color: #eb5e28;
+    border-radius: 20px;
+}

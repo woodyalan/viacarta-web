@@ -223,6 +223,19 @@
               :readonly='false',
               :rules='{ required: true }'
             )
+
+        p.category.mb20 Anexos
+        .row
+          .col-md-12
+            fg-dropzone(
+              v-if="dropzoneVisible"
+              name="myVueDropzone" 
+              id="dropzone"
+              label="Anexos"
+              :value="funcionario.anexosPessoa"
+              :url="uploadUrl"
+              @fileRemoved="removerAnexo($event)"
+            )
   
     button.btn.btn-fill.btn-info(
       :class='{ disabled: loading }'
@@ -251,6 +264,8 @@ export default {
   data () {
     return {
       route: 'funcionario',
+      uploadUrl: process.env.API_URL + 'anexoPessoa/upload',
+      filesLoaded: false,
       loading: false,
       options: {
         ativo: [
@@ -271,7 +286,8 @@ export default {
         ativo: null,
         registro: null,
         cnh: null,
-        planoSaude: null
+        planoSaude: null,
+        anexosPessoa: []
       },
       pessoaFisica: {
         pessoa: null,
@@ -327,6 +343,15 @@ export default {
   computed: {
     cpf() {
       return this.pessoaFisica.cpf;
+    },
+    dropzoneVisible() {
+      if(this.$route.params.id) 
+        return this.filesLoaded;
+      else
+        return true;
+    },
+    dropzoneFiles() {
+      return this.funcionario.anexosPessoa.length;
     }
   },
   watch: {
@@ -337,6 +362,12 @@ export default {
     }
   },
   methods: {
+    removerAnexo(id) {
+      if(id != undefined) {
+        this.service = new AnexoDespesaService(this.$http);
+        this.service.delete(id);
+      }
+    },
     findPessoaFisica(cpf) {
       let app = this;
 
@@ -494,7 +525,8 @@ export default {
               ativo: funcionario.ativo,
               registro: moment(funcionario.registro, 'YYYY-MM-DD').format('DD/MM/YYYY'),
               cnh: funcionario.cnh,
-              planoSaude: funcionario.planoSaude
+              planoSaude: funcionario.planoSaude,
+              anexosPessoa: funcionario.anexosPessoa
             }
 
             let nascimento = funcionario.pessoaFisicaObject.nascimento;
@@ -503,6 +535,19 @@ export default {
 
             this.pessoaFisica = funcionario.pessoaFisicaObject;
             this.pessoa = funcionario.pessoaFisicaObject.pessoaObject;
+
+            this.funcionario.anexosPessoa = this.funcionario.anexosPessoa.map(a => {
+              return {
+                  id: a.id,
+                  size: a.size,
+                  path: a.arquivo,
+                  name: a.arquivo
+              }
+            });
+
+            if(this.funcionario.anexosPessoa) {
+              this.filesLoaded = true;
+            }
           });
       } else {
         this.$store.dispatch('setEndereco', new Endereco());
