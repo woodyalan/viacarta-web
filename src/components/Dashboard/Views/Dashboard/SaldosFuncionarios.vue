@@ -1,6 +1,6 @@
 <template lang="pug">
 .card(
-  v-if='saldosFuncionarios'
+  v-if='saldosFuncionarios && saldosFuncionarios.length > 0'
 )
   .card-header
     h4.card-title Saldos

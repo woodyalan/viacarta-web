@@ -1,6 +1,6 @@
 <template lang="pug">
 .card(
-  v-if='despesasProjetos'
+  v-if='despesasProjetos && despesasProjetos.length > 0'
 )
   .card-header
     h4.card-title Despesas

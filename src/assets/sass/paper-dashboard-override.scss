@@ -47,3 +47,23 @@ a .btn {
     background-color: #eb5e28;
     border-radius: 20px;
 }
+
+.table p small {
+    font-size: 75%;
+    font-weight: 100;
+}
+
+.mb0 {
+    margin-bottom: 0;
+}
+
+.mb10 {
+    margin-bottom: 10px !important;
+}
+
+.el-collapse-item__header__arrow {
+    float: right !important; 
+    line-height: 48px !important;
+    font-weight: 300 !important;
+    font-size: 12px !important;
+}

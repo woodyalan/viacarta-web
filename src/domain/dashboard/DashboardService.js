@@ -20,4 +20,13 @@ export default class DashboardService {
                 throw new Error('Não foi possível obter as despesas dos projetos');
             })
     }
+
+    getManutencoesVeiculos() {
+        return this._resource
+            .get(`dashboard/manutencoesVeiculos`)
+            .then(res => res.json(), err => {
+                console.log(err);
+                throw new Error('Não foi possível obter as despesas dos projetos');
+            })
+    }
 }

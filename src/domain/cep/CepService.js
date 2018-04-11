@@ -9,17 +9,12 @@ export default class CepService {
         let cleanValue = cep.replace(/\D/g, '')
 
         return this._resource
-            .get(`http://cep.republicavirtual.com.br/web_cep.php?cep=${cleanValue}&formato=json`)
+            .get(`cep/${cleanValue}`)
             .then(res => {
-                if(res.body.resultado > 0) {
-                    return {
-                        valid: true,
-                        cep: cep,
-                        logradouro: res.body.tipo_logradouro + " " + res.body.logradouro,
-                        bairro: res.body.bairro,
-                        cidade: res.body.cidade,
-                        estado: res.body.uf
-                    }
+                let result = res.body;
+
+                if(result.valid) {
+                    return result;
                 } else {
                     return new Endereco();
                 }

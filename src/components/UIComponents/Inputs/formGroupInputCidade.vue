@@ -4,7 +4,7 @@
       {{label}}
     </label>
     <input class="form-control border-input" v-bind="$props" :value="value"
-           @input="updateValue($event.target.value)" v-validate="rules" :data-vv-as="label">
+           @input="updateValue($event.target.value)" v-validate="rules" :data-vv-as="label" :readonly="readonly">
     <small class="text-danger" v-show="errors.has(name)">{{ errors.first(name) }}</small>
   </div>
 </template>
@@ -21,7 +21,6 @@
       name: String,
       disabled: Boolean,
       placeholder: String,
-      readonly: Boolean,
       value: [String, Number],
       rules: {
         type: Object,
@@ -34,13 +33,16 @@
       }
     }, 
     asyncComputed: {
+      readonly() {
+        return this.$store.state.endereco.cidade != '';
+      },
       valueComputed() {
         let value
 
         if(this.$store.state.endereco.valid)
-            value = this.$store.state.endereco.cidade
-        else 
-            value = this.value
+          value = this.$store.state.endereco.cidade
+        else
+          value = this.value
 
         this.cidade = value
         
