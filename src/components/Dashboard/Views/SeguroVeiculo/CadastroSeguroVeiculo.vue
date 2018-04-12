@@ -17,6 +17,15 @@
             )
 
           .col-md-3
+            fg-input(
+              label='Apólice',
+              placeholder='Nº da Apólice', 
+              v-model="seguroVeiculo.apolice",
+              name="apolice",
+              :rules="{ required: false }"
+            )
+
+          .col-md-3
             fg-input-mask(
               label='Início',
               placeholder='Selecione', 
@@ -126,6 +135,7 @@ export default {
             fim = moment(fim, 'DD/MM/YYYY').format('YYYY-MM-DD');
             seguroVeiculo.inicio = inicio;
             seguroVeiculo.fim = fim;
+            seguroVeiculo.apolice = seguroVeiculo.apolice || null;
 
             this.service = new SeguroVeiculoService(this.$http);
 

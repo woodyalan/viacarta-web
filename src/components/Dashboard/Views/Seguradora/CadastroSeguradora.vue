@@ -16,6 +16,27 @@
             )
 
           .col-md-3
+            fg-input-mask(
+              label='Celular',
+              placeholder='Celular', 
+              v-model='seguradora.celular', 
+              name='celular', 
+              :rules='{ required: false, min: 14 }',
+              :mask="['(##) ####-####', '(##) #####-####']"
+            )
+          
+          .col-md-3
+            fg-input-mask(
+              label='Telefone',
+              placeholder='Telefone', 
+              v-model='seguradora.telefone', 
+              name='telefone', 
+              :rules='{ required: false, min: 14 }',
+              :mask="['(##) ####-####']"
+            )
+
+        .row
+          .col-md-3
             fg-select(
               label='Ativo',
               placeholder='Ativo', 
@@ -61,6 +82,8 @@ export default {
       },
       seguradora: {
         nome: null,
+        telefone: null,
+        celular: null,
         ativo: null
       }
     }
@@ -82,13 +105,14 @@ export default {
           if(success && !this.loading) {
             this.loading = true;
 
-            let seguradora = new Seguradora(this.seguradora.nome, this.seguradora.ativo);
+            this.seguradora.telefone = this.seguradora.telefone || null;
+            this.seguradora.celular = this.seguradora.celular || null;
 
             this.service = new SeguradoraService(this.$resource);
 
             if(this.$route.params.id) {
               this.service
-                .update(this.$route.params.id, seguradora)
+                .update(this.$route.params.id, this.seguradora)
                 .then(response => {
                   let success = response.success;
 
@@ -117,7 +141,7 @@ export default {
                 });
             } else {
               this.service
-                .save(seguradora)
+                .save(this.seguradora)
                 .then(response => {
                   let success = response.success;
 
