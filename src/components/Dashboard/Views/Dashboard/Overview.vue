@@ -12,11 +12,11 @@
   .col-sm-6
     .row
       .col-xs-12
-        calendario
+        manutencoes-veiculos
 
     .row
       .col-xs-12
-        manutencoes-veiculos
+        calendario
 
 </template>
 <script>
