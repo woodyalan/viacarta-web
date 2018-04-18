@@ -88,6 +88,15 @@
                 th.text-info Funcionário
                 th.text-right.text-info Valor R$
             tbody
+              tr.warning
+                td(
+                  colspan='2'
+                )
+                td(
+                  colspan='2'
+                ) Saldo Anterior
+                td.text-right  
+                  strong {{ formatMoney(saldoAnterior) }}
               tr(
                 v-for="lancamento in lancamentos"
               )
@@ -104,6 +113,15 @@
                   )
                     small {{ lancamento.banco }} {{ lancamento.agencia }} {{ lancamento.operacao }} {{ lancamento.conta }}
                 td.text-right {{ formatMoney(lancamento.valor) }} {{ lancamento.tipo }}
+              tr.info
+                td(
+                  colspan='2'
+                )
+                td(
+                  colspan='2'
+                ) Saldo Atual
+                td.text-right 
+                  strong {{ formatMoney(saldoAtual) }}
             tfoot
               tr
                 th(
@@ -111,7 +129,7 @@
                 ) {{ this.lancamentos.length }} Lançamento(s)
                 th.text-right(
                   colspan='2'
-                ) Total R$
+                ) Total do(s) Lançamento(s) R$
                 th.text-right {{ formatMoney(totalLancamentos) }}
 
           p.lead.text-center(
@@ -145,6 +163,7 @@
           ]
         },
         lancamentos: [],
+        saldoAnterior: null,
         filtro: {
           inicio: null,
           fim: null,
@@ -213,6 +232,17 @@
         }
 
         return total.toFixed(2);
+      },
+      saldoAtual() {
+        let saldoAtual = 0; 
+
+        if(Math.sign(this.totalLancamentos) == -1) {
+          saldoAtual = parseFloat(this.saldoAnterior) - (parseFloat(this.totalLancamentos) * -1);
+        } else {
+          saldoAtual = parseFloat(this.saldoAnterior) + parseFloat(this.totalLancamentos);
+        }
+
+        return saldoAtual.toFixed(2)
       }
     },
     methods: {
@@ -249,7 +279,8 @@
                 this._service
                   .getAcompanhamentoFinanceiro(filtro)
                   .then(lancamentos => {
-                    this.lancamentos = lancamentos;
+                    this.lancamentos = lancamentos.lancamentos;
+                    this.saldoAnterior = lancamentos.saldoAnterior;
 
                     this.loading = false;
                   }, err => {
