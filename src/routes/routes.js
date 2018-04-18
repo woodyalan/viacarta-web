@@ -110,6 +110,8 @@ import ListaViagem from 'src/components/Dashboard/Views/Viagem/ListaViagem.vue'
 import CadastroDiaTrabalho from 'src/components/Dashboard/Views/DiaTrabalho/CadastroDiaTrabalho.vue'
 import ListaDiaTrabalho from 'src/components/Dashboard/Views/DiaTrabalho/ListaDiaTrabalho.vue'
 
+import ListaAcompanhamentoFinanceiro from 'src/components/Dashboard/Views/AcompanhamentoFinanceiro/ListaAcompanhamentoFinanceiro.vue'
+
 const routes = [
   {
     path: '/',
@@ -712,6 +714,18 @@ const routes = [
         path: 'fornecedor',
         name: 'Fornecedor',
         component: ListaFornecedor
+      }
+    ],
+  },
+  {
+    path: '/relatorios',
+    component: DashboardLayout,
+    children: [
+      //Financeiro
+      {
+        path: 'acompanhamentoFinanceiro',
+        name: 'Acompanhamento Financeiro',
+        component: ListaAcompanhamentoFinanceiro
       }
     ]
   },

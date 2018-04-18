@@ -84,3 +84,8 @@ a .btn {
     margin-top: 10px;
     font-size: 18px;
 }
+
+span.sidebar-normal {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}

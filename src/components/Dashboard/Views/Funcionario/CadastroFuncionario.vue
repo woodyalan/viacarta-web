@@ -435,7 +435,12 @@ export default {
             }
 
             funcionario.pessoaFisica.nascimento = moment(funcionario.pessoaFisica.nascimento, 'DD/MM/YYYY').format('YYYY-MM-DD');
-            funcionario.funcionario.registro = moment(funcionario.funcionario.registro, 'DD/MM/YYYY').format('YYYY-MM-DD');            
+            
+            funcionario.funcionario.registro = funcionario.funcionario.registro || null;
+            
+            if(funcionario.funcionario.registro) {
+              funcionario.funcionario.registro = moment(funcionario.funcionario.registro, 'DD/MM/YYYY').format('YYYY-MM-DD');            
+            }
 
             funcionario.pessoaFisica.apelido = funcionario.pessoaFisica.apelido || null;
             funcionario.pessoaFisica.rg = funcionario.pessoaFisica.rg || null;
@@ -444,7 +449,6 @@ export default {
             funcionario.pessoa.telefone = funcionario.pessoa.telefone || null;
             funcionario.pessoa.complemento = funcionario.pessoa.complemento || null;
             funcionario.funcionario.cnh = funcionario.funcionario.cnh || null;
-            funcionario.funcionario.registro = funcionario.funcionario.registro || null;
             funcionario.funcionario.planoSaude = funcionario.funcionario.planoSaude || null;
 
             this.service = new FuncionarioService(this.$resource);

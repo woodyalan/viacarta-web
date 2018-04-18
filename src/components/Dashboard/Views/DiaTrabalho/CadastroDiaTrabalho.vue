@@ -20,43 +20,32 @@
 
         p.category.mb20 Horários de Trabalho
         .row
-          .col-sm-4.col-md-3
-            fg-timepicker(
-              label='Horário',
+          .col-sm-4.col-md-2(
+            v-for="(horario, key) in diaTrabalho.horarios"
+          )
+            fg-input-mask(
+              :label='`Batida ${key + 1}`',
               placeholder='Horário', 
-              v-model='horarioTrabalho.horario', 
-              name='horario',
-              :rules='{ required: false }',
+              v-model='diaTrabalho.horarios[key].horario', 
+              :name='`horario${key + 1}`',
+              :rules='{ required: true }',
               :mask="['##:##']"
             )   
+            button.btn.btn-fill.btn-xs.btn-danger(
+              v-if="diaTrabalho.horarios.length > 2",
+              @click='removeHorario(key)',
+            ) Remover
 
-          .col-sm-4.col-md-3.col-lg-2
+          .col-sm-2
             label.control-label &nbsp;
-            .clearfix  
-            button.btn.btn-fill.btn-info.btn-block(
-              @click="addHorario()"
-            ) Adicionar  
+            .clearfix 
+            button.btn.btn-info(
+              type='button'
+              @click='addHorario()',
+              title='Adicionar Batida'
+            ) 
+              i.ti-plus
 
-        .row
-          .col-xs-12
-            el-table.table.table-striped.table-no-bordered.table-hover(
-              :data='diaTrabalho.horarios', 
-              style='width: 100%'
-            )
-              el-table-column(
-                prop='horario', 
-                label='Horário'
-              )
-              el-table-column(width='150' class-name='text-center', fixed='right')
-                template(scope='props')
-                  a.btn.btn-simple.btn-warning.btn-xs.btn-icon.edit(
-                    @click='editHorario(props.$index)'
-                  )
-                    i.ti-pencil-alt
-                  a.btn.btn-simple.btn-danger.btn-xs.btn-icon.remove(
-                    @click='removeHorario(props.$index)'
-                  )
-                    i.ti-close
   
     button.btn.btn-fill.btn-info(
       :class='{ disabled: loading }'
@@ -118,46 +107,13 @@ export default {
       diaTrabalho: {
         planoManutencao: null,
         diaSemana: null,
-        horarios: []
-      },
-      horarioTrabalho: {
-        index: null,
-        horario: null,
-        horarios: []
+        horarios: [{ horario: null }]
       }
     }
   },
   methods: {
-    editHorario(index) {
-      let horario = this.diaTrabalho.horarios[index];
-      this.horarioTrabalho.index = index;
-      this.horarioTrabalho.horario = moment(horario.horario, 'HH:mm').format('YYYY-MM-DD HH:mm');
-    },
     addHorario() {
-      if(!this.horarioTrabalho.horario) {
-        swal({
-          title: 'Ops!',
-          html: `Você deve informar um horário.`,
-          buttonsStyling: false,
-          type: 'info',
-          confirmButtonClass: 'btn btn-success btn-fill',
-          allowOutsideClick: false
-        });
-      } else {
-        let horario = moment(this.horarioTrabalho.horario, 'HH:mm').format('HH:mm');
-
-        if(this.horarioTrabalho.index != undefined) {
-          let horarioEdit = this.diaTrabalho.horarios[this.horarioTrabalho.index];
-          horarioEdit.horario = horario;
-
-          this.diaTrabalho.horarios[this.horarioTrabalho.index] = horarioEdit;
-        } else {
-          this.diaTrabalho.horarios.push({ horario });
-        }
-
-        this.horarioTrabalho.index = null;
-        this.horarioTrabalho.horario = null;
-      }
+      this.diaTrabalho.horarios.push({ horario: null });
     },
     removeHorario(index) {
       if(index != undefined) {
@@ -165,7 +121,7 @@ export default {
 
         swal({
           title: 'Atenção!',
-          html: `Confirma a remoção do horário?`,
+          html: `Confirma a remoção da batida ${index + 1}?`,
           type: 'question',
           buttonsStyling: false,
           showCancelButton: true,
@@ -174,12 +130,16 @@ export default {
           allowOutsideClick: false
         }).then(function() {
           let horario = app.diaTrabalho.horarios[index];
-          app.diaTrabalho.horarios.splice(index, 1);
 
           if (horario.id != undefined) {
             app.service = new HorarioDiaTrabalhoService(app.$resource);
             app.service
               .delete(horario.id)
+              .then(result => {
+                app.diaTrabalho.horarios.splice(index, 1);
+              });
+          } else {
+            app.diaTrabalho.horarios.splice(index, 1);
           }
         });
       }
@@ -198,79 +158,68 @@ export default {
       this.validate()
         .then(success => {
           if(success && !this.loading) {
-            if(this.diaTrabalho.horarios.length > 0) {
-              this.loading = true;
+            this.loading = true;
 
-              this.service = new DiaTrabalhoService(this.$http);
+            this.service = new DiaTrabalhoService(this.$http);
 
-              if(this.$route.params.id) {
-                this.service
-                  .update(this.$route.params.id, this.diaTrabalho)
-                  .then(response => {
-                    let success = response.success;
+            if(this.$route.params.id) {
+              this.service
+                .update(this.$route.params.id, this.diaTrabalho)
+                .then(response => {
+                  let success = response.success;
 
-                    swal({
-                      title: success ? 'Muito bem!' : 'Ops!',
-                      html: success ? `O registro foi atualizado com sucesso` : `Falha ao salvar o registro. ${response.error}`,
-                      buttonsStyling: false,
-                      type: success ? 'success' : 'error',
-                      confirmButtonClass: 'btn btn-success btn-fill',
-                      allowOutsideClick: false
-                    }).then(function() {
-                      if(success)
-                        app.$store.dispatch('setBackToList', true);
-                    });
-                  }, err => {
-                    this.loading = false;
-                    
-                    swal({
-                      title: 'Ops!',
-                      html: `Falha ao salvar o registro. ${err}`,
-                      buttonsStyling: false,
-                      type: 'error',
-                      confirmButtonClass: 'btn btn-danger btn-fill',
-                      allowOutsideClick: false
-                    });
+                  swal({
+                    title: success ? 'Muito bem!' : 'Ops!',
+                    html: success ? `O registro foi atualizado com sucesso` : `Falha ao salvar o registro. ${response.error}`,
+                    buttonsStyling: false,
+                    type: success ? 'success' : 'error',
+                    confirmButtonClass: 'btn btn-success btn-fill',
+                    allowOutsideClick: false
+                  }).then(function() {
+                    if(success)
+                      app.$store.dispatch('setBackToList', true);
                   });
-              } else {
-                this.service
-                  .save(this.diaTrabalho)
-                  .then(response => {
-                    let success = response.success;
-
-                    swal({
-                      title: success ? 'Muito bem!' : 'Ops!',
-                      html: success ? `O registro foi salvo com sucesso` : `Falha ao salvar o registro. ${response.error}`,
-                      buttonsStyling: false,
-                      type: success ? 'success' : 'error',
-                      confirmButtonClass: 'btn btn-success btn-fill',
-                      allowOutsideClick: false
-                    }).then(function() {
-                      if(success)
-                        app.$store.dispatch('setBackToList', true);
-                    });
-                  }, err => {
-                    this.loading = false;
-                    
-                    swal({
-                      title: 'Ops!',
-                      html: `Falha ao salvar o registro. ${err}`,
-                      buttonsStyling: false,
-                      type: 'error',
-                      confirmButtonClass: 'btn btn-danger btn-fill',
-                      allowOutsideClick: false
-                    });
+                }, err => {
+                  this.loading = false;
+                  
+                  swal({
+                    title: 'Ops!',
+                    html: `Falha ao salvar o registro. ${err}`,
+                    buttonsStyling: false,
+                    type: 'error',
+                    confirmButtonClass: 'btn btn-danger btn-fill',
+                    allowOutsideClick: false
                   });
-              }
+                });
             } else {
-              swal({
-                title: 'Ops!',
-                html: `Você deve adicionar horários a este dia de trabalho.`,
-                buttonsStyling: false,
-                type: 'info',
-                confirmButtonClass: 'btn btn-success btn-fill',
-                allowOutsideClick: false
-              });
+              this.service
+                .save(this.diaTrabalho)
+                .then(response => {
+                  let success = response.success;
+
+                  swal({
+                    title: success ? 'Muito bem!' : 'Ops!',
+                    html: success ? `O registro foi salvo com sucesso` : `Falha ao salvar o registro. ${response.error}`,
+                    buttonsStyling: false,
+                    type: success ? 'success' : 'error',
+                    confirmButtonClass: 'btn btn-success btn-fill',
+                    allowOutsideClick: false
+                  }).then(function() {
+                    if(success)
+                      app.$store.dispatch('setBackToList', true);
+                  });
+                }, err => {
+                  this.loading = false;
+                  
+                  swal({
+                    title: 'Ops!',
+                    html: `Falha ao salvar o registro. ${err}`,
+                    buttonsStyling: false,
+                    type: 'error',
+                    confirmButtonClass: 'btn btn-danger btn-fill',
+                    allowOutsideClick: false
+                  });
+                });
             }
           }
         });
@@ -287,6 +236,9 @@ export default {
         .then(diaTrabalho => {
           this.diaTrabalho = diaTrabalho;
         });
+    } else {
+      this.diaTrabalho.horarios.push({ horario: null });
+      this.diaTrabalho.horarios.push({ horario: null });
     }
   }
 }

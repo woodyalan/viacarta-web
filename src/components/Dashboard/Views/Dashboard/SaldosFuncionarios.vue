@@ -23,6 +23,11 @@
     card-message(
       message='Nenhum saldo para exibir'
     )
+  //- .card-footer.text-right
+  //-   router-link(
+  //-     to='/relatorios/acompanhamentoFinanceiro'
+  //-   ) 
+  //-     button.btn.btn-primary Ver Detalhes
 </template>
 <script>
 import DashboardService from 'src/domain/dashboard/DashboardService';

@@ -105,13 +105,11 @@ export default {
           if(success && !this.loading) {
             this.loading = true;
 
-            let menu = new Menu(this.menu.nome, this.menu.ativo);
-
             this.service = new MenuService(this.$resource);
 
             if(this.$route.params.id) {
               this.service
-                .update(this.$route.params.id, menu)
+                .update(this.$route.params.id, this.menu)
                 .then(response => {
                   let success = response.success;
 
@@ -140,7 +138,7 @@ export default {
                 });
             } else {
               this.service
-                .save(menu)
+                .save(this.menu)
                 .then(response => {
                   let success = response.success;
 
