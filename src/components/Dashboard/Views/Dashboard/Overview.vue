@@ -20,6 +20,7 @@
 
 </template>
 <script>
+import LoginService from 'src/domain/login/LoginService.js';
 import SaldosFuncionarios from 'src/components/Dashboard/Views/Dashboard/SaldosFuncionarios.vue';
 import DespesasProjetos from 'src/components/Dashboard/Views/Dashboard/DespesasProjetos.vue';
 import ManutencoesVeiculos from 'src/components/Dashboard/Views/Dashboard/ManutencoesVeiculos.vue';
@@ -31,6 +32,20 @@ export default {
     'despesas-projetos': DespesasProjetos,
     'manutencoes-veiculos': ManutencoesVeiculos,
     'calendario': Calendario
+  },
+  computed: {
+    token() {
+      return this.$store.state.token;
+    }
+  },
+  mounted() {
+    if(this.token) {
+      this._service = new LoginService(this.$http);
+      this._service
+        .getUserInfo(this.$store.state.user.email);
+    } else {
+      this.$router.push('/login');
+    }
   }
 };
 </script>
