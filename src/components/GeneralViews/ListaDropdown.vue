@@ -1,4 +1,4 @@
-<template lang="pug">
+s<template lang="pug">
   .row
     .col-xs-12
       .card(v-if="telaInfo")
@@ -22,6 +22,7 @@
               .table-responsive
                 el-table.table.table-striped.table-no-bordered.table-hover(
                   :data='queriedData', 
+                  :default-sort='sort', 
                   border='', 
                   style='width: 100%'
                 )
@@ -115,7 +116,7 @@
           return this.$route.params.backRoute ? `/${this.telaInfo.menuPath}/${this.$route.params.backRoute}` : `/${this.telaInfo.menuPath}/${this.navigationBack}`;
       },
       pagedData () {
-        return this.tableData.slice(this.from, this.to)
+        return this.tableData.reverse().slice(this.from, this.to)
       },
       queriedData () {
         if(this.tableData) {
@@ -123,12 +124,12 @@
             this.pagination.total = this.tableData.length
             return this.pagedData
           }
-          let result = this.tableData
+          let result = this.tableData.reverse()
             .filter((row) => {
               let isIncluded = false
               for (let key of this.propsToSearch) {
-                let rowValue = row[key].toString()
-                if (rowValue.includes && rowValue.includes(this.searchQuery)) {
+                let rowValue = row[key].toString().toUpperCase();
+                if (rowValue.includes && rowValue.includes(this.searchQuery.toUpperCase())) {
                   isIncluded = true
                 }
               }
@@ -188,7 +189,11 @@
           perPageOptions: [10, 25, 50],
           total: 0
         },
-        searchQuery: ''
+        searchQuery: '',
+        sort: {
+          prop: 'id', 
+          order: 'descending'
+        }
       }
     },
     methods: {

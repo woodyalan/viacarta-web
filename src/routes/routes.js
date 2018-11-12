@@ -112,6 +112,8 @@ import ListaDiaTrabalho from 'src/components/Dashboard/Views/DiaTrabalho/ListaDi
 
 import ListaAcompanhamentoFinanceiro from 'src/components/Dashboard/Views/AcompanhamentoFinanceiro/ListaAcompanhamentoFinanceiro.vue'
 
+import ListaAcompanhamentoPonto from 'src/components/Dashboard/Views/AcompanhamentoPonto/ListaAcompanhamentoPonto.vue'
+
 const routes = [
   {
     path: '/',
@@ -726,6 +728,12 @@ const routes = [
         path: 'acompanhamentoFinanceiro',
         name: 'Acompanhamento Financeiro',
         component: ListaAcompanhamentoFinanceiro
+      },
+      //Ponto
+      {
+        path: 'acompanhamentoPonto',
+        name: 'Acompanhamento Ponto',
+        component: ListaAcompanhamentoPonto
       }
     ]
   },
