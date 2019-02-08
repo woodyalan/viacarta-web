@@ -13,22 +13,26 @@
           )
             .row
               .col-sm-6.col-md-3
-                fg-input-mask(
+                fg-datepicker(
                   label='Início',
-                  placeholder='Início', 
+                  placeholder='Selecione', 
                   v-model="filtro.inicio",
                   name="inicio",
-                  :rules="{ required: true, date_format: 'DD/MM/YYYY' }",
+                  format='dd/MM/yyyy',
+                  value-format='yyyy-MM-dd',
+                  :rules="{ required: true }",
                   :mask="['##/##/####']"
                 )
 
               .col-sm-6.col-md-3
-                fg-input-mask(
+                fg-datepicker(
                   label='Fim',
-                  placeholder='Fim', 
+                  placeholder='Selecione', 
                   v-model="filtro.fim",
                   name="fim",
-                  :rules="{ required: true, date_format: 'DD/MM/YYYY' }",
+                  format='dd/MM/yyyy',
+                  value-format='yyyy-MM-dd',
+                  :rules="{ required: true }",
                   :mask="['##/##/####']"
                 )
 
@@ -165,8 +169,8 @@
         lancamentos: [],
         saldoAnterior: null,
         filtro: {
-          inicio: null,
-          fim: null,
+          inicio: new Date(),
+          fim: new Date(),
           tipoLancamento: null
         }
       }
@@ -261,7 +265,7 @@
         let inicio = moment(this.filtro.inicio, 'DD/MM/YYYY');
         let fim = moment(this.filtro.fim, 'DD/MM/YYYY');
 
-        return fim.diff(inicio) > 0;
+        return fim.diff(inicio, 'days') >= 0;
       },
       buscarLancamentos() {
         this.validate()
@@ -270,14 +274,14 @@
               if(this.validPeriod()) {
                 this.loading = true;
 
-                let filtro = Object.assign({}, this.filtro);
+                // let filtro = Object.assign({}, this.filtro);
 
-                filtro.inicio = moment(filtro.inicio, 'DD/MM/YYYY').format('YYYY-MM-DD');
-                filtro.fim = moment(filtro.fim, 'DD/MM/YYYY').format('YYYY-MM-DD');
+                // filtro.inicio = moment(filtro.inicio, 'DD/MM/YYYY').format('YYYY-MM-DD');
+                // filtro.fim = moment(filtro.fim, 'DD/MM/YYYY').format('YYYY-MM-DD');
 
                 this._service = new FinanceiroService(this.$http);
                 this._service
-                  .getAcompanhamentoFinanceiro(filtro)
+                  .getAcompanhamentoFinanceiro(this.filtro)
                   .then(lancamentos => {
                     this.lancamentos = lancamentos.lancamentos;
                     this.saldoAnterior = lancamentos.saldoAnterior;
@@ -311,8 +315,8 @@
     },
     mounted() {
       let data = moment();
-      let inicio = moment(moment(data).date(1), 'YYYY-MM-DD').format('DD/MM/YYYY');
-      let fim = moment(data, 'YYYY-MM-DD').format('DD/MM/YYYY');
+      let inicio = moment(moment(data).date(1), 'YYYY-MM-DD');
+      let fim = moment(data, 'YYYY-MM-DD');
 
       this.filtro.inicio = inicio;
       this.filtro.fim = fim;

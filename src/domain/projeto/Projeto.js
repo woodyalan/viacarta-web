@@ -1,5 +1,5 @@
 export default class Projeto {
-	constructor(nome = null, cliente = null, centroCusto = null, inicio =  new Date().toLocaleDateString(), fim =  new Date().toLocaleDateString(), conclusao = null, escopo = null, ativo = null) {
+	constructor(nome = null, cliente = null, centroCusto = null, inicio =  new Date(), fim =  new Date(), conclusao = null, escopo = null, ativo = 1) {
 		this.nome = nome;
 		this.cliente = cliente;
 		this.centroCusto = centroCusto;

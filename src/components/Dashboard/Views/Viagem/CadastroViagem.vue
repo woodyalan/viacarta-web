@@ -49,22 +49,26 @@
             )
 
           .col-sm-6.col-md-3
-            fg-input-mask(
+            fg-datepicker(
               label='Data da Saída',
-              placeholder='Data da Saída', 
+              placeholder='Selecione', 
               v-model="viagem.saida",
-              name="saida",
-              :rules="{ required: true, date_format: 'DD/MM/YYYY' }",
+              name="data",
+              format='dd/MM/yyyy',
+              value-format='yyyy-MM-dd',
+              :rules="{ required: true }",
               :mask="['##/##/####']"
             )
 
           .col-sm-6.col-md-3
-            fg-input-mask(
+            fg-datepicker(
               label='Data da Chegada',
-              placeholder='Data da Chegada', 
+              placeholder='Selecione', 
               v-model="viagem.chegada",
-              name="chegada",
-              :rules="{ required: true, date_format: 'DD/MM/YYYY' }",
+              name="data",
+              format='dd/MM/yyyy',
+              value-format='yyyy-MM-dd',
+              :rules="{ required: true }",
               :mask="['##/##/####']"
             )
 
@@ -296,16 +300,16 @@ export default {
             if(this.viagem.projetos.length > 0) {
               this.loading = true;
 
-              let viagem = Object.assign({}, this.viagem);
+              // let viagem = Object.assign({}, this.viagem);
 
-              viagem.saida = moment(viagem.saida, 'DD/MM/YYYY').format('YYYY-MM-DD');
-              viagem.chegada = moment(viagem.chegada, 'DD/MM/YYYY').format('YYYY-MM-DD');
+              // viagem.saida = moment(viagem.saida, 'DD/MM/YYYY').format('YYYY-MM-DD');
+              // viagem.chegada = moment(viagem.chegada, 'DD/MM/YYYY').format('YYYY-MM-DD');
 
               this.service = new ViagemService(this.$resource);
 
               if(this.$route.params.id) {
                 this.service
-                  .update(this.$route.params.id, viagem)
+                  .update(this.$route.params.id, this.viagem)
                   .then(response => {
                     let success = response.success;
 
@@ -334,7 +338,7 @@ export default {
                   });
               } else {
                 this.service
-                  .save(viagem)
+                  .save(this.viagem)
                   .then(response => {
                     let success = response.success;
 
@@ -387,8 +391,8 @@ export default {
       this.service
         .get(this.$route.params.id)
         .then(viagem => {
-          viagem.saida = moment(viagem.saida, 'YYYY-MM-DD').format('DD/MM/YYYY');
-          viagem.chegada = moment(viagem.chegada, 'YYYY-MM-DD').format('DD/MM/YYYY');
+          viagem.saida = moment(viagem.saida, 'YYYY-MM-DD');
+          viagem.chegada = moment(viagem.chegada, 'YYYY-MM-DD');
 
           this.viagem = viagem;
         });

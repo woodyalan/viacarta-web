@@ -448,7 +448,7 @@ export default {
 
             if(this.tipoPessoa == 'F') {
               let nascimento = fornecedor.pessoaFisica.nascimento; 
-              nascimento = moment(nascimento, 'DD/MM/YYYY').format('YYYY-MM-DD');
+              nascimento = moment(nascimento, 'DD/MM/YYYY');
               fornecedor.pessoaFisica.nascimento = nascimento;
 
               fornecedor.pessoaFisica.apelido = fornecedor.pessoaFisica.apelido || null;

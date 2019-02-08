@@ -45,12 +45,14 @@
             )
 
           .col-sm-6.col-md-3
-            fg-input-mask(
+            fg-datepicker(
               label='Data da Despesa',
-              placeholder='Data da Despesa', 
+              placeholder='Selecione', 
               v-model="despesa.data",
               name="data",
-              :rules="{ required: true, date_format: 'DD/MM/YYYY' }",
+              format='dd/MM/yyyy',
+              value-format='yyyy-MM-dd',
+              :rules="{ required: true }",
               :mask="['##/##/####']"
             )
 
@@ -257,17 +259,17 @@ export default {
         if (success && !this.loading) {
           this.loading = true;
 
-          let despesa = Object.assign({}, this.despesa);
+          // let despesa = Object.assign({}, this.despesa);
 
-          let data = despesa.data; 
-          data = moment(data, 'DD/MM/YYYY').format('YYYY-MM-DD');
-          despesa.data = data;
+          // let data = despesa.data; 
+          // data = moment(data, 'DD/MM/YYYY').format('YYYY-MM-DD');
+          // despesa.data = data;
 
           this.service = new DespesaService(this.$resource);
 
           if (this.$route.params.id) {
             this.service
-              .update(this.$route.params.id, despesa)
+              .update(this.$route.params.id, this.despesa)
               .then(response => {
                 let success = response.success;
 
@@ -297,7 +299,7 @@ export default {
               });
           } else {
             this.service
-              .save(despesa)
+              .save(this.despesa)
               .then(response => {
                 let success = response.success;
 
@@ -336,9 +338,7 @@ export default {
     if (this.$route.params.id) {
       this.service = new DespesaService(this.$resource);
       this.service.get(this.$route.params.id).then(despesa => {
-        let data = despesa.data;
-        data = moment(data, 'YYYY-MM-DD').format('DD/MM/YYYY');
-        despesa.data = data;
+        despesa.data = moment(despesa.data, 'YYYY-MM-DD');
 
         this.despesa = despesa;
         this.despesa.valor = parseFloat(despesa.valor);

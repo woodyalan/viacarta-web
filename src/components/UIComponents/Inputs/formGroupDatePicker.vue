@@ -15,6 +15,11 @@
   </div>
 </template>
 <script>
+  import Vue from 'vue';
+  import { DatePicker } from 'element-ui';
+
+  Vue.use(DatePicker);
+  
   export default {
     inject: ['$validator'],
     name: 'fg-datepicker',
@@ -23,7 +28,7 @@
       name: String,
       placeholder: String,
       disabled: Boolean,
-      value: [String, Date],
+      value: [String, Date, Object],
       valueFormat: {
         default: 'yyyy-MM-dd'
       },

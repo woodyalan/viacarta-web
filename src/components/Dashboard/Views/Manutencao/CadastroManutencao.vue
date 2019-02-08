@@ -38,12 +38,14 @@
             )
 
           .col-sm-6.col-md-3
-            fg-input-mask(
+            fg-datepicker(
               label='Data da Manutenção',
-              placeholder='Data da Manutenção', 
+              placeholder='Selecione', 
               v-model="manutencao.data",
-              name="data",
-              :rules="{ required: true, date_format: 'DD/MM/YYYY' }",
+              name="data", 
+              format='dd/MM/yyyy',
+              value-format='yyyy-MM-dd',
+              :rules="{ required: true }",
               :mask="['##/##/####']"
             )
 
@@ -278,17 +280,17 @@ export default {
             if(this.manutencao.servicos.length > 0) {
               this.loading = true;
 
-              let manutencao = Object.assign({}, this.manutencao);
+              // let manutencao = Object.assign({}, this.manutencao);
 
-              let data = manutencao.data; 
-              data = moment(data, 'DD/MM/YYYY').format('YYYY-MM-DD');
-              manutencao.data = data;
+              // let data = manutencao.data; 
+              // data = moment(data, 'DD/MM/YYYY').format('YYYY-MM-DD');
+              // manutencao.data = data;
 
               this.service = new ManutencaoService(this.$resource);
 
               if(this.$route.params.id) {
                 this.service
-                  .update(this.$route.params.id, manutencao)
+                  .update(this.$route.params.id, this.manutencao)
                   .then(response => {
                     let success = response.success;
 
@@ -306,7 +308,7 @@ export default {
                   });
               } else {
                 this.service
-                  .save(manutencao)
+                  .save(this.manutencao)
                   .then(response => {
                     let success = response.success;
 
@@ -358,7 +360,7 @@ export default {
         .get(this.$route.params.id)
         .then(manutencao => {
           let data = manutencao.data;
-          data = moment(data, 'YYYY-MM-DD').format('DD/MM/YYYY');
+          data = moment(data, 'YYYY-MM-DD');
           manutencao.data = data;
 
           this.manutencao = manutencao;

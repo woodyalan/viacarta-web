@@ -26,22 +26,26 @@
             )
 
           .col-md-3
-            fg-input-mask(
+            fg-datepicker(
               label='Início',
               placeholder='Selecione', 
               v-model="seguroVeiculo.inicio",
-              name="inicio",
-              :rules="{ required: true, date_format: 'DD/MM/YYYY' }",
+              name="data",
+              format='dd/MM/yyyy',
+              value-format='yyyy-MM-dd',
+              :rules="{ required: true }",
               :mask="['##/##/####']"
             )
 
           .col-md-3
-            fg-input-mask(
+            fg-datepicker(
               label='Fim',
               placeholder='Selecione', 
               v-model="seguroVeiculo.fim",
-              name="fim",
-              :rules="{ required: true, date_format: 'DD/MM/YYYY' }",
+              name="data",
+              format='dd/MM/yyyy',
+              value-format='yyyy-MM-dd',
+              :rules="{ required: true }",
               :mask="['##/##/####']"
             )
   
@@ -127,21 +131,21 @@ export default {
           if(success && !this.loading) {
             this.loading = true;
 
-            let seguroVeiculo = Object.assign({}, this.seguroVeiculo);
+            // let seguroVeiculo = Object.assign({}, this.seguroVeiculo);
 
-            let inicio = seguroVeiculo.inicio; 
-            let fim = seguroVeiculo.fim; 
-            inicio = moment(inicio, 'DD/MM/YYYY').format('YYYY-MM-DD');
-            fim = moment(fim, 'DD/MM/YYYY').format('YYYY-MM-DD');
-            seguroVeiculo.inicio = inicio;
-            seguroVeiculo.fim = fim;
-            seguroVeiculo.apolice = seguroVeiculo.apolice || null;
+            // let inicio = seguroVeiculo.inicio; 
+            // let fim = seguroVeiculo.fim; 
+            // inicio = moment(inicio, 'DD/MM/YYYY').format('YYYY-MM-DD');
+            // fim = moment(fim, 'DD/MM/YYYY').format('YYYY-MM-DD');
+            // seguroVeiculo.inicio = inicio;
+            // seguroVeiculo.fim = fim;
+            this.seguroVeiculo.apolice = this.seguroVeiculo.apolice || null;
 
             this.service = new SeguroVeiculoService(this.$http);
 
             if(this.$route.params.id) {
               this.service
-                .update(this.$route.params.id, seguroVeiculo)
+                .update(this.$route.params.id, this.seguroVeiculo)
                 .then(response => {
                   let success = response.success;
 
@@ -170,7 +174,7 @@ export default {
                 });
             } else {
               this.service
-                .save(seguroVeiculo)
+                .save(this.seguroVeiculo)
                 .then(response => {
                   let success = response.success;
 
@@ -204,7 +208,6 @@ export default {
   },
   mounted() {
     this.seguroVeiculo = new SeguroVeiculo(this.$route.params.veiculoId);
-    console.log(this.$route.params);
 
     if(this.$route.params.id) {
       this.service = new SeguroVeiculoService(this.$http);
@@ -213,8 +216,8 @@ export default {
         .then(seguroVeiculo => {
           let inicio = seguroVeiculo.inicio;
           let fim = seguroVeiculo.fim;
-          inicio = moment(inicio, 'YYYY-MM-DD').format('DD/MM/YYYY');
-          fim = moment(fim, 'YYYY-MM-DD').format('DD/MM/YYYY');
+          inicio = moment(inicio, 'YYYY-MM-DD');
+          fim = moment(fim, 'YYYY-MM-DD');
           seguroVeiculo.inicio = inicio;
           seguroVeiculo.fim = fim;
 

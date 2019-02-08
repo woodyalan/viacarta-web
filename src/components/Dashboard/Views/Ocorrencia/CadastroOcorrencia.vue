@@ -28,12 +28,14 @@
             )
 
           .col-md-3
-            fg-input-mask(
+            fg-datepicker(
               label='Data da Ocorrência',
               placeholder='Selecione', 
               v-model="ocorrencia.data",
               name="data",
-              :rules="{ required: true, date_format: 'DD/MM/YYYY' }",
+              format='dd/MM/yyyy',
+              value-format='yyyy-MM-dd',
+              :rules="{ required: true }",
               :mask="['##/##/####']"
             )
   
@@ -114,17 +116,17 @@ export default {
           if(success && !this.loading) {
             this.loading = true;
 
-            let ocorrencia = Object.assign({}, this.ocorrencia);
+            // let ocorrencia = Object.assign({}, this.ocorrencia);
 
-            let data = ocorrencia.data; 
-            data = moment(data, 'DD/MM/YYYY').format('YYYY-MM-DD');
-            ocorrencia.data = data;
+            // let data = ocorrencia.data; 
+            // data = moment(data, 'DD/MM/YYYY').format('YYYY-MM-DD');
+            // ocorrencia.data = data;
 
             this.service = new OcorrenciaService(this.$resource);
 
             if(this.$route.params.id) {
               this.service
-                .update(this.$route.params.id, ocorrencia)
+                .update(this.$route.params.id, this.ocorrencia)
                 .then(response => {
                   let success = response.success;
 
@@ -153,7 +155,7 @@ export default {
                 });
             } else {
               this.service
-                .save(ocorrencia)
+                .save(this.ocorrencia)
                 .then(response => {
                   let success = response.success;
 
@@ -188,6 +190,7 @@ export default {
   mounted() {
     let app = this;
     this.ocorrencia = new Ocorrencia();
+    this.ocorrencia.data = moment();
 
     if(this.$route.params.id) {
       this.service = new OcorrenciaService(this.$resource);
@@ -195,7 +198,7 @@ export default {
         .get(this.$route.params.id)
         .then(ocorrencia => {
           let data = ocorrencia.data;
-          data = moment(data, 'YYYY-MM-DD').format('DD/MM/YYYY');
+          data = moment(data, 'YYYY-MM-DD');
           ocorrencia.data = data;
           
           this.ocorrencia = ocorrencia;

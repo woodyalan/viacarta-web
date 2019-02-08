@@ -61,13 +61,14 @@
             )
 
           .col-md-3
-            fg-input-mask(
-              type='text',
+            fg-datepicker(
               label='Data do Registro',
-              placeholder='Data do Registro', 
-              v-model='funcionario.registro', 
-              name='registro', 
-              :rules="{ required: false, date_format: 'DD/MM/YYYY' }",
+              placeholder='Selecione', 
+              v-model="funcionario.registro",
+              name="registro",
+              format='dd/MM/yyyy',
+              value-format='yyyy-MM-dd',
+              :rules="{ required: true }",
               :mask="['##/##/####']"
             )
 
@@ -284,7 +285,7 @@ export default {
         cargo: null,
         planoTrabalho: null,
         ativo: null,
-        registro: null,
+        registro: new Date(),
         cnh: null,
         planoSaude: null,
         anexosPessoa: []
@@ -434,12 +435,12 @@ export default {
               pessoa: Object.assign({}, this.pessoa)
             }
 
-            funcionario.pessoaFisica.nascimento = moment(funcionario.pessoaFisica.nascimento, 'DD/MM/YYYY').format('YYYY-MM-DD');
+            funcionario.pessoaFisica.nascimento = moment(funcionario.pessoaFisica.nascimento, 'DD/MM/YYYY');
             
             funcionario.funcionario.registro = funcionario.funcionario.registro || null;
             
             if(funcionario.funcionario.registro) {
-              funcionario.funcionario.registro = moment(funcionario.funcionario.registro, 'DD/MM/YYYY').format('YYYY-MM-DD');            
+              funcionario.funcionario.registro = moment(funcionario.funcionario.registro, 'DD/MM/YYYY');            
             }
 
             funcionario.pessoaFisica.apelido = funcionario.pessoaFisica.apelido || null;
@@ -527,7 +528,7 @@ export default {
               cargo: funcionario.cargo,
               planoTrabalho: funcionario.planoTrabalho,
               ativo: funcionario.ativo,
-              registro: moment(funcionario.registro, 'YYYY-MM-DD').format('DD/MM/YYYY'),
+              registro: moment(funcionario.registro, 'YYYY-MM-DD'),
               cnh: funcionario.cnh,
               planoSaude: funcionario.planoSaude,
               anexosPessoa: funcionario.anexosPessoa

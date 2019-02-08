@@ -1,5 +1,5 @@
 export default class Viagem {
-	constructor(veiculo = null, funcionario = null, odometroInicio = null, odometroTermino = null, saida = new Date().toLocaleDateString(), chegada = new Date().toLocaleDateString(), observacoes = null, projetos = []) {
+	constructor(veiculo = null, funcionario = null, odometroInicio = null, odometroTermino = null, saida = new Date(), chegada = new Date(), observacoes = null, projetos = []) {
 		this.veiculo = veiculo;
 		this.funcionario = funcionario;
 		this.odometroInicio = odometroInicio;

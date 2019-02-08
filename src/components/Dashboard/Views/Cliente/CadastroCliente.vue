@@ -360,7 +360,7 @@ export default {
             }).then(function(result) {
               if(result) {
                 let nascimento = pessoaFisica.nascimento;
-                nascimento = moment(nascimento, 'YYYY-MM-DD').format('DD/MM/YYYY');
+                nascimento = moment(nascimento, 'YYYY-MM-DD');
                 pessoaFisica.nascimento = nascimento;
 
                 app.pessoaFisica = pessoaFisica;
@@ -448,7 +448,7 @@ export default {
 
             if(this.tipoPessoa == 'F') {
               let nascimento = cliente.pessoaFisica.nascimento; 
-              nascimento = moment(nascimento, 'DD/MM/YYYY').format('YYYY-MM-DD');
+              nascimento = moment(nascimento, 'DD/MM/YYYY');
               cliente.pessoaFisica.nascimento = nascimento;
 
               cliente.pessoaFisica.apelido = cliente.pessoaFisica.apelido || null;

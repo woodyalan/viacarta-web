@@ -17,12 +17,14 @@
             )
 
           .col-md-3
-            fg-input-mask(
-              label='Data',
-              placeholder='Data', 
+            fg-datepicker(
+              label='Data do Feriado',
+              placeholder='Selecione', 
               v-model="feriado.dia",
-              name="dia"
-              :rules="{ required: true, date_format: 'DD/MM/YYYY' }",
+              name="data", 
+              format='dd/MM/yyyy',
+              value-format='yyyy-MM-dd',
+              :rules="{ required: true }",
               :mask="['##/##/####']"
             )
   
@@ -35,7 +37,6 @@
 </template>
 <script>
 import Vue from 'vue'
-import { DatePicker } from 'element-ui'
 import moment from 'moment'
 
 import Cadastro from 'src/components/GeneralViews/Cadastro.vue'
@@ -43,8 +44,6 @@ import FeriadoService from 'src/domain/feriado/FeriadoService'
 import CalendarioService from 'src/domain/calendario/CalendarioService'
 import Feriado from 'src/domain/feriado/Feriado'
 import swal from 'sweetalert2'
-
-Vue.use(DatePicker);
 
 export default {
   $validates: true,
@@ -95,17 +94,17 @@ export default {
           if(success && !this.loading) {
             this.loading = true;
 
-            let feriado = Object.assign({}, this.feriado);
+            // let feriado = Object.assign({}, this.feriado);
 
-            let dia = feriado.dia; 
-            dia = moment(dia, 'DD/MM/YYYY').format('YYYY-MM-DD');
-            feriado.dia = dia;
+            // let dia = feriado.dia; 
+            // dia = moment(dia, 'DD/MM/YYYY').format('YYYY-MM-DD');
+            // feriado.dia = dia;
 
             this.service = new FeriadoService(this.$http);
             
             if(this.$route.params.id) {
               this.service
-                .update(this.$route.params.id, feriado)
+                .update(this.$route.params.id, this.feriado)
                 .then(response => {
                   let success = response.success;
 
@@ -134,7 +133,7 @@ export default {
                 });
             } else {
               this.service
-                .save(feriado)
+                .save(this.feriado)
                 .then(response => {
                   let success = response.success;
 
@@ -175,8 +174,7 @@ export default {
         .get(this.$route.params.id)
         .then(feriado => {
           let dia = feriado.dia;
-          dia = moment(dia, 'YYYY-MM-DD').format('DD/MM/YYYY');
-          feriado.dia = dia;
+          feriado.dia = moment(dia, 'YYYY-MM-DD');
 
           this.feriado = feriado;
         });
