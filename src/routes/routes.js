@@ -1,118 +1,121 @@
-import DashboardLayout from '../components/Dashboard/Layout/DashboardLayout.vue'
+import DashboardLayout from '../components/Dashboard/Layout/DashboardLayout.vue';
 
 // GeneralViews
-import NotFound from '../components/GeneralViews/NotFoundPage.vue'
-import Logoff from '../components/GeneralViews/Logoff.vue'
+import NotFound from '../components/GeneralViews/NotFoundPage.vue';
+import Logoff from '../components/GeneralViews/Logoff.vue';
 
 // Dashboard pages
-import Overview from 'src/components/Dashboard/Views/Dashboard/Overview.vue'
+import Overview from 'src/components/Dashboard/Views/Dashboard/Overview.vue';
 
 // Pages
-import Login from 'src/components/Dashboard/Views/Pages/Login.vue'
+import Login from 'src/components/Dashboard/Views/Pages/Login.vue';
 
 // Cadastros
-import CadastroCentroCusto from 'src/components/Dashboard/Views/CentroCusto/CadastroCentroCusto.vue'
-import ListaCentroCusto from 'src/components/Dashboard/Views/CentroCusto/ListaCentroCusto.vue'
+import CadastroCentroCusto from 'src/components/Dashboard/Views/CentroCusto/CadastroCentroCusto.vue';
+import ListaCentroCusto from 'src/components/Dashboard/Views/CentroCusto/ListaCentroCusto.vue';
 
-import CadastroMenus from 'src/components/Dashboard/Views/Menus/CadastroMenus.vue'
-import ListaMenus from 'src/components/Dashboard/Views/Menus/ListaMenus.vue'
+import CadastroMenus from 'src/components/Dashboard/Views/Menus/CadastroMenus.vue';
+import ListaMenus from 'src/components/Dashboard/Views/Menus/ListaMenus.vue';
 
-import CadastroPerfis from 'src/components/Dashboard/Views/Perfis/CadastroPerfis.vue'
-import ListaPerfis from 'src/components/Dashboard/Views/Perfis/ListaPerfis.vue'
+import CadastroPerfis from 'src/components/Dashboard/Views/Perfis/CadastroPerfis.vue';
+import ListaPerfis from 'src/components/Dashboard/Views/Perfis/ListaPerfis.vue';
 
-import CadastroTiposVeiculo from 'src/components/Dashboard/Views/TiposVeiculo/CadastroTiposVeiculo.vue'
-import ListaTiposVeiculo from 'src/components/Dashboard/Views/TiposVeiculo/ListaTiposVeiculo'
+import CadastroTiposVeiculo from 'src/components/Dashboard/Views/TiposVeiculo/CadastroTiposVeiculo.vue';
+import ListaTiposVeiculo from 'src/components/Dashboard/Views/TiposVeiculo/ListaTiposVeiculo';
 
-import CadastroSeguradora from 'src/components/Dashboard/Views/Seguradora/CadastroSeguradora.vue'
-import ListaSeguradora from 'src/components/Dashboard/Views/Seguradora/ListaSeguradora.vue'
+import CadastroSeguradora from 'src/components/Dashboard/Views/Seguradora/CadastroSeguradora.vue';
+import ListaSeguradora from 'src/components/Dashboard/Views/Seguradora/ListaSeguradora.vue';
 
-import CadastroVeiculo from 'src/components/Dashboard/Views/Veiculo/CadastroVeiculo.vue'
-import ListaVeiculo from 'src/components/Dashboard/Views/Veiculo/ListaVeiculo.vue'
+import CadastroVeiculo from 'src/components/Dashboard/Views/Veiculo/CadastroVeiculo.vue';
+import ListaVeiculo from 'src/components/Dashboard/Views/Veiculo/ListaVeiculo.vue';
 
-import CadastroUsuario from 'src/components/Dashboard/Views/Usuario/CadastroUsuario.vue'
-import ListaUsuario from 'src/components/Dashboard/Views/Usuario/ListaUsuario.vue'
+import CadastroUsuario from 'src/components/Dashboard/Views/Usuario/CadastroUsuario.vue';
+import ListaUsuario from 'src/components/Dashboard/Views/Usuario/ListaUsuario.vue';
 
-import CadastroTela from 'src/components/Dashboard/Views/Tela/CadastroTela.vue'
-import ListaTela from 'src/components/Dashboard/Views/Tela/ListaTela.vue'
+import CadastroTela from 'src/components/Dashboard/Views/Tela/CadastroTela.vue';
+import ListaTela from 'src/components/Dashboard/Views/Tela/ListaTela.vue';
 
-import CadastroTelaPerfil from 'src/components/Dashboard/Views/TelaPerfil/CadastroTelaPerfil.vue'
-import ListaTelaPerfil from 'src/components/Dashboard/Views/TelaPerfil/ListaTelaPerfil.vue'
+import CadastroTelaPerfil from 'src/components/Dashboard/Views/TelaPerfil/CadastroTelaPerfil.vue';
+import ListaTelaPerfil from 'src/components/Dashboard/Views/TelaPerfil/ListaTelaPerfil.vue';
 
-import CadastroTipoOcorrencia from 'src/components/Dashboard/Views/TipoOcorrencia/CadastroTipoOcorrencia.vue'
-import ListaTipoOcorrencia from 'src/components/Dashboard/Views/TipoOcorrencia/ListaTipoOcorrencia.vue'
+import CadastroTipoOcorrencia from 'src/components/Dashboard/Views/TipoOcorrencia/CadastroTipoOcorrencia.vue';
+import ListaTipoOcorrencia from 'src/components/Dashboard/Views/TipoOcorrencia/ListaTipoOcorrencia.vue';
 
-import CadastroServico from 'src/components/Dashboard/Views/Servico/CadastroServico.vue'
-import ListaServico from 'src/components/Dashboard/Views/Servico/ListaServico.vue'
+import CadastroServico from 'src/components/Dashboard/Views/Servico/CadastroServico.vue';
+import ListaServico from 'src/components/Dashboard/Views/Servico/ListaServico.vue';
 
-import CadastroSeguroVeiculo from 'src/components/Dashboard/Views/SeguroVeiculo/CadastroSeguroVeiculo.vue'
-import ListaSeguroVeiculo from 'src/components/Dashboard/Views/SeguroVeiculo/ListaSeguroVeiculo.vue'
+import CadastroSeguroVeiculo from 'src/components/Dashboard/Views/SeguroVeiculo/CadastroSeguroVeiculo.vue';
+import ListaSeguroVeiculo from 'src/components/Dashboard/Views/SeguroVeiculo/ListaSeguroVeiculo.vue';
 
-import CadastroPlanoManutencao from 'src/components/Dashboard/Views/PlanoManutencao/CadastroPlanoManutencao.vue'
-import ListaPlanoManutencao from 'src/components/Dashboard/Views/PlanoManutencao/ListaPlanoManutencao.vue'
+import CadastroPlanoManutencao from 'src/components/Dashboard/Views/PlanoManutencao/CadastroPlanoManutencao.vue';
+import ListaPlanoManutencao from 'src/components/Dashboard/Views/PlanoManutencao/ListaPlanoManutencao.vue';
 
-import CadastroServicoPlanoManutencao from 'src/components/Dashboard/Views/ServicoPlanoManutencao/CadastroServicoPlanoManutencao.vue'
-import ListaServicoPlanoManutencao from 'src/components/Dashboard/Views/servicoPlanoManutencao/ListaServicoPlanoManutencao.vue'
+import CadastroServicoPlanoManutencao from 'src/components/Dashboard/Views/ServicoPlanoManutencao/CadastroServicoPlanoManutencao.vue';
+import ListaServicoPlanoManutencao from 'src/components/Dashboard/Views/servicoPlanoManutencao/ListaServicoPlanoManutencao.vue';
 
-import CadastroTipoDespesa from 'src/components/Dashboard/Views/TipoDespesa/CadastroTipoDespesa.vue'
-import ListaTipoDespesa from 'src/components/Dashboard/Views/TipoDespesa/ListaTipoDespesa.vue'
+import CadastroTipoDespesa from 'src/components/Dashboard/Views/TipoDespesa/CadastroTipoDespesa.vue';
+import ListaTipoDespesa from 'src/components/Dashboard/Views/TipoDespesa/ListaTipoDespesa.vue';
 
-import CadastroCargo from 'src/components/Dashboard/Views/Cargo/CadastroCargo.vue'
-import ListaCargo from 'src/components/Dashboard/Views/Cargo/ListaCargo.vue'
+import CadastroCargo from 'src/components/Dashboard/Views/Cargo/CadastroCargo.vue';
+import ListaCargo from 'src/components/Dashboard/Views/Cargo/ListaCargo.vue';
 
-import CadastroBanco from 'src/components/Dashboard/Views/Banco/CadastroBanco.vue'
-import ListaBanco from 'src/components/Dashboard/Views/Banco/ListaBanco.vue'
+import CadastroBanco from 'src/components/Dashboard/Views/Banco/CadastroBanco.vue';
+import ListaBanco from 'src/components/Dashboard/Views/Banco/ListaBanco.vue';
 
-import CadastroPlanoTrabalho from 'src/components/Dashboard/Views/PlanoTrabalho/CadastroPlanoTrabalho.vue'
-import ListaPlanoTrabalho from 'src/components/Dashboard/Views/PlanoTrabalho/ListaPlanoTrabalho.vue'
+import CadastroPlanoTrabalho from 'src/components/Dashboard/Views/PlanoTrabalho/CadastroPlanoTrabalho.vue';
+import ListaPlanoTrabalho from 'src/components/Dashboard/Views/PlanoTrabalho/ListaPlanoTrabalho.vue';
 
-import CadastroCalendario from 'src/components/Dashboard/Views/calendario/CadastroCalendario.vue'
-import ListaCalendario from 'src/components/Dashboard/Views/calendario/ListaCalendario.vue'
+import CadastroCalendario from 'src/components/Dashboard/Views/calendario/CadastroCalendario.vue';
+import ListaCalendario from 'src/components/Dashboard/Views/calendario/ListaCalendario.vue';
 
-import CadastroFeriado from 'src/components/Dashboard/Views/Feriado/CadastroFeriado.vue'
-import ListaFeriado from 'src/components/Dashboard/Views/Feriado/ListaFeriado.vue'
+import CadastroFeriado from 'src/components/Dashboard/Views/Feriado/CadastroFeriado.vue';
+import ListaFeriado from 'src/components/Dashboard/Views/Feriado/ListaFeriado.vue';
 
-import CadastroFuncionario from 'src/components/Dashboard/Views/Funcionario/CadastroFuncionario.vue'
-import ListaFuncionario from 'src/components/Dashboard/Views/Funcionario/ListaFuncionario.vue'
+import CadastroFuncionario from 'src/components/Dashboard/Views/Funcionario/CadastroFuncionario.vue';
+import ListaFuncionario from 'src/components/Dashboard/Views/Funcionario/ListaFuncionario.vue';
 
-import CadastroContaBancaria from 'src/components/Dashboard/Views/ContaBancaria/CadastroContaBancaria.vue'
-import ListaContaBancaria from 'src/components/Dashboard/Views/ContaBancaria/ListaContaBancaria.vue'
+import CadastroContaBancaria from 'src/components/Dashboard/Views/ContaBancaria/CadastroContaBancaria.vue';
+import ListaContaBancaria from 'src/components/Dashboard/Views/ContaBancaria/ListaContaBancaria.vue';
 
-import CadastroCliente from 'src/components/Dashboard/Views/Cliente/CadastroCliente.vue'
-import ListaCliente from 'src/components/Dashboard/Views/Cliente/ListaCliente.vue'
+import CadastroCliente from 'src/components/Dashboard/Views/Cliente/CadastroCliente.vue';
+import ListaCliente from 'src/components/Dashboard/Views/Cliente/ListaCliente.vue';
 
-import CadastroContato from 'src/components/Dashboard/Views/Contato/CadastroContato.vue'
-import ListaContato from 'src/components/Dashboard/Views/Contato/ListaContato.vue'
+import CadastroContato from 'src/components/Dashboard/Views/Contato/CadastroContato.vue';
+import ListaContato from 'src/components/Dashboard/Views/Contato/ListaContato.vue';
 
-import CadastroFornecedor from 'src/components/Dashboard/Views/Fornecedor/CadastroFornecedor.vue'
-import ListaFornecedor from 'src/components/Dashboard/Views/Fornecedor/ListaFornecedor.vue'
+import CadastroFornecedor from 'src/components/Dashboard/Views/Fornecedor/CadastroFornecedor.vue';
+import ListaFornecedor from 'src/components/Dashboard/Views/Fornecedor/ListaFornecedor.vue';
 
-import CadastroProjeto from 'src/components/Dashboard/Views/Projeto/CadastroProjeto.vue'
-import ListaProjeto from 'src/components/Dashboard/Views/Projeto/ListaProjeto.vue'
+import CadastroProjeto from 'src/components/Dashboard/Views/Projeto/CadastroProjeto.vue';
+import ListaProjeto from 'src/components/Dashboard/Views/Projeto/ListaProjeto.vue';
 
-import CadastroFuncionarioProjeto from 'src/components/Dashboard/Views/FuncionarioProjeto/CadastroFuncionarioProjeto.vue'
-import ListaFuncionarioProjeto from 'src/components/Dashboard/Views/FuncionarioProjeto/ListaFuncionarioProjeto.vue'
+import CadastroFuncionarioProjeto from 'src/components/Dashboard/Views/FuncionarioProjeto/CadastroFuncionarioProjeto.vue';
+import ListaFuncionarioProjeto from 'src/components/Dashboard/Views/FuncionarioProjeto/ListaFuncionarioProjeto.vue';
 
-import CadastroCusteio from 'src/components/Dashboard/Views/Custeio/CadastroCusteio.vue'
-import ListaCusteio from 'src/components/Dashboard/Views/Custeio/ListaCusteio.vue'
+import CadastroCusteio from 'src/components/Dashboard/Views/Custeio/CadastroCusteio.vue';
+import ListaCusteio from 'src/components/Dashboard/Views/Custeio/ListaCusteio.vue';
 
-import CadastroDespesa from 'src/components/Dashboard/Views/Despesa/CadastroDespesa.vue'
-import ListaDespesa from 'src/components/Dashboard/Views/Despesa/ListaDespesa.vue'
+import CadastroDespesa from 'src/components/Dashboard/Views/Despesa/CadastroDespesa.vue';
+import ListaDespesa from 'src/components/Dashboard/Views/Despesa/ListaDespesa.vue';
 
-import CadastroOcorrencia from 'src/components/Dashboard/Views/Ocorrencia/CadastroOcorrencia.vue'
-import ListaOcorrencia from 'src/components/Dashboard/Views/Ocorrencia/ListaOcorrencia.vue'
+import CadastroOcorrencia from 'src/components/Dashboard/Views/Ocorrencia/CadastroOcorrencia.vue';
+import ListaOcorrencia from 'src/components/Dashboard/Views/Ocorrencia/ListaOcorrencia.vue';
 
-import CadastroManutencao from 'src/components/Dashboard/Views/Manutencao/CadastroManutencao.vue'
-import ListaManutencao from 'src/components/Dashboard/Views/Manutencao/ListaManutencao.vue'
+import CadastroManutencao from 'src/components/Dashboard/Views/Manutencao/CadastroManutencao.vue';
+import ListaManutencao from 'src/components/Dashboard/Views/Manutencao/ListaManutencao.vue';
 
-import CadastroViagem from 'src/components/Dashboard/Views/Viagem/CadastroViagem.vue'
-import ListaViagem from 'src/components/Dashboard/Views/Viagem/ListaViagem.vue'
+import CadastroViagem from 'src/components/Dashboard/Views/Viagem/CadastroViagem.vue';
+import ListaViagem from 'src/components/Dashboard/Views/Viagem/ListaViagem.vue';
 
-import CadastroDiaTrabalho from 'src/components/Dashboard/Views/DiaTrabalho/CadastroDiaTrabalho.vue'
-import ListaDiaTrabalho from 'src/components/Dashboard/Views/DiaTrabalho/ListaDiaTrabalho.vue'
+import CadastroDiaTrabalho from 'src/components/Dashboard/Views/DiaTrabalho/CadastroDiaTrabalho.vue';
+import ListaDiaTrabalho from 'src/components/Dashboard/Views/DiaTrabalho/ListaDiaTrabalho.vue';
 
-import ListaAcompanhamentoFinanceiro from 'src/components/Dashboard/Views/AcompanhamentoFinanceiro/ListaAcompanhamentoFinanceiro.vue'
+import ListaAcompanhamentoFinanceiro from 'src/components/Dashboard/Views/AcompanhamentoFinanceiro/ListaAcompanhamentoFinanceiro.vue';
 
-import ListaAcompanhamentoPonto from 'src/components/Dashboard/Views/AcompanhamentoPonto/ListaAcompanhamentoPonto.vue'
+import ListaAcompanhamentoPonto from 'src/components/Dashboard/Views/AcompanhamentoPonto/ListaAcompanhamentoPonto.vue';
+
+import ListaAcompanhamentoPropriedades from 'src/components/Dashboard/Views/AcompanhamentoPropriedades/ListaAcompanhamentoPropriedades.vue';
+import ViewPropriedade from 'src/components/Dashboard/Views/AcompanhamentoPropriedades/ViewPropriedade.vue';
 
 const routes = [
   {
@@ -193,7 +196,7 @@ const routes = [
         path: 'telaPerfil/:perfilId',
         name: 'Telas do Perfil',
         component: ListaTelaPerfil
-      },//Usuário
+      }, //Usuário
       {
         path: 'usuario/new',
         name: 'Novo Usuário',
@@ -224,7 +227,7 @@ const routes = [
         path: 'tela',
         name: 'Tela',
         component: ListaTela
-      },
+      }
     ]
   },
   {
@@ -717,7 +720,7 @@ const routes = [
         name: 'Fornecedor',
         component: ListaFornecedor
       }
-    ],
+    ]
   },
   {
     path: '/relatorios',
@@ -734,11 +737,22 @@ const routes = [
         path: 'acompanhamentoPonto',
         name: 'Acompanhamento Ponto',
         component: ListaAcompanhamentoPonto
+      },
+      //Propriedades
+      {
+        path: 'acompanhamentoPropriedades',
+        name: 'Acompanhamento de Propriedades',
+        component: ListaAcompanhamentoPropriedades
       }
     ]
   },
-  {path: '*', component: NotFound}
-]
+  {
+    path: '/relatorios/propriedade/:id',
+    name: 'Imprimir Propriedades',
+    component: ViewPropriedade
+  },
+  { path: '*', component: NotFound }
+];
 
 /**
  * Asynchronously load view (Webpack Lazy loading compatible)
@@ -749,4 +763,4 @@ const routes = [
    return res;
 };**/
 
-export default routes
+export default routes;

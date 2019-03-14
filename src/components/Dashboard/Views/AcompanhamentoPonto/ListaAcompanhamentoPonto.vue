@@ -75,73 +75,9 @@
                   p.mb0.text-info 
                     small {{ registro.dataInfo.nomeDia }}
                 td
-                  //- el-dropdown(
-                  //-   v-for="registroPonto in registro.registrosPonto"
-                  //-   size='medium', 
-                  //-   split-button='', 
-                  //-   type='default'
-                  //- )
-                  //-   | {{ registroPonto.horaRegistro }}
-                  //-   el-dropdown-menu(
-                  //-     slot='dropdown'
-                  //-   )
-                  //-     el-dropdown-item Remover
                   a.btn.btn-info.btn-fill.btn-ponto(
                     v-for="registroPonto in registro.registrosPonto"
                   ) {{ registroPonto.horaRegistro }}
-
-
-          //-   thead
-          //-     tr
-          //-       th.text-info #
-          //-       th.text-info Data
-          //-       th.text-info Descrição
-          //-       th.text-info Funcionário
-          //-       th.text-right.text-info Valor R$
-          //-   tbody
-          //-     tr.warning
-          //-       td(
-          //-         colspan='2'
-          //-       )
-          //-       td(
-          //-         colspan='2'
-          //-       ) Saldo Anterior
-          //-       td.text-right  
-          //-         strong {{ formatMoney(saldoAnterior) }}
-          //-     tr(
-          //-       v-for="lancamento in lancamentos"
-          //-     )
-          //-       td {{ lancamento.id }}
-          //-       td {{ moment(lancamento.data, 'YYYY-MM-DD').format('DD/MM/YYYY') }}
-          //-       td {{ lancamento.descricao }}
-          //-         p.mb0.text-info(
-          //-           v-if='lancamento.projeto'
-          //-         )
-          //-           small {{ lancamento.projeto }}
-          //-       td {{ lancamento.funcionario }}
-          //-         p.mb0.text-info(
-          //-           v-if='lancamento.banco'
-          //-         )
-          //-           small {{ lancamento.banco }} {{ lancamento.agencia }} {{ lancamento.operacao }} {{ lancamento.conta }}
-          //-       td.text-right {{ formatMoney(lancamento.valor) }} {{ lancamento.tipo }}
-          //-     tr.info
-          //-       td(
-          //-         colspan='2'
-          //-       )
-          //-       td(
-          //-         colspan='2'
-          //-       ) Saldo Atual
-          //-       td.text-right 
-          //-         strong {{ formatMoney(saldoAtual) }}
-          //-   tfoot
-          //-     tr
-          //-       th(
-          //-         colspan='2'
-          //-       ) {{ this.lancamentos.length }} Lançamento(s)
-          //-       th.text-right(
-          //-         colspan='2'
-          //-       ) Total do(s) Lançamento(s) R$
-          //-       th.text-right {{ formatMoney(totalLancamentos) }}
 
           p.lead.text-center(
             v-else
@@ -162,8 +98,8 @@
         loading: false,
         registros: [],
         filtro: {
-          inicio: null,
-          fim: null,
+          inicio: new Date(),
+          fim: new Date(),
           funcionario: null
         }
       }
@@ -271,9 +207,6 @@
 
       this.filtro.inicio = inicio;
       this.filtro.fim = fim;
-      // this.filtro.inicio = '01/09/2018';
-      // this.filtro.fim = '30/09/2018';
-      // this.filtro.funcionario = 5;
     }
   }
 </script>
