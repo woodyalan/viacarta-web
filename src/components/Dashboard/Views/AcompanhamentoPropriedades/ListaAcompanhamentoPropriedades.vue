@@ -94,7 +94,7 @@ export default {
   $validates: true,
   data() {
     return {
-      route: "acompanhamentoPonto",
+      route: "acompanhamentoPropriedades",
       loading: false,
       registros: [],
       filtro: {
