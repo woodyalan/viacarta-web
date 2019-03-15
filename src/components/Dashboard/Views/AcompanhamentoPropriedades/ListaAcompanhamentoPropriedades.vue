@@ -78,7 +78,7 @@
                     :to="`/relatorios/propriedade/${registro.id}`"
                     target="_blank"
                   )
-                    a.btn.btn-xs.btn-fill.btn-default Imprimir
+                    a.btn.btn-xs.btn-fill.btn-default Visualizar
 
           p.lead.text-center(
             v-else

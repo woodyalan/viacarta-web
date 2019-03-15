@@ -6,6 +6,9 @@
           div(
             v-if="fichaCadastro"
           )
+            a.btn.btn-fill.btn-default.hidden-print.pull-right(
+              @click.prevent="print()"
+            ) Imprimir
             h4.title Ficha de Cadastro
 
             .row 
@@ -143,7 +146,7 @@
                 | {{fichaCadastro.proprietarioFichaCadastro.profissao || '-'}}
             
               .col-xs-3.form-group
-                p Número
+                p Nacionalidade
                 | {{fichaCadastro.proprietarioFichaCadastro.nacionalidade || '-'}}
 
             .row 
@@ -236,9 +239,15 @@
                       :src="`${apiUrl}${foto.arquivo}`"
                     )
 
+            hr
+
+          h4.title(
+            v-else-if="loading"
+          ) Carregando...
+
           h4.title(
             v-else
-          ) Ficha não localizada
+          ) Propriedade não localizada
 </template>
 <script>
 import PropriedadeService from "src/domain/propriedade/PropriedadeService";
@@ -247,7 +256,9 @@ import moment from "moment";
 export default {
   $validates: true,
   data() {
-    return {};
+    return {
+      loading: true
+    };
   },
   computed: {
     localizacao() {
@@ -269,7 +280,16 @@ export default {
     fichaCadastro() {
       let app = this;
       this.service = new PropriedadeService(this.$http);
-      return this.service.get(this.$route.params.id);
+      return this.service.get(this.$route.params.id)
+        .then(result => {
+          this.loading = false;
+          return result;
+        });
+    }
+  },
+  methods: {
+    print() {
+      window.print();
     }
   }
 };
