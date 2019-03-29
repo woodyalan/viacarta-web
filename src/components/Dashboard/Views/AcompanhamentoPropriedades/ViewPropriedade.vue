@@ -16,13 +16,17 @@
                 p Número
                 | {{fichaCadastro.numero}}
 
-              .col-xs-6.form-group
+              .col-xs-3.form-group
                 p Instalação
                 | {{fichaCadastro.instalacao}}
 
               .col-xs-3.form-group
                 p Criado em
                 | {{moment(fichaCadastro.createdAt).format('DD/MM/YYYY')}}
+
+              .col-xs-3.form-group
+                p Última visita em
+                | {{ultimaVisita}}
 
             .page-header
               h6.title Imóvel
@@ -218,7 +222,7 @@
                   h6.title Fotos do Imóvel
 
                 .row 
-                  .col-xs-4(
+                  .col-xs-3(
                     v-for="foto in fichaCadastro.fotoImovelFichaCadastros"
                   )
                     img.img-responsive.img-rounded(
@@ -232,7 +236,7 @@
                   h6.title Fotos dos Documentos
 
                 .row 
-                  .col-xs-4(
+                  .col-xs-3(
                     v-for="foto in fichaCadastro.fotoDocumentoFichaCadastros"
                   )
                     img.img-responsive.img-rounded(
@@ -264,9 +268,14 @@ export default {
     localizacao() {
       let localizacao;
 
-      if(this.fichaCadastro) {
-        if(this.fichaCadastro.imovelFichaCadastro.latitude && this.fichaCadastro.imovelFichaCadastro.longitude) {
-          localizacao = `${this.fichaCadastro.imovelFichaCadastro.latitude}, ${this.fichaCadastro.imovelFichaCadastro.longitude}`;
+      if (this.fichaCadastro) {
+        if (
+          this.fichaCadastro.imovelFichaCadastro.latitude &&
+          this.fichaCadastro.imovelFichaCadastro.longitude
+        ) {
+          localizacao = `${this.fichaCadastro.imovelFichaCadastro.latitude}, ${
+            this.fichaCadastro.imovelFichaCadastro.longitude
+          }`;
         }
       }
 
@@ -274,17 +283,23 @@ export default {
     },
     apiUrl() {
       return process.env.API_URL;
+    },
+    ultimaVisita() {
+      if (this.fichaCadastro && this.fichaCadastro.visitaFichaCadastros) {
+        const length = this.fichaCadastro.visitaFichaCadastros.length;
+        const ultima = this.fichaCadastro.visitaFichaCadastros[length - 1];
+        return moment(ultima).format("DD/MM/YYYY");
+      }
     }
   },
   asyncComputed: {
     fichaCadastro() {
       let app = this;
       this.service = new PropriedadeService(this.$http);
-      return this.service.get(this.$route.params.id)
-        .then(result => {
-          this.loading = false;
-          return result;
-        });
+      return this.service.get(this.$route.params.id).then(result => {
+        this.loading = false;
+        return result;
+      });
     }
   },
   methods: {

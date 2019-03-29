@@ -79,6 +79,9 @@
                     target="_blank"
                   )
                     a.btn.btn-xs.btn-fill.btn-default Visualizar
+                    a.btn.btn-xs.btn-fill.btn-danger(
+                      @click.prevent="remover(registro.id)"
+                    ) Remover
 
           p.lead.text-center(
             v-else
@@ -136,6 +139,38 @@ export default {
       let fim = moment(this.filtro.fim, "DD/MM/YYYY");
 
       return fim.diff(inicio, "days") >= 0;
+    },
+    remover(id) {
+      const app = this;
+      swal({
+          title: 'Atenção!',
+          html: `Confirma a remoção do registro?`,
+          type: 'question',
+          buttonsStyling: false,
+          showCancelButton: true,
+          confirmButtonClass: 'btn btn-success btn-fill',
+          cancelButtonClass: 'btn btn-danger btn-fill',
+          allowOutsideClick: false
+        }).then(function() {
+          app.service = new PropriedadeService(app.$http);
+          app.service
+            .delete(id)
+            .then(result => {
+              if(result.success) {
+                app.buscarFichas();
+              }
+            }).catch(e => {
+              console.log(e);
+                swal({
+                  title: 'Ops!',
+                  html: `Falha ao remover o registro.`,
+                  buttonsStyling: false,
+                  type: 'error',
+                  confirmButtonClass: 'btn btn-success btn-fill',
+                  allowOutsideClick: false
+                });
+            })  
+        });
     },
     buscarFichas() {
       this.validate().then(success => {

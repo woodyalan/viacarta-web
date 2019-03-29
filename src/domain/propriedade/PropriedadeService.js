@@ -20,4 +20,13 @@ export default class PropriedadeService {
       }
     );
   }
+
+  delete(id) {
+    return this._resource.delete(`propriedade/${id}`).then(
+      res => res.json(),
+      err => {
+        throw new Error(err.body.error.name);
+      }
+    );
+  }
 }
