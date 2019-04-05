@@ -1,22 +1,15 @@
 <template lang="pug">
-.row
-  .col-sm-6
-    .row
+.row(
+  v-if="widgets"
+)
+  .col-sm-6(
+    v-for="row in widgets"
+  )
+    .row(
+      v-for="widget in row"
+    )
       .col-xs-12
-        saldos-funcionarios
-
-    .row
-      .col-xs-12
-        despesas-projetos
-
-  .col-sm-6
-    .row
-      .col-xs-12
-        manutencoes-veiculos
-
-    .row
-      .col-xs-12
-        calendario
+        <component :is="widget.widgetObject.nome"></component>
 
 </template>
 <script>
@@ -33,6 +26,11 @@ export default {
     'manutencoes-veiculos': ManutencoesVeiculos,
     'calendario': Calendario
   },
+  data () {
+    return {
+      widgets: null
+    }
+  },
   computed: {
     token() {
       return this.$store.state.token;
@@ -42,7 +40,17 @@ export default {
     if(this.token) {
       this._service = new LoginService(this.$http);
       this._service
-        .getUserInfo(this.$store.state.user.email);
+        .getUserInfo(this.$store.state.user.email)
+        .then(response => {
+          let results = [];
+          const widgets = response.result.widgets;
+
+          while (widgets.length) {
+            results.push(widgets.splice(0, 2));
+          }
+
+          this.widgets = results;
+        })
     } else {
       this.$router.push('/login');
     }
