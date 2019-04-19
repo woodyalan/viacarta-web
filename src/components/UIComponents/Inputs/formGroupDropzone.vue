@@ -1,19 +1,17 @@
 <template>
   <div class="form-group">
-    <label v-if="label">
-      {{label}}
-    </label>
+    <label v-if="label">{{label}}</label>
 
     <vue-dropzone
-      :ref="name" 
-      :id="id" 
+      :ref="name"
+      :id="id"
       :options="dropzoneOptions"
       :destroyDropzone="false"
-      @vdropzone-success="vsuccess" 
-      @vdropzone-removed-file="vremoved" 
-      @vdropzone-mounted="vmounted">
-    </vue-dropzone>
-    
+      @vdropzone-success="vsuccess"
+      @vdropzone-removed-file="vremoved"
+      @vdropzone-mounted="vmounted"
+    ></vue-dropzone>
+
     <small class="text-danger" v-show="errors.has(name)">{{ errors.first(name) }}</small>
   </div>
 </template>
@@ -35,8 +33,12 @@ export default {
     },
     id: String,
     url: String,
+    path: {
+      default: null,
+      type: String
+    },
     maxFiles: {
-      default: 8,
+      default: 8
     },
     acceptedFiles: {
       default: "image/*,application/pdf"
@@ -46,7 +48,8 @@ export default {
     return {
       visible: false,
       dropzoneOptions: {
-        dictDefaultMessage: "Arraste seus arquivos aqui<br><small>ou clique para fazer o upload</small>",
+        dictDefaultMessage:
+          "Arraste seus arquivos aqui<br><small>ou clique para fazer o upload</small>",
         dictMaxFilesExceeded: "Você não pode adicionar mais arquivos",
         dictRemoveFile: "Remover",
         dictFileTooBig:
@@ -62,7 +65,7 @@ export default {
           "x-access-token": this.$store.state.token
         }
       }
-    }
+    };
   },
   methods: {
     vremoved(file, error, xhr) {
@@ -70,8 +73,8 @@ export default {
         if (arquivo.name == file.name) {
           this.value.splice(i, 1);
 
-          if(arquivo.id) {
-            this.$emit('fileRemoved', arquivo.id);
+          if (arquivo.id) {
+            this.$emit("fileRemoved", arquivo.id);
           }
         }
       });
@@ -90,20 +93,19 @@ export default {
           name: file.name
         };
 
-        let extension = url.split('.').pop();
-        
-        if((extension == 'png') || (extension == 'jpg') || (extension == 'jpeg')) {
+        let extension = url.split(".").pop();
+
+        if (extension == "png" || extension == "jpg" || extension == "jpeg") {
           url = process.env.API_URL + url;
         } else {
-          url = '';
+          url = "";
         }
 
         app.$refs.myVueDropzone.manuallyAddFile(mocked, url);
       });
-    },
+    }
   }
 };
 </script>
 <style>
-
 </style>

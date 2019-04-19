@@ -110,6 +110,9 @@ import ListaViagem from 'src/components/Dashboard/Views/Viagem/ListaViagem.vue';
 import CadastroDiaTrabalho from 'src/components/Dashboard/Views/DiaTrabalho/CadastroDiaTrabalho.vue';
 import ListaDiaTrabalho from 'src/components/Dashboard/Views/DiaTrabalho/ListaDiaTrabalho.vue';
 
+import CadastroPropriedade from 'src/components/Dashboard/Views/Propriedade/CadastroPropriedade.vue';
+import ListaPropriedade from 'src/components/Dashboard/Views/Propriedade/ListaPropriedade.vue';
+
 import ListaAcompanhamentoFinanceiro from 'src/components/Dashboard/Views/AcompanhamentoFinanceiro/ListaAcompanhamentoFinanceiro.vue';
 
 import ListaAcompanhamentoPonto from 'src/components/Dashboard/Views/AcompanhamentoPonto/ListaAcompanhamentoPonto.vue';
@@ -227,6 +230,28 @@ const routes = [
         path: 'tela',
         name: 'Tela',
         component: ListaTela
+      }
+    ]
+  },
+  {
+    path: '/propriedades',
+    component: DashboardLayout,
+    children: [
+      //Propriedade
+      {
+        path: 'propriedade/new',
+        name: 'Nova Propriedade',
+        component: CadastroPropriedade
+      },
+      {
+        path: 'propriedade/edit/:id?',
+        name: 'Editar Propriedade',
+        component: CadastroPropriedade
+      },
+      {
+        path: 'propriedade',
+        name: 'Propriedades',
+        component: ListaPropriedade
       }
     ]
   },

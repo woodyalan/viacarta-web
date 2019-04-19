@@ -98,7 +98,7 @@
             .row
               .col-xs-3.form-group
                 p Observações
-                | {{fichaCadastro.imovelFichaCadastro.obervacoes || '-'}}
+                | {{fichaCadastro.imovelFichaCadastro.observacoes || '-'}}
 
             .page-header
               h6.title Documentação
@@ -212,7 +212,7 @@
             .row
               .col-xs-12.form-group
                 p Observações
-                | {{fichaCadastro.proprietarioFichaCadastro.obervacoes || '-'}}
+                | {{fichaCadastro.proprietarioFichaCadastro.observacoes || '-'}}
 
             .page-break
               div(
