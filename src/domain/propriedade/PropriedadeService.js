@@ -23,6 +23,15 @@ export default class PropriedadeService {
     );
   }
 
+  exportarExcel(id) {
+    return this._resource.get(`propriedade/exportar/${id}`).then(
+      res => res.json(),
+      err => {
+        throw new Error(err.body.error.name);
+      }
+    );
+  }
+
   save(propriedade) {
     return this._resource.post(`propriedade`, propriedade).then(
       res => res.json(),

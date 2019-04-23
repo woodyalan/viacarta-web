@@ -6,10 +6,16 @@
           div(
             v-if="fichaCadastro"
           )
-            a.btn.btn-fill.btn-default.hidden-print.pull-right(
-              @click.prevent="print()"
-            ) Imprimir
-            h4.title Ficha de Cadastro
+            .row
+              .col-xs-12
+                a.btn.btn-fill.btn-default.m10.hidden-print.pull-right(
+                  @click.prevent="print()"
+                ) Imprimir
+
+                a.btn.btn-fill.btn-primary.m10.hidden-print.pull-right(
+                  @click.prevent="exportarExcel()"
+                ) Excel
+                h4.title Ficha de Cadastro
 
             .row 
               .col-xs-3.form-group
@@ -25,8 +31,11 @@
                 | {{moment(fichaCadastro.createdAt).format('DD/MM/YYYY')}}
 
               .col-xs-3.form-group
-                p Última visita em
-                | {{ultimaVisita}}
+                p Visitas realizadas
+                ul
+                  li(
+                    v-for="visita in fichaCadastro.visitaFichaCadastros"
+                  ) {{ moment(visita.createdAt).format("DD/MM/YYYY HH:mm") }}
 
             .page-header
               h6.title Imóvel
@@ -226,7 +235,7 @@
                     v-for="foto in fichaCadastro.fotoImovelFichaCadastros"
                   )
                     img.img-responsive.img-rounded(
-                      :src="`${apiUrl}${foto.arquivo}`"
+                      :src="`${foto.conteudo}`"
                     )
 
               div(
@@ -240,7 +249,7 @@
                     v-for="foto in fichaCadastro.fotoDocumentoFichaCadastros"
                   )
                     img.img-responsive.img-rounded(
-                      :src="`${apiUrl}${foto.arquivo}`"
+                      :src="`${foto.conteudo}`"
                     )
 
             hr
@@ -305,6 +314,12 @@ export default {
   methods: {
     print() {
       window.print();
+    },
+    exportarExcel() {
+      this.service = new PropriedadeService(this.$http);
+      this.service.exportarExcel(this.$route.params.id).then(result => {
+        window.open(`${this.apiUrl}${result.file}`, "_blank");
+      });
     }
   }
 };
@@ -320,6 +335,10 @@ div.form-group > p {
   font-weight: 600;
   font-size: 12px;
   margin-bottom: 5px;
+}
+
+.m10 {
+  margin: 20px;
 }
 
 @media print {
