@@ -830,18 +830,8 @@ export default {
         this.imovel = propriedade.imovelFichaCadastro;
         this.documento = propriedade.documentacaoImovelFichaCadastro;
 
-        this.fotosImovel = propriedade.fotoImovelFichaCadastros.map(a => {
-          return {
-            id: a.id,
-            size: a.size,
-            path: a.arquivo,
-            name: a.arquivo,
-            conteudo: a.conteudo
-          };
-        });
-
-        this.fotosDocumentos = propriedade.fotoDocumentoFichaCadastros.map(
-          a => {
+        this.service.getFotosImovel(this.$route.params.id).then(fotos => {
+          this.fotosImovel = fotos.map(a => {
             return {
               id: a.id,
               size: a.size,
@@ -849,11 +839,24 @@ export default {
               name: a.arquivo,
               conteudo: a.conteudo
             };
-          }
-        );
+          });
 
-        this.filesDocumentosLoaded = true;
-        this.filesImovelLoaded = true;
+          this.filesImovelLoaded = true;
+        });
+
+        this.service.getFotosDocumentos(this.$route.params.id).then(fotos => {
+          this.fotosDocumentos = fotos.map(a => {
+            return {
+              id: a.id,
+              size: a.size,
+              path: a.arquivo,
+              name: a.arquivo,
+              conteudo: a.conteudo
+            };
+          });
+
+          this.filesDocumentosLoaded = true;
+        });
 
         delete propriedade.proprietarioFichaCadastro;
         delete propriedade.imovelFichaCadastro;

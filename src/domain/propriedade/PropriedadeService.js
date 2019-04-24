@@ -7,7 +7,7 @@ export default class PropriedadeService {
     return this._resource.post(`propriedade/acompanhamentoPropriedades`, params).then(
       res => res.json(),
       err => {
-        throw new Error(err.body.error.name);
+        throw new Error(`Falha ao buscar propriedades. ${err.message}`);
       }
     );
   }
@@ -18,7 +18,7 @@ export default class PropriedadeService {
     return this._resource.get(url).then(
       res => res.json(),
       err => {
-        throw new Error(err.body.error.name);
+        throw new Error(`Falha ao buscar propriedades. ${err.message}`);
       }
     );
   }
@@ -27,7 +27,7 @@ export default class PropriedadeService {
     return this._resource.get(`propriedade/exportar/${id}`).then(
       res => res.json(),
       err => {
-        throw new Error(err.body.error.name);
+        throw new Error(`Falha exportar propriedade. ${err.message}`);
       }
     );
   }
@@ -36,7 +36,7 @@ export default class PropriedadeService {
     return this._resource.post(`propriedade`, propriedade).then(
       res => res.json(),
       err => {
-        throw new Error(err.body.error.name);
+        throw new Error(`Falha ao salvar propriedade. ${err.message}`);
       }
     );
   }
@@ -45,7 +45,7 @@ export default class PropriedadeService {
     return this._resource.put(`propriedade/${id}`, propriedade).then(
       res => res.json(),
       err => {
-        throw new Error(err.body.error.name);
+        throw new Error(`Falha ao atualizar propriedade. ${err.message}`);
       }
     );
   }
@@ -54,7 +54,25 @@ export default class PropriedadeService {
     return this._resource.delete(`propriedade/${id}`).then(
       res => res.json(),
       err => {
-        throw new Error(err.body.error.name);
+        throw new Error(`Falha ao remover propriedade. ${err.message}`);
+      }
+    );
+  }
+
+  getFotosImovel(fichaId) {
+    return this._resource.get(`propriedade/fotoImovel/${fichaId}`).then(
+      res => res.json(),
+      err => {
+        throw new Error(`Falha ao buscar fotos do imovel. ${err.message}`);
+      }
+    );
+  }
+
+  getFotosDocumentos(fichaId) {
+    return this._resource.get(`propriedade/fotoDocumento/${fichaId}`).then(
+      res => res.json(),
+      err => {
+        throw new Error(`Falha ao buscar fotos da documentação. ${err.message}`);
       }
     );
   }
@@ -63,7 +81,7 @@ export default class PropriedadeService {
     return this._resource.delete(`propriedade/fotoImovel/${id}`).then(
       res => res.json(),
       err => {
-        throw new Error(err.body.error.name);
+        throw new Error(`Falha ao remover foto do imóvel. ${err.message}`);
       }
     );
   }
@@ -72,7 +90,7 @@ export default class PropriedadeService {
     return this._resource.delete(`propriedade/fotoDocumento/${id}`).then(
       res => res.json(),
       err => {
-        throw new Error(err.body.error.name);
+        throw new Error(`Falha ao remover foto da documentação. ${err.message}`);
       }
     );
   }

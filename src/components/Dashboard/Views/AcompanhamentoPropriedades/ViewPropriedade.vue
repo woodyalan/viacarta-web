@@ -225,28 +225,28 @@
 
             .page-break
               div(
-                v-if="fichaCadastro.fotoImovelFichaCadastros.length > 0"
+                v-if="fichaCadastro && fotosImovel"
               ) 
                 .page-header
                   h6.title Fotos do Imóvel
 
                 .row 
                   .col-xs-3(
-                    v-for="foto in fichaCadastro.fotoImovelFichaCadastros"
+                    v-for="foto in fotosImovel"
                   )
                     img.img-responsive.img-rounded(
                       :src="`${foto.conteudo}`"
                     )
 
               div(
-                v-if="fichaCadastro.fotoDocumentoFichaCadastros.length > 0"
+                v-if="fichaCadastro && fotosDocumentos"
               ) 
                 .page-header
                   h6.title Fotos dos Documentos
 
                 .row 
                   .col-xs-3(
-                    v-for="foto in fichaCadastro.fotoDocumentoFichaCadastros"
+                    v-for="foto in fotosDocumentos"
                   )
                     img.img-responsive.img-rounded(
                       :src="`${foto.conteudo}`"
@@ -309,6 +309,18 @@ export default {
         this.loading = false;
         return result;
       });
+    },
+    fotosImovel() {
+      this.service = new PropriedadeService(this.$http);
+      return this.service
+        .getFotosImovel(this.$route.params.id)
+        .then(fotos => fotos);
+    },
+    fotosDocumentos() {
+      this.service = new PropriedadeService(this.$http);
+      return this.service
+        .getFotosDocumentos(this.$route.params.id)
+        .then(fotos => fotos);
     }
   },
   methods: {
