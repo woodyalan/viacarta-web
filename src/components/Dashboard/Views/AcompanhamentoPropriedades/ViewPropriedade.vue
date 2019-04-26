@@ -27,8 +27,8 @@
                 | {{fichaCadastro.instalacao}}
 
               .col-xs-3.form-group
-                p Criado em
-                | {{moment(fichaCadastro.createdAt).format('DD/MM/YYYY')}}
+                p Região
+                | {{ fichaCadastro.regiaoFichaCadastro.nome }}
 
               .col-xs-3.form-group
                 p Visitas realizadas

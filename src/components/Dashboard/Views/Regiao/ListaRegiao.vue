@@ -8,7 +8,7 @@
 </template>
 <script>
 import Lista from "src/components/GeneralViews/Lista.vue";
-import PropriedadeService from "src/domain/propriedade/PropriedadeService";
+import RegiaoService from "src/domain/regiao/RegiaoService";
 import swal from "sweetalert2";
 
 export default {
@@ -17,13 +17,13 @@ export default {
   },
   asyncComputed: {
     tableData() {
-      this.service = new PropriedadeService(this.$http);
-      return this.service.get().then(propriedades => propriedades);
+      this.service = new RegiaoService(this.$resource);
+      return this.service.get(cargos => cargos);
     }
   },
   data() {
     return {
-      route: "propriedade",
+      route: "regiao",
       tableColumns: [
         {
           prop: "id",
@@ -32,23 +32,8 @@ export default {
           minWidth: "20"
         },
         {
-          prop: "regiaoFichaCadastro.nome",
-          label: "Região",
-          class: ""
-        },
-        {
-          prop: "instalacao",
-          label: "Instalação",
-          class: ""
-        },
-        {
-          prop: "imovelFichaCadastro.endereco",
-          label: "Endereço",
-          class: ""
-        },
-        {
-          prop: "imovelFichaCadastro.numero",
-          label: "Número",
+          prop: "nome",
+          label: "Nome",
           class: ""
         }
       ]
@@ -68,7 +53,7 @@ export default {
         cancelButtonClass: "btn btn-danger btn-fill",
         allowOutsideClick: false
       }).then(function() {
-        app.service = new PropriedadeService(app.$http);
+        app.service = new RegiaoService(app.$resource);
         app.service
           .delete(item.object.id)
           .then(result => {

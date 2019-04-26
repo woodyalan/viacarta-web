@@ -120,6 +120,9 @@ import ListaAcompanhamentoPonto from 'src/components/Dashboard/Views/Acompanhame
 import ListaAcompanhamentoPropriedades from 'src/components/Dashboard/Views/AcompanhamentoPropriedades/ListaAcompanhamentoPropriedades.vue';
 import ViewPropriedade from 'src/components/Dashboard/Views/AcompanhamentoPropriedades/ViewPropriedade.vue';
 
+import CadastroRegiao from 'src/components/Dashboard/Views/regiao/CadastroRegiao.vue';
+import ListaRegiao from 'src/components/Dashboard/Views/regiao/ListaRegiao.vue';
+
 const routes = [
   {
     path: '/',
@@ -252,6 +255,22 @@ const routes = [
         path: 'propriedade',
         name: 'Propriedades',
         component: ListaPropriedade
+      },
+      //Região
+      {
+        path: 'regiao/new',
+        name: 'Nova Região',
+        component: CadastroRegiao
+      },
+      {
+        path: 'regiao/edit/:id?',
+        name: 'Editar Região',
+        component: CadastroRegiao
+      },
+      {
+        path: 'regiao',
+        name: 'Regiões',
+        component: ListaRegiao
       }
     ]
   },

@@ -47,15 +47,17 @@
         .card-content.table-responsive(
           v-if="registros"
         )
-          table.table.table-hover(
+          table.table.table-hover.table-report(
             v-if="registros.length > 0"
           )
             thead
               tr
                 th.text-info.col-md-1 #
                 th.text-info Ficha
-                th.text-info Intalação
-                th.text-info Proprietário
+                th.text-info Região
+                th.text-info Instalação
+                th.text-info Endereço
+                th.text-info Número
                 th
 
             tbody
@@ -64,24 +66,23 @@
               )
                 td {{ registro.id }}
                 td {{ registro.numero }}
+                td {{ registro.regiao }}
+                td {{ registro.instalacao }}
                 td 
-                  p.mb0 {{ registro.instalacao }}
+                  p.mb0 {{ registro.endereco }}
                   a(
                     v-if="registro.latitude && registro.longitude"
                     target="_blank"
                     :href="`https://www.google.com/maps/?q=${registro.latitude},${registro.longitude}`"
                   ) 
                     small Ver localização
-                td {{ registro.proprietario }}
+                td {{ registro.numero }}
                 td.text-center
                   router-link(
                     :to="`/relatorios/propriedade/${registro.id}`"
                     target="_blank"
                   )
                     a.btn.btn-xs.btn-fill.btn-default Visualizar
-                    a.btn.btn-xs.btn-fill.btn-danger(
-                      @click.prevent="remover(registro.id)"
-                    ) Remover
 
           p.lead.text-center(
             v-else
@@ -143,34 +144,35 @@ export default {
     remover(id) {
       const app = this;
       swal({
-          title: 'Atenção!',
-          html: `Confirma a remoção do registro?`,
-          type: 'question',
-          buttonsStyling: false,
-          showCancelButton: true,
-          confirmButtonClass: 'btn btn-success btn-fill',
-          cancelButtonClass: 'btn btn-danger btn-fill',
-          allowOutsideClick: false
-        }).then(function() {
-          app.service = new PropriedadeService(app.$http);
-          app.service
-            .delete(id)
-            .then(result => {
-              if(result.success) {
-                app.buscarFichas();
-              }
-            }).catch(e => {
-              console.log(e);
-                swal({
-                  title: 'Ops!',
-                  html: `Falha ao remover o registro.`,
-                  buttonsStyling: false,
-                  type: 'error',
-                  confirmButtonClass: 'btn btn-success btn-fill',
-                  allowOutsideClick: false
-                });
-            })  
-        });
+        title: "Atenção!",
+        html: `Confirma a remoção do registro?`,
+        type: "question",
+        buttonsStyling: false,
+        showCancelButton: true,
+        confirmButtonClass: "btn btn-success btn-fill",
+        cancelButtonClass: "btn btn-danger btn-fill",
+        allowOutsideClick: false
+      }).then(function() {
+        app.service = new PropriedadeService(app.$http);
+        app.service
+          .delete(id)
+          .then(result => {
+            if (result.success) {
+              app.buscarFichas();
+            }
+          })
+          .catch(e => {
+            console.log(e);
+            swal({
+              title: "Ops!",
+              html: `Falha ao remover o registro.`,
+              buttonsStyling: false,
+              type: "error",
+              confirmButtonClass: "btn btn-success btn-fill",
+              allowOutsideClick: false
+            });
+          });
+      });
     },
     buscarFichas() {
       this.validate().then(success => {
@@ -214,7 +216,7 @@ export default {
   },
   mounted() {
     let data = moment();
-    let inicio = moment(moment(data).date(1), "YYYY-MM-DD");
+    let inicio = moment(moment(data).month(0), "YYYY-MM-DD");
     let fim = moment(data, "YYYY-MM-DD");
 
     this.filtro.inicio = inicio;
@@ -222,3 +224,10 @@ export default {
   }
 };
 </script>
+
+<style>
+.table-report,
+.table-report p {
+  font-size: 12px;
+}
+</style>

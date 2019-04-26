@@ -22,6 +22,17 @@
               name='instalacao'
               :rules='{ required: true }'
             )
+
+          .col-sm-3
+            fg-select(
+              v-if="regioes"
+              label='Região',
+              placeholder='Região', 
+              v-model='fichaCadastro.regiaoId', 
+              name='regiaoId'
+              :rules='{ required: false }'
+              :options='regioes'
+            )
           
           .col-sm-4.col-md-3
             fg-select(
@@ -415,7 +426,7 @@
               v-model='proprietario.estadoCivil', 
               name='estadoCivil'
               :options='estadosCivis'
-              :rules='{ required: true }'
+              :rules='{ required: false }'
             )
 
           .col-sm-9
@@ -473,6 +484,7 @@
 <script>
 import Cadastro from "src/components/GeneralViews/Cadastro.vue";
 import PropriedadeService from "src/domain/propriedade/PropriedadeService";
+import RegiaoService from "src/domain/regiao/RegiaoService";
 import CepService from "src/domain/cep/CepService";
 // import gmapsInit from "src/domain/utils/gmaps";
 import swal from "sweetalert2";
@@ -500,7 +512,8 @@ export default {
       fichaCadastro: {
         id: null,
         numero: null,
-        instalacao: null
+        instalacao: null,
+        regiaoId: null
       },
       imovel: {
         tipo: null,
@@ -584,6 +597,19 @@ export default {
         }
       }
     };
+  },
+  asyncComputed: {
+    regioes() {
+      this.service = new RegiaoService(this.$resource);
+      return this.service.get().then(result => {
+        return result.map(regiao => {
+          return {
+            text: regiao.nome,
+            value: regiao.id
+          };
+        });
+      });
+    }
   },
   computed: {
     position() {
