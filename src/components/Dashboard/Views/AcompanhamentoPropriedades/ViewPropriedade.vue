@@ -26,7 +26,9 @@
                 p Instalação
                 | {{fichaCadastro.instalacao}}
 
-              .col-xs-3.form-group
+              .col-xs-3.form-group(
+                v-if='fichaCadastro.regiaoFichaCadastro'
+              )
                 p Região
                 | {{ fichaCadastro.regiaoFichaCadastro.nome }}
 
