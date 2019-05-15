@@ -128,9 +128,36 @@ s<template lang="pug">
             .filter((row) => {
               let isIncluded = false
               for (let key of this.propsToSearch) {
-                let rowValue = row[key].toString().toUpperCase();
-                if (rowValue.includes && rowValue.includes(this.searchQuery.toUpperCase())) {
-                  isIncluded = true
+                const parts = key.split('.');
+
+                let rowValue = '';
+                let hasValue = row[key] != undefined;
+
+                if(!hasValue && parts.length > 0) {
+                  let objectPart;
+
+                  for(let part of parts) {
+                    if(objectPart) {
+                      hasValue = objectPart[part] != undefined;
+                    }
+
+                    if((typeof row[part]) == 'object') {
+                      objectPart = row[part];
+                    }
+
+                    if(hasValue) {
+                      rowValue = objectPart[part];
+                    }
+                  }
+                } else {
+                  rowValue = row[key];
+                }
+
+                if(hasValue) {  
+                  rowValue = rowValue.toString().toUpperCase();
+                  if (rowValue.includes && rowValue.includes(this.searchQuery.toUpperCase())) {
+                    isIncluded = true
+                  }
                 }
               }
               return isIncluded
