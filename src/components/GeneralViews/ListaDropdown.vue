@@ -27,7 +27,7 @@ s<template lang="pug">
                   style='width: 100%'
                 )
                   el-table-column(v-for='column in tableColumns', :class-name='column.class', :prop='column.prop', :label='column.label', sortable='', :min-width='column.minWidth')
-                  el-table-column(width='150' class-name='text-center', fixed='right')
+                  el-table-column(width='150' class-name='text-center')
                     template(scope='props')
                       el-dropdown(@command='handleAction')
                         el-button.btn.btn-primary.btn-sm.btn-fill 
