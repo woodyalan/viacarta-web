@@ -32,6 +32,11 @@ export default {
           minWidth: "20"
         },
         {
+          prop: "numero",
+          label: "Ficha",
+          class: ""
+        },
+        {
           prop: "regiaoFichaCadastro.nome",
           label: "Região",
           class: ""

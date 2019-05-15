@@ -35,6 +35,46 @@
                   :rules="{ required: true }",
                   :mask="['##/##/####']"
                 )
+
+              .col-sm-12.col-md-6
+                fg-select(
+                  v-if="regioes"
+                  label='Região',
+                  placeholder='Região', 
+                  v-model='filtro.regiaoId', 
+                  name='regiaoId'
+                  :rules='{ required: false }'
+                  :options='regioes'
+                )
+
+            .row
+              .col-sm-12.col-md-6
+                fg-input(
+                  label='Endereço',
+                  placeholder='Endereço', 
+                  v-model="filtro.endereco",
+                  name="endereco",
+                  :rules="{ required: false }"
+                )
+
+              .col-sm-6.col-md-3
+                fg-input(
+                  label='Número',
+                  placeholder='Número', 
+                  v-model="filtro.numero",
+                  name="numero",
+                  :rules="{ required: false }"
+                )
+
+              .col-sm-6.col-md-3
+                fg-input(
+                  label='Ficha',
+                  placeholder='Ex: FC-000', 
+                  v-model="filtro.ficha",
+                  name="ficha",
+                  :rules="{ required: false }"
+                )
+
             hr
 
             .text-right
@@ -65,7 +105,7 @@
                 v-for="registro in registros"
               )
                 td {{ registro.id }}
-                td {{ registro.numero }}
+                td {{ registro.ficha }}
                 td {{ registro.regiao }}
                 td {{ registro.instalacao }}
                 td 
@@ -90,6 +130,7 @@
 </template>
 <script>
 import PropriedadeService from "src/domain/propriedade/PropriedadeService";
+import RegiaoService from "src/domain/regiao/RegiaoService";
 import LoginService from "src/domain/login/LoginService";
 import swal from "sweetalert2";
 import moment from "moment";
@@ -103,7 +144,10 @@ export default {
       registros: [],
       filtro: {
         inicio: new Date(),
-        fim: new Date()
+        fim: new Date(),
+        endereco: null,
+        numero: null,
+        ficha: null
       }
     };
   },
@@ -123,9 +167,19 @@ export default {
 
         return result;
       });
+    },
+    regioes() {
+      this.service = new RegiaoService(this.$resource);
+      return this.service.get().then(result => {
+        return result.map(regiao => {
+          return {
+            text: regiao.nome,
+            value: regiao.id
+          };
+        });
+      });
     }
   },
-  computed: {},
   methods: {
     validate() {
       return this.$validator
