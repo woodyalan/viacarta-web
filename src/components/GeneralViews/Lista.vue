@@ -135,7 +135,7 @@
                       objectPart = row[part];
                     }
 
-                    if(hasValue) {
+                    if(hasValue && objectPart) {
                       rowValue = objectPart[part];
                     }
                   }
