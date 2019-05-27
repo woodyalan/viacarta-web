@@ -27,7 +27,16 @@ export default class PropriedadeService {
     return this._resource.get(`propriedade/exportar/${id}`).then(
       res => res.json(),
       err => {
-        throw new Error(`Falha exportar propriedade. ${err}`);
+        throw new Error(`Falha ao exportar propriedade. ${err}`);
+      }
+    );
+  }
+
+  exportarExcelLote(fichas) {
+    return this._resource.post(`propriedade/exportar/lote`, { fichas }).then(
+      res => res.json(),
+      err => {
+        throw new Error(`Falha ao exportar lote de propriedades. ${err}`);
       }
     );
   }

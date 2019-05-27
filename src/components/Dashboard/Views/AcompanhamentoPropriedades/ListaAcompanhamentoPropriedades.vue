@@ -87,6 +87,15 @@
         .card-content.table-responsive(
           v-if="registros"
         )
+          .row
+            .col-xs-12.mb20
+              a.btn.btn-default.btn-fill.pull-right(
+                v-if="registros.length > 0"
+                href='#'
+                @click.prevent="exportarLote()"
+                :class='{ disabled: loading }'
+              ) Exportar em Lote
+
           table.table.table-hover.table-report(
             v-if="registros.length > 0"
           )
@@ -151,6 +160,18 @@ export default {
       }
     };
   },
+  computed: {
+    apiUrl() {
+      return process.env.API_URL;
+    },
+    fichasExportacao() {
+      if (this.registros) {
+        return this.registros.map(registro => {
+          return registro.id;
+        });
+      }
+    }
+  },
   asyncComputed: {
     telaInfo() {
       let app = this;
@@ -194,6 +215,31 @@ export default {
       let fim = moment(this.filtro.fim, "DD/MM/YYYY");
 
       return fim.diff(inicio, "days") >= 0;
+    },
+    exportarLote() {
+      if (this.fichasExportacao && !this.loading) {
+        this.loading = true;
+
+        this.service = new PropriedadeService(this.$http);
+        this.service
+          .exportarExcelLote(this.fichasExportacao)
+          .then(result => {
+            this.loading = false;
+
+            window.open(`${this.apiUrl}${result.file}`, "_blank");
+          })
+          .catch(e => {
+            console.log(e);
+            swal({
+              title: "Ops!",
+              html: `Falha ao exportar fichas.`,
+              buttonsStyling: false,
+              type: "error",
+              confirmButtonClass: "btn btn-success btn-fill",
+              allowOutsideClick: false
+            });
+          });
+      }
     },
     remover(id) {
       const app = this;
