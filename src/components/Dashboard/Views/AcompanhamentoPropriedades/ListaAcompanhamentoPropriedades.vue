@@ -88,13 +88,25 @@
           v-if="registros"
         )
           .row
-            .col-xs-12.mb20
-              a.btn.btn-default.btn-fill.pull-right(
-                v-if="registros.length > 0"
-                href='#'
-                @click.prevent="exportarLote()"
-                :class='{ disabled: loading }'
-              ) Exportar em Lote
+            .col-xs-12.mb20(
+              v-if="registros.length > 0"
+            )
+              el-dropdown.pull-right(@command='handleAction')
+                el-button.btn.btn-primary.btn-fill(
+                  :loading='loading'
+                ) 
+                  | Exportar 
+                  span.caret
+                el-dropdown-menu(slot="dropdown")
+                  el-dropdown-item.text-info(command='exportarLote') 
+                    i.ti-files 
+                    |  Lote de Fichas
+                  el-dropdown-item.text-info(command='exportarAnexos') 
+                    i.ti-gallery
+                    |  Anexos
+                  //- el-dropdown-item.text-info(command='exportarArquivoUnico') 
+                  //-   i.ti-file 
+                  //-   |  Arquivo Único
 
           table.table.table-hover.table-report(
             v-if="registros.length > 0"
@@ -138,11 +150,18 @@
           ) Nenhum registro foi encontrado
 </template>
 <script>
+import { Dropdown, DropdownMenu, DropdownItem } from "element-ui";
 import PropriedadeService from "src/domain/propriedade/PropriedadeService";
 import RegiaoService from "src/domain/regiao/RegiaoService";
 import LoginService from "src/domain/login/LoginService";
+
+import Vue from "vue";
 import swal from "sweetalert2";
 import moment from "moment";
+
+Vue.use(Dropdown);
+Vue.use(DropdownMenu);
+Vue.use(DropdownItem);
 
 export default {
   $validates: true,
@@ -229,6 +248,35 @@ export default {
             window.open(`${this.apiUrl}${result.file}`, "_blank");
           })
           .catch(e => {
+            this.loading = false;
+
+            console.log(e);
+            swal({
+              title: "Ops!",
+              html: `Falha ao exportar fichas.`,
+              buttonsStyling: false,
+              type: "error",
+              confirmButtonClass: "btn btn-success btn-fill",
+              allowOutsideClick: false
+            });
+          });
+      }
+    },
+    exportarAnexos() {
+      if (this.fichasExportacao && !this.loading) {
+        this.loading = true;
+
+        this.service = new PropriedadeService(this.$http);
+        this.service
+          .exportarAnexos(this.fichasExportacao)
+          .then(result => {
+            this.loading = false;
+
+            window.open(`${this.apiUrl}${result.file}`, "_blank");
+          })
+          .catch(e => {
+            this.loading = false;
+            
             console.log(e);
             swal({
               title: "Ops!",
@@ -312,6 +360,17 @@ export default {
           }
         }
       });
+    },
+    handleAction(action) {
+      switch(action) {
+        case 'exportarLote':
+          this.exportarLote(); 
+          break;
+
+        case 'exportarAnexos':
+          this.exportarAnexos(); 
+          break;
+      }
     }
   },
   mounted() {

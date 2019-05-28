@@ -68,177 +68,192 @@ s<template lang="pug">
                   |  Novo
 </template>
 <script>
-  import Vue from 'vue'
-  import {Table, TableColumn, Select, Option, Button, Dropdown, DropdownMenu, DropdownItem } from 'element-ui'
-  import PPagination from 'src/components/UIComponents/Pagination.vue'
-  import LoginService from 'src/domain/login/LoginService'
+import Vue from "vue";
+import {
+  Table,
+  TableColumn,
+  Select,
+  Option,
+  Button,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem
+} from "element-ui";
+import PPagination from "src/components/UIComponents/Pagination.vue";
+import LoginService from "src/domain/login/LoginService";
 
-  Vue.use(Table)
-  Vue.use(TableColumn)
-  Vue.use(Select)
-  Vue.use(Option)
-  Vue.use(Button)
-  Vue.use(Dropdown)
-  Vue.use(DropdownMenu)
-  Vue.use(DropdownItem)
+Vue.use(Table);
+Vue.use(TableColumn);
+Vue.use(Select);
+Vue.use(Option);
+Vue.use(Button);
+Vue.use(Dropdown);
+Vue.use(DropdownMenu);
+Vue.use(DropdownItem);
 
-  export default {
-    props: {
-      route: {
-        type: String,
-        required: true
-      },
-      tableColumns: {
-        type: Array,
-        required: true
-      },
-      tableData: {
-        type: Array
-      },
-      dropdownLinks: {
-        type: Array,
-        required: true
-      },
-      navigationBack: {
-        type: String
-      }
+export default {
+  props: {
+    route: {
+      type: String,
+      required: true
     },
-    components: {
-      PPagination
+    tableColumns: {
+      type: Array,
+      required: true
     },
-    computed: {
-      rota() {
-        let param = this.paramValue ? `/${this.paramValue}` : '';
-        return this.$route.params.backRoute ? `/${this.telaInfo.menuPath}/${this.$route.params.backRoute}/${this.telaInfo.tela}${param}` : this.telaInfo.rota;
-      },
-      routeNavigationBack() {
-        if(this.$route.params.backRoute || this.navigationBack)
-          return this.$route.params.backRoute ? `/${this.telaInfo.menuPath}/${this.$route.params.backRoute}` : `/${this.telaInfo.menuPath}/${this.navigationBack}`;
-      },
-      pagedData () {
-        return this.tableData.reverse().slice(this.from, this.to)
-      },
-      queriedData () {
-        if(this.tableData) {
-          if (!this.searchQuery) {
-            this.pagination.total = this.tableData.length
-            return this.pagedData
-          }
-          let result = this.tableData.reverse()
-            .filter((row) => {
-              let isIncluded = false
-              for (let key of this.propsToSearch) {
-                const parts = key.split('.');
+    tableData: {
+      type: Array
+    },
+    dropdownLinks: {
+      type: Array,
+      required: true
+    },
+    navigationBack: {
+      type: String
+    }
+  },
+  components: {
+    PPagination
+  },
+  computed: {
+    rota() {
+      let param = this.paramValue ? `/${this.paramValue}` : "";
+      return this.$route.params.backRoute
+        ? `/${this.telaInfo.menuPath}/${this.$route.params.backRoute}/${
+            this.telaInfo.tela
+          }${param}`
+        : this.telaInfo.rota;
+    },
+    routeNavigationBack() {
+      if (this.$route.params.backRoute || this.navigationBack)
+        return this.$route.params.backRoute
+          ? `/${this.telaInfo.menuPath}/${this.$route.params.backRoute}`
+          : `/${this.telaInfo.menuPath}/${this.navigationBack}`;
+    },
+    pagedData() {
+      return this.tableData.reverse().slice(this.from, this.to);
+    },
+    queriedData() {
+      if (this.tableData) {
+        if (!this.searchQuery) {
+          this.pagination.total = this.tableData.length;
+          return this.pagedData;
+        }
+        let result = this.tableData.reverse().filter(row => {
+          let isIncluded = false;
+          for (let key of this.propsToSearch) {
+            const parts = key.split(".");
 
-                let rowValue = '';
-                let hasValue = row[key] != undefined;
+            let rowValue = "";
+            let hasValue = row[key] != undefined;
 
-                if(!hasValue && parts.length > 0) {
-                  let objectPart;
+            if (!hasValue && parts.length > 0) {
+              let objectPart;
 
-                  for(let part of parts) {
-                    if(objectPart) {
-                      hasValue = objectPart[part] != undefined;
-                    }
-
-                    if((typeof row[part]) == 'object') {
-                      objectPart = row[part];
-                    }
-
-                    if(hasValue && objectPart) {
-                      rowValue = objectPart[part];
-                    }
-                  }
-                } else {
-                  rowValue = row[key];
+              for (let part of parts) {
+                if (objectPart) {
+                  hasValue = objectPart[part] != undefined;
                 }
 
-                if(hasValue) {  
-                  rowValue = rowValue.toString().toUpperCase();
-                  if (rowValue.includes && rowValue.includes(this.searchQuery.toUpperCase())) {
-                    isIncluded = true
-                  }
+                if (typeof row[part] == "object") {
+                  objectPart = row[part];
+                }
+
+                if (hasValue && objectPart) {
+                  rowValue = objectPart[part];
                 }
               }
-              return isIncluded
-            })
-          this.pagination.total = result.length
-          return result.slice(this.from, this.to)
-        }
-      },
-      to () {
-        let highBound = this.from + this.pagination.perPage
-        if (this.total < highBound) {
-          highBound = this.total
-        }
-        return highBound
-      },
-      from () {
-        return this.pagination.perPage * (this.pagination.currentPage - 1)
-      },
-      total () {
-        if(this.tableData) {
-          this.pagination.total = this.tableData.length
-          return this.tableData.length  
-        }
-      },
-      propsToSearch() {
-        return this.tableColumns.map(tc => {
-          return tc.prop
-        })
-      }
-    },
-    asyncComputed: {
-      telaInfo() {
-        let app = this;
-        this.service = new LoginService(this.$http);
-        return this.service
-          .getTelaInfo(this.route)
-          .then(telaInfo => {
-            let result = {
-              title: telaInfo.descricao,
-              menuPath: telaInfo.menuObject.path,
-              tela: telaInfo.rota,
-              rota: `/${telaInfo.menuObject.path}/${telaInfo.rota}`  
+            } else {
+              rowValue = row[key];
             }
-            
-            app.$store.dispatch('setLastRoute', result);
 
-            return result;
-          });
+            if (hasValue) {
+              rowValue = rowValue.toString().toUpperCase();
+              if (
+                rowValue.includes &&
+                rowValue.includes(this.searchQuery.toUpperCase())
+              ) {
+                isIncluded = true;
+              }
+            }
+          }
+          return isIncluded;
+        });
+        this.pagination.total = result.length;
+        return result.slice(this.from, this.to);
       }
     },
-    data () {
-      return {
-        pagination: {
-          perPage: 25,
-          currentPage: 1,
-          perPageOptions: [10, 25, 50],
-          total: 0
-        },
-        searchQuery: '',
-        sort: {
-          prop: 'id', 
-          order: 'descending'
-        }
+    to() {
+      let highBound = this.from + this.pagination.perPage;
+      if (this.total < highBound) {
+        highBound = this.total;
+      }
+      return highBound;
+    },
+    from() {
+      return this.pagination.perPage * (this.pagination.currentPage - 1);
+    },
+    total() {
+      if (this.tableData) {
+        this.pagination.total = this.tableData.length;
+        return this.tableData.length;
       }
     },
-    methods: {
-      handleAction(command) {
-        if(command.action == 'edit') {
-          this.$router.push(command.url);
-        }
+    propsToSearch() {
+      return this.tableColumns.map(tc => {
+        return tc.prop;
+      });
+    }
+  },
+  asyncComputed: {
+    telaInfo() {
+      let app = this;
+      this.service = new LoginService(this.$http);
+      return this.service.getTelaInfo(this.route).then(telaInfo => {
+        let result = {
+          title: telaInfo.descricao,
+          menuPath: telaInfo.menuObject.path,
+          tela: telaInfo.rota,
+          rota: `/${telaInfo.menuObject.path}/${telaInfo.rota}`
+        };
 
-        if(command.action == 'delete') {
-          this.handleDelete(command);
-        }
+        app.$store.dispatch("setLastRoute", result);
+
+        return result;
+      });
+    }
+  },
+  data() {
+    return {
+      pagination: {
+        perPage: 25,
+        currentPage: 1,
+        perPageOptions: [10, 25, 50],
+        total: 0
       },
-      handleDelete(command) {
-        this.$emit('deleteItem', command);
-      },
-      removeItem(index) {
-        this.tableData.splice(index)
+      searchQuery: "",
+      sort: {
+        prop: "id",
+        order: "descending"
       }
+    };
+  },
+  methods: {
+    handleAction(command) {
+      if (command.action == "edit") {
+        this.$router.push(command.url);
+      }
+
+      if (command.action == "delete") {
+        this.handleDelete(command);
+      }
+    },
+    handleDelete(command) {
+      this.$emit("deleteItem", command);
+    },
+    removeItem(index) {
+      this.tableData.splice(index);
     }
   }
+};
 </script>

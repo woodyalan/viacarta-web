@@ -41,6 +41,15 @@ export default class PropriedadeService {
     );
   }
 
+  exportarAnexos(fichas) {
+    return this._resource.post(`propriedade/exportar/anexos`, { fichas }).then(
+      res => res.json(),
+      err => {
+        throw new Error(`Falha ao exportar anexos das propriedades. ${err}`);
+      }
+    );
+  }
+
   save(propriedade) {
     return this._resource.post(`propriedade`, propriedade).then(
       res => res.json(),
