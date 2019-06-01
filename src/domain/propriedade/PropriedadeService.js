@@ -50,6 +50,15 @@ export default class PropriedadeService {
     );
   }
 
+  exportarArquivoUnico(fichas) {
+    return this._resource.post(`propriedade/exportar`, { fichas }).then(
+      res => res.json(),
+      err => {
+        throw new Error(`Falha ao exportar fichas das propriedades. ${err}`);
+      }
+    );
+  }
+
   save(propriedade) {
     return this._resource.post(`propriedade`, propriedade).then(
       res => res.json(),

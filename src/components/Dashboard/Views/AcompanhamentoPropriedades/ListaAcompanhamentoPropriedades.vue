@@ -104,9 +104,9 @@
                   el-dropdown-item.text-info(command='exportarAnexos') 
                     i.ti-gallery
                     |  Anexos
-                  //- el-dropdown-item.text-info(command='exportarArquivoUnico') 
-                  //-   i.ti-file 
-                  //-   |  Arquivo Único
+                  el-dropdown-item.text-info(command='exportarArquivoUnico') 
+                    i.ti-file 
+                    |  Arquivo Único
 
           table.table.table-hover.table-report(
             v-if="registros.length > 0"
@@ -276,7 +276,34 @@ export default {
           })
           .catch(e => {
             this.loading = false;
-            
+
+            console.log(e);
+            swal({
+              title: "Ops!",
+              html: `Falha ao exportar fichas.`,
+              buttonsStyling: false,
+              type: "error",
+              confirmButtonClass: "btn btn-success btn-fill",
+              allowOutsideClick: false
+            });
+          });
+      }
+    },
+    exportarArquivoUnico() {
+      if (this.fichasExportacao && !this.loading) {
+        this.loading = true;
+
+        this.service = new PropriedadeService(this.$http);
+        this.service
+          .exportarArquivoUnico(this.fichasExportacao)
+          .then(result => {
+            this.loading = false;
+
+            window.open(`${this.apiUrl}${result.file}`, "_blank");
+          })
+          .catch(e => {
+            this.loading = false;
+
             console.log(e);
             swal({
               title: "Ops!",
@@ -362,13 +389,17 @@ export default {
       });
     },
     handleAction(action) {
-      switch(action) {
-        case 'exportarLote':
-          this.exportarLote(); 
+      switch (action) {
+        case "exportarLote":
+          this.exportarLote();
           break;
 
-        case 'exportarAnexos':
-          this.exportarAnexos(); 
+        case "exportarAnexos":
+          this.exportarAnexos();
+          break;
+
+        case "exportarArquivoUnico":
+          this.exportarArquivoUnico();
           break;
       }
     }
