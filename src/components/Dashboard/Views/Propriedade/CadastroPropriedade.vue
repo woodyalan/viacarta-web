@@ -588,9 +588,9 @@ export default {
         dictRemoveFileConfirmation: "Confirma a remoção do arquivo?",
         url: process.env.API_URL + "propriedade/upload",
         addRemoveLinks: true,
-        acceptedFiles: "image/*",
+        acceptedFiles: "image/*, application/pdf",
         thumbnailWidth: 150,
-        maxFiles: 8,
+        maxFiles: 20,
         maxFilesize: 2,
         headers: {
           "x-access-token": this.$store.state.token
