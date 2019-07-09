@@ -108,6 +108,11 @@
                     i.ti-file 
                     |  Arquivo Único
 
+          p.lead(
+            v-if="registros.length > 0"
+          ) 
+            small {{ registros.length }} registro(s) encontrado(s)
+
           table.table.table-hover.table-report(
             v-if="registros.length > 0"
           )
