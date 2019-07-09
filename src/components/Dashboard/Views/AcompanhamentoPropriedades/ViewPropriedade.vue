@@ -237,7 +237,7 @@
                     v-for="foto in fotosImovel"
                   )
                     img.img-responsive.img-rounded(
-                      :src="`${foto.conteudo}`"
+                      :src="`${apiUrl}${foto.arquivo}`"
                     )
 
               div(
@@ -251,7 +251,7 @@
                     v-for="foto in fotosDocumentos"
                   )
                     img.img-responsive.img-rounded(
-                      :src="`${foto.conteudo}`"
+                      :src="`${apiUrl}${foto.arquivo}`"
                     )
 
             hr
@@ -284,9 +284,7 @@ export default {
           this.fichaCadastro.imovelFichaCadastro.latitude &&
           this.fichaCadastro.imovelFichaCadastro.longitude
         ) {
-          localizacao = `${this.fichaCadastro.imovelFichaCadastro.latitude}, ${
-            this.fichaCadastro.imovelFichaCadastro.longitude
-          }`;
+          localizacao = `${this.fichaCadastro.imovelFichaCadastro.latitude}, ${this.fichaCadastro.imovelFichaCadastro.longitude}`;
         }
       }
 

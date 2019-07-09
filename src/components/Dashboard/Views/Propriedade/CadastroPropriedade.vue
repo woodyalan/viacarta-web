@@ -862,8 +862,7 @@ export default {
               id: a.id,
               size: a.size,
               path: a.arquivo,
-              name: a.arquivo,
-              conteudo: a.conteudo
+              name: a.arquivo
             };
           });
 
@@ -876,8 +875,7 @@ export default {
               id: a.id,
               size: a.size,
               path: a.arquivo,
-              name: a.arquivo,
-              conteudo: a.conteudo
+              name: a.arquivo
             };
           });
 
