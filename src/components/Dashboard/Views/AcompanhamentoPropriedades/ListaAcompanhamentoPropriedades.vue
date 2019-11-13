@@ -180,7 +180,8 @@ export default {
         fim: new Date(),
         endereco: null,
         numero: null,
-        ficha: null
+        ficha: null,
+        regiaoId: null
       }
     };
   },
