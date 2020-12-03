@@ -30,7 +30,7 @@ import routes from './routes/routes';
 
 // library imports
 
-import 'vue2-dropzone/dist/vue2Dropzone.css';
+import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 import './assets/sass/paper-dashboard.scss';
 import './assets/sass/demo.scss';
 import './assets/sass/paper-dashboard-override.scss';
@@ -69,7 +69,7 @@ Validator.addLocale(messagesBR);
 Vue.use(VeeValidate, {
   locale: 'pt_BR',
   inject: false,
-  dictionary: Dictionary
+  dictionary: Dictionary,
 });
 
 locale.use(lang);
@@ -78,12 +78,12 @@ locale.use(lang);
 const router = new VueRouter({
   routes, // short for routes: routes
   mode: 'history',
-  linkActiveClass: 'active'
+  linkActiveClass: 'active',
 });
 
 Vue.http.options.root = process.env.API_URL;
 
-Vue.http.interceptors.push(function(request, next) {
+Vue.http.interceptors.push(function (request, next) {
   const removeAuthHeaders = request.url.includes('republicavirtual.com.br');
 
   request.headers.set('Accept', 'application/json');
@@ -95,7 +95,7 @@ Vue.http.interceptors.push(function(request, next) {
     request.headers.set('x-access-token', token);
   }
 
-  next(function(res) {
+  next(function (res) {
     if (res.status === 401) {
       router.push('/logoff');
     }
@@ -107,5 +107,5 @@ new Vue({
   el: '#app',
   router,
   store,
-  render: h => h(App)
+  render: (h) => h(App),
 });
