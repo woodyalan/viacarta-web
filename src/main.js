@@ -61,13 +61,13 @@ Vue.use(money);
 //   }
 // });
 
-Validator.installDateTimeValidators(moment);
 Validator.extend('cpf', CpfValidator);
 Validator.extend('cnpj', CnpjValidator);
 
-Validator.addLocale(messagesBR);
+// Validator.addLocale();
 Vue.use(VeeValidate, {
   locale: 'pt_BR',
+  // dictionary: messagesBR,
   inject: false,
   dictionary: Dictionary,
 });
